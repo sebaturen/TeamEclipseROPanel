@@ -37,13 +37,17 @@ public class User {
 
     }
 
-    private User() {
+    public User() {
 
     }
 
     // GET SET
     public boolean isIs_guild_member() {
         return is_guild_member;
+    }
+
+    public boolean isLogin() {
+        return (id > 0);
     }
 
     @Override

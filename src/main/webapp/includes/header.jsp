@@ -14,7 +14,7 @@
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="description" content="Eclipse Ragnarok Online Panel" />
+<meta name="description" content="Team Eclipse Ragnarok Online Panel" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- Required Bootstrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>

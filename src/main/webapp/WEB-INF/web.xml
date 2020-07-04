@@ -19,18 +19,18 @@
         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
         version="4.0">
 
-    <description>Eclipse RO Panel</description>
-    <display-name>Eclipse Ragnarok Online Panel</display-name>
+    <description>Team Eclipse RO Panel</description>
+    <display-name>Team Eclipse Ragnarok Online Panel</display-name>
 
     <!-- Define servlets that are included in the example application -->
 
     <servlet>
-        <servlet-name>Eclipse RO Panel</servlet-name>
+        <servlet-name>Team Eclipse RO Panel</servlet-name>
         <servlet-class>com.eclipse.panel</servlet-class>
     </servlet>
 
     <servlet>
-        <servlet-name>Eclipse RO Panel API</servlet-name>
+        <servlet-name>Team Eclipse RO Panel API</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
@@ -39,7 +39,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Eclipse RO Panel API</servlet-name>
+        <servlet-name>Team Eclipse RO Panel API</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
 
@@ -50,7 +50,7 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Eclipse RO Panel</web-resource-name>
+            <web-resource-name>Team Eclipse RO Panel</web-resource-name>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <!-- auth-constraint goes here if you require authentication -->
