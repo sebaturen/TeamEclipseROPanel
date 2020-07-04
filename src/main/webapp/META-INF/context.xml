@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!-- ******************************************************************* -->
+    <!-- ************************ Data Base ******************************** -->
+    <!-- ******************************************************************* -->
+    <Resource
+            name="jdbc/db" type="javax.sql.DataSource"
+            maxActive="100" maxIdle="30" maxWait="10000"
+            url="jdbc:mysql://127.0.0.1/"
+            driverClassName="org.mariadb.jdbc.Driver"
+            username=""
+            password=""
+    />
+
+    <!-- ******************************************************************* -->
+    <!-- ***************** Enviroment variables **************************** -->
+    <!-- ******************************************************************* -->
+    <!--  Guild information -->
+    <Environment name="GUILD_NAME"      value="" override="false" type="java.lang.String" />
+
+    <!--  Web main URL -->
+    <Environment name="MAIN_URL"        value="" override="false" type="java.lang.String" />
+
+    <!-- DISCORD API INFO -->
+    <Environment name="DISCORD_BOT_TOKEN" value="" override="false" type="java.lang.String" />
+    <Environment name="DISCORD_GUILD_NAME" value="" override="false" type="java.lang.String" />
+    <Environment name="DISCORD_GUILD_ID" value="" override="false" type="java.lang.String" />
+    <Environment name="DISCORD_CHANEL_NAME" value="" override="false" type="java.lang.String" />
+
+    <!-- Rewrite value -->
+    <Valve className="org.apache.catalina.valves.rewrite.RewriteValve" />
+</Context>
