@@ -21,21 +21,8 @@ public class User {
     // Update control
     private long create_timestamp;
 
-    public static class Builder extends DBLoadObject {
 
-        private int id;
-        public Builder(int id) {
-            super(TABLE_NAME, User.class);
-            this.id = id;
-        }
 
-        public User build() {
-            User u = (User) load(TABLE_KEY, id);
-            // Load accounts (?)
-            return u;
-        }
-
-    }
 
     public User() {
 
