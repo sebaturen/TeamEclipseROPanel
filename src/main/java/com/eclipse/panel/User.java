@@ -21,9 +21,6 @@ public class User {
     // Update control
     private long create_timestamp;
 
-
-
-
     public User() {
 
     }

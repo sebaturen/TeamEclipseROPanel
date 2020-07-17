@@ -7,7 +7,7 @@ public class Accounts {
 
     // Accounts DB
     public static final String TABLE_NAME = "accounts";
-    public static final String TABLE_KEY = "ro_id";
+    public static final String TABLE_KEY = "id";
 
     // Attributes
     private int ro_id;

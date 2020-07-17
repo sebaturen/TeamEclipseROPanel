@@ -6,8 +6,8 @@ import com.eclipse.panel.gameObject.Accounts;
 public class Character {
 
     // Character DB
-    public static final String TABLE_NAME = "character";
-    public static final String TABLE_KEY = "ro_id";
+    public static final String TABLE_NAME = "characters";
+    public static final String TABLE_KEY = "id";
 
     // Attributes
     private int ro_id;
