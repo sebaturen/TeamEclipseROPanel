@@ -1,10 +1,8 @@
 package com.eclipse.panel.gameObject.character;
 
 import com.eclipse.panel.dbConnect.DBLoadObject;
-import com.eclipse.panel.gameObject.roDB.PlayableClass;
-import com.eclipse.panel.gameObject.roDB.PlayableSex;
 import com.eclipse.panel.gameObject.roDB.Skill;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,25 +16,19 @@ public class CharacterInfo {
     // Attributes
     private int id;
     private int character_id;
-    private int class_id;
-    private int base_lvl;
     private int job_lvl;
-    private String sex;
-    private int head_type;
-    private int head_color;
-    private int clothes_color;
     private int stat_str;
     private int stat_agi;
     private int stat_vit;
     private int stat_int;
     private int stat_dex;
     private int stat_luk;
-    private JsonElement character_skills;
+    private JsonObject character_skills;
+
+    // Update control
     private long last_update;
 
     // Internal data
-    private PlayableClass playableClass;
-    private PlayableSex playableSex;
     private List<Skill> skills;
 
     public static class Builder extends DBLoadObject {
@@ -65,13 +57,7 @@ public class CharacterInfo {
         return "{\"_class\":\"CharacterInfo\", " +
                 "\"id\":\"" + id + "\"" + ", " +
                 "\"character_id\":\"" + character_id + "\"" + ", " +
-                "\"class_id\":\"" + class_id + "\"" + ", " +
-                "\"base_lvl\":\"" + base_lvl + "\"" + ", " +
                 "\"job_lvl\":\"" + job_lvl + "\"" + ", " +
-                "\"sex\":" + (sex == null ? "null" : "\"" + sex + "\"") + ", " +
-                "\"head_type\":\"" + head_type + "\"" + ", " +
-                "\"head_color\":\"" + head_color + "\"" + ", " +
-                "\"clothes_color\":\"" + clothes_color + "\"" + ", " +
                 "\"stat_str\":\"" + stat_str + "\"" + ", " +
                 "\"stat_agi\":\"" + stat_agi + "\"" + ", " +
                 "\"stat_vit\":\"" + stat_vit + "\"" + ", " +
@@ -80,8 +66,6 @@ public class CharacterInfo {
                 "\"stat_luk\":\"" + stat_luk + "\"" + ", " +
                 "\"character_skills\":" + (character_skills == null ? "null" : character_skills) + ", " +
                 "\"last_update\":\"" + last_update + "\"" + ", " +
-                "\"playableClass\":\"" + playableClass + "\"" + ", " +
-                "\"sex\":\"" + sex + "\"" + ", " +
                 "\"skills\":" + (skills == null ? "null" : Arrays.toString(skills.toArray())) +
                 "}";
     }

@@ -38,6 +38,10 @@
         </init-param>
     </servlet>
 
+    <listener>
+        <listener-class>com.eclipse.panel.viewController.ViewController</listener-class>
+    </listener>
+
     <servlet-mapping>
         <servlet-name>Team Eclipse RO Panel API</servlet-name>
         <url-pattern>/rest/*</url-pattern>

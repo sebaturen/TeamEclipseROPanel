@@ -216,7 +216,11 @@ public class DBConnect {
         int i = 0;
         for (Map.Entry<Object, Object> entry : columns.entrySet()) {
             nC[i] = entry.getKey().toString();
-            nV[i] = entry.getValue().toString();
+            if (entry.getValue() == null) {
+                nV[i] = null;
+            } else {
+                nV[i] = entry.getValue().toString();
+            }
             i++;
         }
         return insert(table, idColumn, nC, nV);
@@ -276,7 +280,11 @@ public class DBConnect {
         int i = 0;
         for (Map.Entry<Object, Object> entry : info.entrySet()) {
             nC[i] = entry.getKey().toString();
-            nV[i] = entry.getValue().toString();
+            if (entry.getValue() == null) {
+                nV[i] = null;
+            } else {
+                nV[i] = entry.getValue().toString();
+            }
             i++;
         }
         update(table, nC, nV, where, whereValues);

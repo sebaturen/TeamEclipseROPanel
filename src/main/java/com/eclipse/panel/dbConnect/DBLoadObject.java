@@ -42,7 +42,12 @@ public abstract class DBLoadObject {
                         jElem.remove(key);
                     }
                 }
-                return gson.fromJson(jElem, classObject);
+                Object g = null;
+                try {
+                    g = gson.fromJson(jElem, classObject);
+                } catch (Exception e) {
+                }
+                return g;
             } else if (dbSelect.size() > 1) {
                 Logs.errorLog(this.getClass(), "TO MANY DATA");
             } else {

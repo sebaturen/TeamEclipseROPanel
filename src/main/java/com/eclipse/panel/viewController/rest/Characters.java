@@ -39,12 +39,17 @@ public class Characters {
 
         // Check is account previously exist:
         try {
-            createAccount(accId);
-            createUpdateGuild(pjData);
-            createUpdateCharacter(pjData);
+            if (pjData.get("name").toString().length() > 0) {
+                createAccount(accId);
+                if (pjData.has("guild_id") && pjData.get("guild_id").getAsInt() != 0) {
+                    createUpdateGuild(pjData);
+                }
+                createUpdateCharacter(pjData);
+            }
             return Response.ok().entity(okInfo.toString()).build();
         } catch (Exception e) {
-            e.printStackTrace();
+            Logs.fatalLog(this.getClass(), "FATAL Add Character Detail is failed -> "+ e);
+            //e.printStackTrace();
         }
 
         return Response.serverError().entity("Failed").build();
@@ -72,14 +77,15 @@ public class Characters {
                             new String[]{"id", "timestamp"},
                             new String[]{accId+"", new Date().getTime()+""}
                     );
+                    Logs.infoLog(this.getClass(), "Create account success ["+ accId +"]");
                 } catch (Exception e) {
-                    Logs.fatalLog(this.getClass(), "FATAL [Exception] [createAccount] -> "+ e);
+                    Logs.fatalLog(this.getClass(), "FATAL Create/Update account [Exception] [createAccount] -> "+ e);
                     throw new Exception("Process not completed");
                 }
             }
 
         } catch (SQLException e) {
-            Logs.fatalLog(this.getClass(), "FATAL [SQLException] [createAccount] -> "+ e);
+            Logs.fatalLog(this.getClass(), "FATAL Create/Update create Account [SQLException] [createAccount] -> "+ e);
             throw new Exception("Process not completed");
         }
 
@@ -91,7 +97,7 @@ public class Characters {
 
             JsonArray character_db = DBLoadObject.dbConnect.select(
                     Character.TABLE_NAME,
-                    new String[] {"last_update"},
+                    new String[] {"last_update", "guild_id"},
                     Character.TABLE_KEY +"=?",
                     new String[] { pjData.get("character_id").getAsString() }
             );
@@ -103,18 +109,18 @@ public class Characters {
             }
 
             JsonObject showEquip = new JsonObject();
-            showEquip.addProperty("weapon_id", pjData.get("weapon_id").getAsString());
-            showEquip.addProperty("shield_id", pjData.get("shield_id").getAsString());
+            showEquip.addProperty("weapon_id", pjData.get("weapon_id").getAsInt());
+            showEquip.addProperty("shield_id", pjData.get("shield_id").getAsInt());
 
             JsonObject headView = new JsonObject();
-            headView.addProperty("low_head_view_id", pjData.get("low_head_view_id").getAsString());
-            headView.addProperty("top_head_view_id", pjData.get("top_head_view_id").getAsString());
-            headView.addProperty("mid_head_view_id", pjData.get("mid_head_view_id").getAsString());
+            headView.addProperty("low_head_view_id", pjData.get("low_head_view_id").getAsInt());
+            headView.addProperty("top_head_view_id", pjData.get("top_head_view_id").getAsInt());
+            headView.addProperty("mid_head_view_id", pjData.get("mid_head_view_id").getAsInt());
 
             JsonObject characterView = new JsonObject();
-            characterView.addProperty("hair_style_id", pjData.get("hair_style_id").getAsString());
-            characterView.addProperty("hair_color_id", pjData.get("hair_color_id").getAsString());
-            characterView.addProperty("clothes_color_id", pjData.get("clothes_color_id").getAsString());
+            characterView.addProperty("hair_style_id", pjData.get("hair_style_id").getAsInt());
+            characterView.addProperty("hair_color_id", pjData.get("hair_color_id").getAsInt());
+            characterView.addProperty("clothes_color_id", pjData.get("clothes_color_id").getAsInt());
 
             Map<Object, Object> info = new HashMap<>();
             info.put("id", pjData.get("character_id").getAsString());
@@ -128,8 +134,10 @@ public class Characters {
             info.put("character_view", characterView.toString());
             info.put("last_update", new Date().getTime()+"");
 
-            if (pjData.get("guild_id").getAsInt() > 0) {
+            if (pjData.has("guild_id") && pjData.get("guild_id").getAsInt() > 0) {
                 info.put("guild_id", pjData.get("guild_id").getAsString());
+            } else {
+                info.put("guild_id", null);
             }
 
             if (!isInDb) {
@@ -143,6 +151,7 @@ public class Characters {
                             Character.TABLE_KEY,
                             info
                     );
+                    Logs.infoLog(this.getClass(), "Create Character success ["+ pjData.get("character_id") +"]");
 
                 } catch (Exception e) {
                     Logs.fatalLog(this.getClass(), "FATAL [Exception] [createUpdateCharacter] -> "+ e);
@@ -157,11 +166,12 @@ public class Characters {
                         Character.TABLE_KEY +"=?",
                         new String[] { pjData.get("character_id").getAsString() }
                 );
+                Logs.infoLog(this.getClass(), "Update Character success ["+ pjData.get("character_id") +"]");
 
             }
 
         } catch (SQLException e) {
-            Logs.fatalLog(this.getClass(), "FATAL [SQLException] [createUpdateCharacter] -> "+ e);
+            Logs.fatalLog(this.getClass(), "FATAL Update/Create Character [SQLException] [createUpdateCharacter] -> "+ e);
             throw new Exception("Process not completed");
         }
 
@@ -195,6 +205,7 @@ public class Characters {
                                 new Date().getTime()+""
                         }
                 );
+                Logs.infoLog(this.getClass(), "Create Guild success ["+ pjInfo.get("guild_id") +"]");
 
             } else {
 
@@ -207,10 +218,12 @@ public class Characters {
                         Guild.TABLE_KEY +" = ?",
                         new String[]{pjInfo.get("guild_id").getAsString()}
                 );
+                Logs.infoLog(this.getClass(), "Update Guild success ["+ pjInfo.get("guild_id") +"]");
+
             }
 
         } catch (Exception e) {
-            Logs.fatalLog(this.getClass(), "FATAL [SQLException] [createUpdateGuild] -> "+ e);
+            Logs.fatalLog(this.getClass(), "FATAL Create/Update Guild [SQLException] [createUpdateGuild] -> "+ e);
             throw new Exception("Process not completed");
         }
 
