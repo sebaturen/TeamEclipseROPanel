@@ -2,8 +2,8 @@ package com.eclipse.panel.viewController.rest;
 
 import com.eclipse.panel.Logs;
 import com.eclipse.panel.dbConnect.DBLoadObject;
+import com.eclipse.panel.gameObject.woe.CastleBreaker;
 import com.eclipse.panel.gameObject.Guild;
-import com.eclipse.panel.gameObject.WoE;
 import com.eclipse.panel.gameObject.character.Character;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -20,7 +20,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.*;
-import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
@@ -195,8 +194,8 @@ public class Guilds {
             }
 
             DBLoadObject.dbConnect.insert(
-                    WoE.TABLE_NAME_BREAKER,
-                    WoE.TABLE_KEY_ID,
+                    CastleBreaker.TABLE_NAME,
+                    CastleBreaker.TABLE_KEY,
                     info
             );
 

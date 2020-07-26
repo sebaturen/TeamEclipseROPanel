@@ -182,7 +182,7 @@ public class Characters {
         try {
             JsonArray guild_db = DBLoadObject.dbConnect.select(
                     Guild.TABLE_NAME,
-                    new String[] {"id"},
+                    new String[] {Guild.TABLE_KEY},
                     Guild.TABLE_KEY +" = ?",
                     new String[] {pjInfo.get("guild_id").getAsString()}
             );
