@@ -34,13 +34,13 @@
         <select onchange="urlHandler(this.value)">
             <c:forEach items="${guilds}" var="gDet">
                 <option value="${gDet.id}" <c:if test="${gDet.id == guild.id}">selected</c:if>>
-                    <img src="assets/img/ro/guilds/Poring_${guild.id}_${guild.emblem_id}.png"/>[${gDet.id}] ${gDet.name}
+                    [${gDet.id}] ${gDet.name}
                 </option>
             </c:forEach>
         </select>
         <div class="row guild_logoName divder">
             <div class="col col-md-6 align-self-center">
-                <img src="assets/img/ro/guilds/Poring_${guild.id}_${guild.emblem_id}.png"/>
+                <img src="assets/img/ro/guilds/emblems/Poring_${guild.id}_${guild.emblem_id}.png"/>
                 <p class='home_name'>${guild.name}</p>
             </div>
         </div>
