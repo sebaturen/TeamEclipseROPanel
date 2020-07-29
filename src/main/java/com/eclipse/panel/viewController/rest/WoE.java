@@ -9,6 +9,8 @@ import com.google.gson.JsonObject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.ParseException;
 import java.util.List;
@@ -18,6 +20,7 @@ public class WoE {
 
     @GET
     @Path("/breaker/{time}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response woeBreaker(
             @PathParam("time") String time
     ) {
@@ -26,7 +29,7 @@ public class WoE {
             JsonObject breaksCities = new JsonObject();
 
             for(CastleBreaker castBreak : castleBreakerList) {
-                String mapName = castBreak.getCastle().getMap().getName();
+                String mapName = castBreak.getCastle().getMap().getSlug();
                 int castNumber = castBreak.getCastle().getCast_number();
                 if (breaksCities.has(mapName)) {
                     if (breaksCities.get(mapName).getAsJsonObject().has("castle_"+ castNumber)) {
@@ -35,13 +38,21 @@ public class WoE {
                                 .get(mapName)
                                 .getAsJsonObject()
                                 .get("castle_"+ castNumber)
+                                .getAsJsonObject()
+                                .get("break_history")
                                 .getAsJsonArray()
                                 .add(getBreakCastleInfo(castBreak));
 
                     } else {
 
-                        JsonArray castles = new JsonArray();
-                        castles.add(getBreakCastleInfo(castBreak));
+                        JsonObject castles = new JsonObject();
+                        castles.addProperty("castle_map_name", castBreak.getCastle().getCastle_map_name());
+                        castles.addProperty("castle_name", castBreak.getCastle().getName());
+
+                        JsonArray breakHistory = new JsonArray();
+                        breakHistory.add(getBreakCastleInfo(castBreak));
+                        castles.add("break_history", breakHistory);
+
 
                         breaksCities.get(mapName).getAsJsonObject().add("castle_"+ castNumber, castles);
                     }
@@ -50,15 +61,18 @@ public class WoE {
                     JsonObject mapDetail = new JsonObject();
                     mapDetail.addProperty("map_name", castBreak.getCastle().getMap().getName());
                     mapDetail.addProperty("map_slug", castBreak.getCastle().getMap().getSlug());
-                    mapDetail.addProperty("castle_map_name", castBreak.getCastle().getCastle_map_name());
-                    mapDetail.addProperty("castle_name", castBreak.getCastle().getName());
 
-                    JsonArray castles = new JsonArray();
-                    castles.add(getBreakCastleInfo(castBreak));
+                    JsonObject castles = new JsonObject();
+                    castles.addProperty("castle_map_name", castBreak.getCastle().getCastle_map_name());
+                    castles.addProperty("castle_name", castBreak.getCastle().getName());
+
+                    JsonArray breakHistory = new JsonArray();
+                    breakHistory.add(getBreakCastleInfo(castBreak));
+                    castles.add("break_history", breakHistory);
 
                     mapDetail.add("castle_"+ castNumber, castles);
 
-                    breaksCities.add(castBreak.getCastle().getMap().getName(), mapDetail);
+                    breaksCities.add(mapName, mapDetail);
 
                 }
             }

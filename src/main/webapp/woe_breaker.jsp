@@ -10,22 +10,28 @@
 <%@ page import ="com.eclipse.panel.gameObject.woe.CastleBreaker" %>
 <%@ page import ="com.eclipse.panel.gameObject.woe.Castle" %>
 <%@ page import ="java.util.List" %>
-<c:if test="${empty param.time}">
-    <c:set var="breaks" scope="request" value="${GuildController.getBreakers(\"\")}"/>
-</c:if>
-<c:if test="${not empty param.time}">
-    <c:set var="breaks" scope="request" value="${GuildController.getBreakers(param.time)}"/>
-</c:if>
 <html>
     <head>
         <title>WoE Cast Breaker TimeLine</title>
         <%@include file="includes/header.jsp" %>
+        <link rel="stylesheet" href="assets/css/woe_breaker.css">
+        <script src="assets/js/woe_breaker.js"></script>
     </head>
     <body>
         <%@include file="includes/menu.jsp" %>
-        <div class="content fill">
-            ${breaks}
+        <div class="container fill">
+            <div id="loading">
+                Loading... :eyes
+            </div>
+            <div id="break_info">
+                <div id="prt_gld"></div>
+                <div id="gef_fild13"></div>
+                <div id="pay_gld"></div>
+                <div id="alde_gld"></div>
+            </div>
+
         </div>
+        <script></script>
         <%@include file="includes/footer.jsp" %>
     </body>
 </html>

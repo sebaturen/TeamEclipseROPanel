@@ -8,7 +8,7 @@
 <div id="footer">
     <div class="fill">
         <div class="copyRight">
-            Team Eclipse RO Panel ... Warp warp! juego ql mal echo
+            Team Eclipse RO Panel ... Warp warp! juego ql mal hecho
         </div>
     </div>
 </div>

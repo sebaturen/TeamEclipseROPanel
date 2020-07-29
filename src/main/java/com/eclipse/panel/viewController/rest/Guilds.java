@@ -17,8 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.io.*;
 import java.util.Base64;
 import java.util.Date;
@@ -231,55 +230,61 @@ public class Guilds {
     public static void writeByte(byte[] bytes, int guildId, int emblemId) {
 
         String FILEPATH = System.getProperty( "catalina.base" ) +"/team_eclipse/ROOT/assets/img/ro/guilds/emblems/";
-        File file = new File(FILEPATH+"Poring_"+ guildId +"_"+ emblemId +".png");
+        File filePng = new File(FILEPATH+"Poring_"+ guildId +"_"+ emblemId +".png");
 
         try {
             // BMP to PNG
             ByteArrayInputStream bInput = new ByteArrayInputStream(bytes);
-            BufferedImage im = rasterToAlpha(ImageIO.read(bInput), new Color(255, 0, 255));
+            BufferedImage im;
+            im = ImageIO.read(bInput);
+
+            Image transpImg2 = TransformColorToTransparency(im, new Color(250, 0, 250), new Color(255, 10, 255));
+            BufferedImage resultImage2 = ImageToBufferedImage(transpImg2, im.getWidth(), im.getHeight());
+
             // Initialize a pointer
             // in file using OutputStream
             // Starts writing the bytes in it
-            ImageIO.write(im, "PNG", file);
+            ImageIO.write(resultImage2, "png", filePng);
         } catch (Exception e) {
             Logs.fatalLog(Guilds.class, "FAILED to save guild emblem "+ e);
         }
     }
 
-    public static BufferedImage rasterToAlpha(BufferedImage sourceImage, Color origColor) {
-
-        BufferedImage targetImage = new BufferedImage(sourceImage.getWidth(),
-                sourceImage.getHeight(),
-                BufferedImage.TYPE_4BYTE_ABGR);
-        WritableRaster targetRaster = targetImage.getRaster();
-        WritableRaster sourceRaster = sourceImage.getRaster();
-
-        for (int row = 0; row < sourceImage.getHeight(); row++) {
-
-            int[] rgba = new int[4 * sourceImage.getWidth()];
-            int[] rgb = new int[3 * sourceImage.getWidth()];
-
-            // Get the next row of pixels
-            sourceRaster.getPixels(0, row, sourceImage.getWidth(), 1, rgb);
-
-            for (int i = 0, j = 0; i < rgb.length; i += 3, j += 4) {
-                if (origColor.equals(new Color(rgb[i], rgb[i + 1], rgb[i + 2]))) {
-                    // If it's the same make it transparent
-                    rgba[j] = 0;
-                    rgba[j + 1] = 0;
-                    rgba[j + 2] = 0;
-                    rgba[j + 3] = 0;
-                } else {
-                    rgba[j] = rgb[i];
-                    rgba[j + 1] = rgb[i + 1];
-                    rgba[j + 2] = rgb[i + 2];
-                    // Make it opaque
-                    rgba[j + 3] = 255;
-                }
-            }
-            // Write the line
-            targetRaster.setPixels(0, row, sourceImage.getWidth(), 1, rgba);
-        }
-        return targetImage;
+    private static BufferedImage ImageToBufferedImage(Image image, int width, int height) {
+        BufferedImage dest = new BufferedImage(
+                width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = dest.createGraphics();
+        g2.drawImage(image, 0, 0, null);
+        g2.dispose();
+        return dest;
     }
+
+    private static Image TransformColorToTransparency(BufferedImage image, Color c1, Color c2) {
+        // Primitive test, just an example
+        final int r1 = c1.getRed();
+        final int g1 = c1.getGreen();
+        final int b1 = c1.getBlue();
+        final int r2 = c2.getRed();
+        final int g2 = c2.getGreen();
+        final int b2 = c2.getBlue();
+        ImageFilter filter = new RGBImageFilter() {
+            public final int filterRGB(int x, int y, int rgb) {
+                int r = (rgb & 0xFF0000) >> 16;
+                int g = (rgb & 0xFF00) >> 8;
+                int b = rgb & 0xFF;
+                if (r >= r1 && r <= r2 &&
+                        g >= g1 && g <= g2 &&
+                        b >= b1 && b <= b2
+                ) {
+                    // Set fully transparent but keep color
+                    return rgb & 0xFFFFFF;
+                }
+                return rgb;
+            }
+        };
+
+        ImageProducer ip = new FilteredImageSource(image.getSource(), filter);
+        return Toolkit.getDefaultToolkit().createImage(ip);
+    }
+
 }
