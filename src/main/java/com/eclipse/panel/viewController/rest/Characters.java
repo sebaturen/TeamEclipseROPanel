@@ -36,6 +36,9 @@ public class Characters {
 
         // Save info
         JsonObject pjData = JsonParser.parseString(inputData).getAsJsonObject();
+        if (!pjData.has("api_key") || APIKeys.getValue(pjData.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
+            return Response.status(403).entity("Key not match").build();
+        }
 
         // Check is account previously exist:
         try {

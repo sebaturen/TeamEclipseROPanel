@@ -198,8 +198,8 @@ public class DBConnect {
                     stockArr);
             this.lastQuery = tempLastQuery + this.lastQuery; //save insert and select
             if (v.size() == 0) {
-                Logs.fatalLog(this.getClass(), "FAIL (EXIT) TO GET ID! - " + sql);
-                System.exit(-1);
+                Logs.fatalLog(this.getClass(), "FAIL TO GET ID! - " + sql);
+                throw new Exception("Fail to get ID '" + this.getClass() + "' -> "+ lastQuery);
             } else {
                 id = v.get(0).getAsJsonObject().get(idColumn).getAsString();
             }

@@ -41,6 +41,9 @@ public class Guilds {
 
         // Save info
         JsonObject guildData = JsonParser.parseString(inputData).getAsJsonObject();
+        if (!guildData.has("api_key") || APIKeys.getValue(guildData.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
+            return Response.status(403).entity("Key not match").build();
+        }
 
         // Get guild ID buy character
         try {
@@ -146,6 +149,10 @@ public class Guilds {
 
         // Save info
         JsonObject emblemData = JsonParser.parseString(inputData).getAsJsonObject();
+        if (!emblemData.has("api_key") || APIKeys.getValue(emblemData.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
+            return Response.status(403).entity("Key not match").build();
+        }
+
         byte[] bEmblemLogo = Base64.getDecoder().decode(emblemData.get("emblem").getAsString());
         bEmblemLogo = decompress(bEmblemLogo);
 
@@ -171,6 +178,9 @@ public class Guilds {
 
         // Save info
         JsonObject breakCast = JsonParser.parseString(inputData).getAsJsonObject();
+        if (!breakCast.has("api_key") || APIKeys.getValue(breakCast.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
+            return Response.status(403).entity("Key not match").build();
+        }
 
         // Get guild id
         try {
