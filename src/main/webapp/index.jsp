@@ -1,16 +1,21 @@
 <%--
   Created by IntelliJ IDEA.
   User: Seba
-  Date: 21/07/2020
-  Time: 14:51
+  Date: 26/07/2020
+  Time: 0:19
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="includes/globalObject.jsp" %>
 <html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-:eyes
-</body>
+    <head>
+        <title>RO Del mal Panel</title>
+        <%@include file="includes/header.jsp" %>
+    </head>
+    <body>
+    <%@include file="includes/menu.jsp" %>
+    <div class="container fill">
+        :eyes
+    </div>
+    <%@include file="includes/footer.jsp" %>
+    </body>
 </html>

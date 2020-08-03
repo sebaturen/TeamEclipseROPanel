@@ -1,6 +1,7 @@
 $(document).ready(function() {
     /*Load a member details*/
-    $.get("rest/woe/breaker/20200725", function(data) {
+    $.get("rest/woe/breaker/20200801", function(data) {
+        $("#loading").remove();
         console.log("break ready", data);
         castBreaker(data);
     }).always(function() {
@@ -30,7 +31,7 @@ function castBreaker(breakInfo) {
     });
 
     function renderCastle(inf, castNumber) {
-        let castDet = $("<br><div class='castle_num'><h3>"+ inf.castle_name +" "+ castNumber +" </h3></div>");
+        let castDet = $("<br><div class='castle_num'><h3>"+ inf.castle_name +" "+ castNumber +" </h3> ("+ (inf.break_history.length-2) +")</div>");
         let breaks = $("<div class='break_timeline'><div class='timeline_color'></div></div>");
         let post0 = inf.break_history[0].timestamp_break;
         let post100 = inf.break_history[inf.break_history.length-1].timestamp_break - post0;
@@ -39,7 +40,9 @@ function castBreaker(breakInfo) {
             breaks.append(`
                 <div class='breaker_point' style='margin-left: `+ postEmb +`%;'>
                     <div class='breaker_guild_tl'>
-                        <img src='./assets/img/ro/guilds/emblems/Poring_`+ breaks_h.guild_id +`_`+ breaks_h.guild_emblem +`.png'>
+                        <a href="guild_info.jsp?id=`+ breaks_h.guild_id +`">
+                            <img src='./assets/img/ro/guilds/emblems/Poring_`+ breaks_h.guild_id +`_`+ breaks_h.guild_emblem +`.png'>
+                        </a>
                     </div>
                 </div>
             `);

@@ -11,7 +11,7 @@
             <br>
             * Page in construction...
             <br>
-            Team Eclipse RO Panel ... Warp warp! juego ql mal hecho
+            Del Mal RO Panel ... Warp warp! juego ql mal hecho
         </div>
     </div>
 </div>

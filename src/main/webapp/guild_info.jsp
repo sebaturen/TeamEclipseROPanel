@@ -14,7 +14,9 @@
     <c:redirect url="index.jsp"/>
 </c:if>
 <c:set var="guilds" scope="request" value="${GuildController.getGuildList()}"/>
-<c:set var="guild" scope="request" value="${GuildController.getGuild(param.id)}"/>
+<c:if test="${param.id > 0}">
+    <c:set var="guild" scope="request" value="${GuildController.getGuild(param.id)}"/>
+</c:if>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="es">
     <head>

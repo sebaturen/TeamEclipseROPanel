@@ -1,6 +1,7 @@
 package com.eclipse.panel.viewController.rest;
 
 
+import com.eclipse.panel.DiscordBot;
 import com.eclipse.panel.Logs;
 import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.Accounts;

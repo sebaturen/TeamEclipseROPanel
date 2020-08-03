@@ -3,10 +3,11 @@ plugins {
     id 'war'
 }
 
-group 'com.turensoft'
+group 'com.eclipse.panel'
 version '1.0-SNAPSHOT'
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
@@ -28,4 +29,7 @@ dependencies {
     // Jersey API Restful
     compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.25.1'
     compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.25.1'
+
+    // Discord
+    compile("net.dv8tion:JDA:4.2.0_168")
 }

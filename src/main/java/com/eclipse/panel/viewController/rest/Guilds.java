@@ -5,6 +5,7 @@ import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.woe.CastleBreaker;
 import com.eclipse.panel.gameObject.Guild;
 import com.eclipse.panel.gameObject.character.Character;
+import com.eclipse.panel.viewController.ViewController;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -28,6 +29,8 @@ import java.util.zip.Inflater;
 
 @Path("/guilds")
 public class Guilds {
+
+    public static final String EMBLEM_PATH = ViewController.FILEPATH +"assets/img/ro/guilds/emblems/";
 
     @PUT
     @Path("/{account_id}")
@@ -166,57 +169,6 @@ public class Guilds {
 
     }
 
-    @PUT
-    @Path("/cast/{cast_id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response guildBreaker(
-            @PathParam("cast_id") int castId,
-            String inputData
-    ) {
-        JsonObject okInfo = new JsonObject();
-        okInfo.addProperty("cast", castId);
-
-        // Save info
-        JsonObject breakCast = JsonParser.parseString(inputData).getAsJsonObject();
-        if (!breakCast.has("api_key") || APIKeys.getValue(breakCast.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
-            return Response.status(403).entity("Key not match").build();
-        }
-
-        // Get guild id
-        try {
-
-            JsonArray guild_db = DBLoadObject.dbConnect.select(
-                    Guild.TABLE_NAME,
-                    new String[] {"id"},
-                    "name = ? ORDER BY id DESC",
-                    new String[] {breakCast.get("guild_name").getAsString()}
-            );
-
-            Map<Object, Object> info = new HashMap<>();
-            info.put("cast_id", castId);
-            info.put("timestamp", breakCast.get("timestamp"));
-
-            if (guild_db.size() > 0) {
-                info.put("guild_id", guild_db.get(0).getAsJsonObject().get("id").getAsInt());
-            } else {
-                info.put("guild_temp_name", breakCast.get("guild_name").getAsString());
-            }
-
-            DBLoadObject.dbConnect.insert(
-                    CastleBreaker.TABLE_NAME,
-                    CastleBreaker.TABLE_KEY,
-                    info
-            );
-
-            Logs.infoLog(this.getClass(), "Add CAST Breaker! ["+ castId +"]: ["+ breakCast.get("guild_name") +"]");
-
-        } catch (Exception e) {
-            Logs.fatalLog(this.getClass(), "FAILED to input WoE Breaker info! [guildBreaker]: "+ e);
-        }
-
-        return Response.notModified().entity(okInfo.toString()).build();
-    }
-
     public static byte[] decompress(byte[] data) {
         try {
 
@@ -239,8 +191,7 @@ public class Guilds {
 
     public static void writeByte(byte[] bytes, int guildId, int emblemId) {
 
-        String FILEPATH = System.getProperty( "catalina.base" ) +"/team_eclipse/ROOT/assets/img/ro/guilds/emblems/";
-        File filePng = new File(FILEPATH+"Poring_"+ guildId +"_"+ emblemId +".png");
+        File filePng = new File(EMBLEM_PATH+"Poring_"+ guildId +"_"+ emblemId +".png");
 
         try {
             // BMP to PNG
