@@ -10,7 +10,7 @@ public class Monster {
     private int x;
     private int y;
     private String map_name;
-    private final Date timeStamp = new Date();
+    private long timestamp;
 
     public int getId() {
         return id;
@@ -36,8 +36,8 @@ public class Monster {
         return map_name;
     }
 
-    public Date getTimeStamp() {
-        return timeStamp;
+    public long getTimestamp() {
+        return timestamp;
     }
 
     @Override
@@ -45,10 +45,11 @@ public class Monster {
         return "{\"_class\":\"Monster\", " +
                 "\"id\":\"" + id + "\"" + ", " +
                 "\"monster_id\":\"" + monster_id + "\"" + ", " +
+                "\"monster_name\":" + (monster_name == null ? "null" : "\"" + monster_name + "\"") + ", " +
                 "\"x\":\"" + x + "\"" + ", " +
                 "\"y\":\"" + y + "\"" + ", " +
                 "\"map_name\":" + (map_name == null ? "null" : "\"" + map_name + "\"") + ", " +
-                "\"timeStamp\":" + (timeStamp == null ? "null" : timeStamp) +
+                "\"timestamp\":\"" + timestamp + "\"" +
                 "}";
     }
 }

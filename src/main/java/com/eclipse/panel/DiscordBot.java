@@ -1,6 +1,7 @@
 package com.eclipse.panel;
 
 import com.eclipse.panel.gameObject.Monster;
+import com.eclipse.panel.gameObject.ROMap;
 import com.eclipse.panel.viewController.ViewController;
 import com.google.gson.JsonObject;
 import net.dv8tion.jda.api.JDA;
@@ -21,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,47 +30,44 @@ import java.util.Map;
 public class DiscordBot {
 
     private static final String DISCORD_CLIENT_SECRET = "NzM5NTIyNDQ2NDExMTY5OTcy.Xybr8g.prqK1kZRfXtt603Je_7PxCyk9kc";
-    private static final String SERVER_ID = "494163318932504576";
+    private static final String SERVER_ID = "88465337883852800";
+    private static final String CHANNEL_ID = "739627408486957056";
     public static final String MAP_PATH = ViewController.FILEPATH +"assets/img/ro/maps/";
     public static final String MAP_POINTER_PATH = ViewController.FILEPATH +"assets/img/icons/";
 
     private Map<Integer, Monster> monstersReport = new HashMap<>();
     private Guild server;
-    public static final DiscordBot shared = new DiscordBot().build();
+    private MessageChannel messageChannel;
     private JDA jda;
+    public static final DiscordBot shared;
+    static {
+        shared = DiscordBot.build();
+    }
 
-    public DiscordBot build() {
+    public static DiscordBot build() {
+        DiscordBot newDisc = null;
         try {
-            jda = JDABuilder.createDefault(DISCORD_CLIENT_SECRET)
+            newDisc = new DiscordBot();
+            newDisc.jda = JDABuilder
+                    .createDefault(DISCORD_CLIENT_SECRET)
                     .build();
-            imInStatus();
-            //server = jda.getGuildById(SERVER_ID);
-        } catch (LoginException e) {
+            newDisc.jda.awaitReady();
+        } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
         }
 
-        return this;
+        return newDisc;
     }
 
     private DiscordBot() {
 
     }
 
-    private void imInStatus() {
-
-        try {
-            MessageChannel channel = jda.getTextChannelsByName("lupita-channel", false).get(0);
-            channel.sendMessage("Volvi!").queue();
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("No hay canal :eyes");
-        }
-
-    }
 
     public void reportMonsterLocation(Monster monster) {
         if(monstersReport.containsKey(monster.getId())) {
             Monster oldReport = monstersReport.get(monster.getId());
-            long diff = oldReport.getTimeStamp().getTime() - monster.getTimeStamp().getTime();
+            long diff = oldReport.getTimestamp() - monster.getTimestamp();
             long diffMinutes = diff / (60 * 1000) % 60;
             long diffHours = diff / (60 * 60 * 1000) % 24;
             long diffDays = diff / (24 * 60 * 60 * 1000);
@@ -85,13 +84,27 @@ public class DiscordBot {
                 monstersReport.remove(monster.getId());
             }
 
+            // Check if preview not have a map
+            if (oldReport.getMap_name() == null || oldReport.getMap_name().isEmpty()) {
+                monstersReport.remove(monster.getId());
+            }
+
         }
         if (!monstersReport.containsKey(monster.getId())) {
 
-            MessageChannel channel = jda.getTextChannelsByName("lupita-channel", false).get(0);
-
+            // Prepare server
+            if (server == null || messageChannel == null) {
+                try {
+                    jda.awaitReady();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                server = jda.getGuildById(SERVER_ID);
+                messageChannel = server.getTextChannelById(CHANNEL_ID);
+            }
             // Prepare message:
-            String msg = monster.getMonster_name() +" ```["+ monster.getId() +"] "+ monster.getMap_name() +" ("+ monster.getX() +","+ monster.getY() +")```";
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            String msg = monster.getMonster_name() +" ```["+ monster.getId() +"] "+ monster.getMap_name() +" ("+ monster.getX() +","+ monster.getY() +") --> "+ df.format(monster.getTimestamp()) +"```";
 
             // Prepare map view:
             try {
@@ -106,10 +119,11 @@ public class DiscordBot {
                 g.drawImage(map, 0, 0, null);
 
                 int nW = 3, nH = 3;
-                double ratio = 512 / (double) 400;
+                double ratioX = 512 / (double) ROMap.mapsSize.get(monster.getMap_name())[0];
+                double ratioY = 512 / (double) ROMap.mapsSize.get(monster.getMap_name())[1];
 
-                double nX = (monster.getX() * ratio) - (nW /(double) 2);
-                double nY = 512 - (monster.getY() * ratio) - (nH /(double) 2);
+                double nX = (monster.getX() * ratioX) - (nW /(double) 2);
+                double nY = 512 - (monster.getY() * ratioY) - (nH /(double) 2);
 
                 g.drawImage(marker, (int) nX, (int) nY, null);
                 g.dispose();
@@ -118,11 +132,11 @@ public class DiscordBot {
                 ImageIO.write(mapLoc, "png", os);
                 ByteArrayInputStream inputStream = new ByteArrayInputStream(os.toByteArray());
                 // send message
-                channel.sendMessage(msg).addFile(inputStream, "map_"+ monster.getId() +".png").queue();
+                messageChannel.sendMessage(msg).addFile(inputStream, "map_"+ monster.getId() +".png").queue();
                 // add queue monster
                 monstersReport.put(monster.getId(), monster);
             } catch (IOException e) {
-                channel.sendMessage(msg).queue();
+                messageChannel.sendMessage(msg).queue();
             }
 
         }
