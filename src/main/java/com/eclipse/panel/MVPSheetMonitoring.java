@@ -154,6 +154,9 @@ public class MVPSheetMonitoring implements Runnable {
 
     public void reportMonsterDied(JsonObject monsterInf) {
         Monster monster = DiscordBot.shared.getMonsterReport(monsterInf.get("id").getAsInt());
+        if (monster != null) {
+            
+        }
 
     }
 
