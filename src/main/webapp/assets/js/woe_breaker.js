@@ -1,13 +1,31 @@
 $(document).ready(function() {
     /*Load a member details*/
-    $.get("rest/woe/breaker/20200801", function(data) {
-        $("#loading").remove();
+    woeBreaker("20200815");
+    $("#today_woe").click(function () {
+        woeBreaker("20200815");
+    });
+    $("#last_woe").click(function () {
+        woeBreaker("20200808");
+    });
+    $("#20200801").click(function () {
+        woeBreaker("20200801");
+    });
+    $("#20200725").click(function () {
+        woeBreaker("20200725");
+    });
+});
+
+function woeBreaker(dateBreaker) {
+    $("#loading").show();
+    $("#break_info").html('<div id="prt_gld"></div><div id="gef_fild13"></div><div id="pay_gld"></div><div id="alde_gld"></div>');
+    $.get("rest/woe/breaker/"+ dateBreaker, function(data) {
+        $("#loading").hide();
         console.log("break ready", data);
         castBreaker(data);
     }).always(function() {
         //complete();
     });
-});
+}
 
 function castBreaker(breakInfo) {
     jQuery.each(breakInfo, function(i, cast) {

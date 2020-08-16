@@ -23,19 +23,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class DiscordBot {
 
     private static final String DISCORD_CLIENT_SECRET = "NzM5NTIyNDQ2NDExMTY5OTcy.Xybr8g.prqK1kZRfXtt603Je_7PxCyk9kc";
     private static final String SERVER_ID = "88465337883852800";
     private static final String CHANNEL_ID = "739627408486957056";
+    private static final String TAG_PROFILE_ID = "744004665607454760";
     public static final String MAP_PATH = ViewController.FILEPATH +"assets/img/ro/maps/";
     public static final String MAP_POINTER_PATH = ViewController.FILEPATH +"assets/img/icons/";
 
     private Map<Integer, Monster> monstersReport = new HashMap<>();
+    private Date lastSpawnReport;
     private Guild server;
     private MessageChannel messageChannel;
     private JDA jda;
@@ -63,6 +64,20 @@ public class DiscordBot {
 
     }
 
+    private void prepareServer() {
+        // Prepare server
+        if (server == null || messageChannel == null) {
+            try {
+                jda.awaitReady();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            server = jda.getGuildById(SERVER_ID);
+            assert server != null;
+            messageChannel = server.getTextChannelById(CHANNEL_ID);
+        }
+    }
+
 
     public void reportMonsterLocation(Monster monster) {
         if(monstersReport.containsKey(monster.getId())) {
@@ -85,23 +100,17 @@ public class DiscordBot {
             }
 
             // Check if preview not have a map
-            if (oldReport.getMap_name() == null || oldReport.getMap_name().isEmpty()) {
+            if (
+                    (oldReport.getMap_name() == null || oldReport.getMap_name().isEmpty())
+                    && (monster.getMap_name() != null && monster.getMap_name().length() > 0)
+            ){
                 monstersReport.remove(monster.getId());
             }
 
         }
         if (!monstersReport.containsKey(monster.getId())) {
 
-            // Prepare server
-            if (server == null || messageChannel == null) {
-                try {
-                    jda.awaitReady();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                server = jda.getGuildById(SERVER_ID);
-                messageChannel = server.getTextChannelById(CHANNEL_ID);
-            }
+            prepareServer();
             // Prepare message:
             SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
             String msg = monster.getMonster_name() +" ```["+ monster.getId() +"] "+ monster.getMap_name() +" ("+ monster.getX() +","+ monster.getY() +") --> "+ df.format(monster.getTimestamp()) +"```";
@@ -134,11 +143,59 @@ public class DiscordBot {
                 // send message
                 messageChannel.sendMessage(msg).addFile(inputStream, "map_"+ monster.getId() +".png").queue();
                 // add queue monster
-                monstersReport.put(monster.getId(), monster);
             } catch (IOException e) {
                 messageChannel.sendMessage(msg).queue();
             }
+            monstersReport.put(monster.getId(), monster);
 
         }
+    }
+
+    public void reportDelayTime(List<Monster> spawnList) {
+
+        spawnList.sort(Comparator.comparingLong(Monster::getTimestamp));
+        if (spawnList.get(0).getTimestamp() <= 300000) {
+            if (lastSpawnReport != null) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(lastSpawnReport);
+                c.add(Calendar.MINUTE, 5);
+                if ((new Date()).after(c.getTime())) {
+                    return;
+                }
+            }
+            StringBuilder msg = new StringBuilder();
+            msg.append("Oe! <@&"+ TAG_PROFILE_ID +"> atentos con los siguientes respawn!");
+            msg.append("\n```nim");
+            for(Monster m : spawnList) {
+                long diff = m.getTimestamp();
+                long diffSeconds = diff / 1000 % 60;
+                long diffMinutes = diff / (60 * 1000) % 60;
+                long diffHours = diff / (60 * 60 * 1000);
+                // Show info
+                String hor = ((diffHours < 10)? "0":"")+""+ diffHours;
+                String min = ((diffMinutes < 10)? "0":"")+""+ diffMinutes;
+                msg
+                        .append("\n - ")
+                        .append("[")
+                        .append(hor)
+                        .append(":")
+                        .append(min)
+                        .append("] --> ")
+                        .append(m.getMonster_name());
+            }
+            msg.append("\n```");
+
+            prepareServer();
+            messageChannel.sendMessage(msg).queue();
+            lastSpawnReport = new Date();
+        }
+
+    }
+
+    public Monster getMonsterReport(int mapMonsterId) {
+        if (monstersReport.containsKey(mapMonsterId)) {
+            return monstersReport.get(mapMonsterId);
+        }
+        return null;
     }
 }

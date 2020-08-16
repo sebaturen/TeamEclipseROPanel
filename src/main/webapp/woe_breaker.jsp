@@ -20,6 +20,12 @@
     <body>
         <%@include file="includes/menu.jsp" %>
         <div class="container fill">
+            <div id="last_time">
+                <button id="20200725" type="button" class="btn btn-primary">2020/07/25</button>
+                <button id="20200801" type="button" class="btn btn-primary">2020/08/01</button>
+                <button id="last_woe" type="button" class="btn btn-primary">Last WoE (2020/08/08)</button>
+                <button id="today_woe" type="button" class="btn btn-primary">Today WoE (2020/08/15)</button>
+            </div>
             <div id="loading">
                 Loading... :eyes
             </div>
@@ -29,7 +35,6 @@
                 <div id="pay_gld"></div>
                 <div id="alde_gld"></div>
             </div>
-
         </div>
         <script></script>
         <%@include file="includes/footer.jsp" %>

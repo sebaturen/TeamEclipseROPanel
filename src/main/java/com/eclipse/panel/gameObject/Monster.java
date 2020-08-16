@@ -40,6 +40,18 @@ public class Monster {
         return timestamp;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setMonster_name(String monster_name) {
+        this.monster_name = monster_name;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public String toString() {
         return "{\"_class\":\"Monster\", " +
