@@ -13,8 +13,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
-import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.api.services.sheets.v4.model.*;
 import com.google.gson.JsonObject;
 
 import java.io.*;
@@ -69,13 +68,12 @@ public class MVPSheetMonitoring implements Runnable {
         try {
             // Build a new authorized API client service.
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            final String spreadsheetId = GOOGLE_SHEET_ID;
             final String range = "Tiempos!A3:E50";
             Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                     .setApplicationName(APPLICATION_NAME)
                     .build();
             ValueRange response = service.spreadsheets().values()
-                    .get(spreadsheetId, range)
+                    .get(GOOGLE_SHEET_ID, range)
                     .execute();
             List<List<Object>> values = response.getValues();
             List<Monster> spawnMonsterList = new ArrayList<>();
@@ -117,13 +115,12 @@ public class MVPSheetMonitoring implements Runnable {
         try {
             // Build a new authorized API client service.
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            final String spreadsheetId = GOOGLE_SHEET_ID;
             final String range = "Tiempos!A1";
             Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                     .setApplicationName(APPLICATION_NAME)
                     .build();
             ValueRange response = service.spreadsheets().values()
-                    .get(spreadsheetId, range)
+                    .get(GOOGLE_SHEET_ID, range)
                     .setValueRenderOption("FORMULA")
                     .execute();
             List<List<Object>> values = response.getValues();
@@ -140,7 +137,7 @@ public class MVPSheetMonitoring implements Runnable {
                     content.setValues(Collections.singletonList(Collections.singletonList((Object) sFormula)));
 
                     updateResponse = service.spreadsheets().values()
-                            .update(spreadsheetId, range, content)
+                            .update(GOOGLE_SHEET_ID, range, content)
                             .setValueInputOption("USER_ENTERED")
                             .setIncludeValuesInResponse(Boolean.TRUE)
                             .setResponseValueRenderOption("FORMATTED_VALUE")
@@ -153,11 +150,44 @@ public class MVPSheetMonitoring implements Runnable {
     }
 
     public void reportMonsterDied(JsonObject monsterInf) {
+        final String range = "TiemposLupita!A:D";
         Monster monster = DiscordBot.shared.getMonsterReport(monsterInf.get("id").getAsInt());
         if (monster != null) {
-            
-        }
+            try {
+                Calendar dieTime = Calendar.getInstance();
+                dieTime.setTimeInMillis(monsterInf.get("timestamp").getAsLong());
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT-7"));
 
+                // Build a new authorized API client service.
+                final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+
+                List<List<Object>> infInsert = new ArrayList<>();
+                List<Object> cellData = new ArrayList<>();
+                cellData.add(monster.getId()+"");
+                cellData.add(monster.getMonster_id()+"");
+                cellData.add(monster.getMonster_name()+"");
+                cellData.add(monster.getMap_name());
+                cellData.add(sdf.format(dieTime.getTime()));
+                infInsert.add(cellData);
+
+                ValueRange content = new ValueRange();
+                content.setRange(range);
+                content.setValues(infInsert);
+
+                Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                        .setApplicationName(APPLICATION_NAME)
+                        .build();
+
+                AppendValuesResponse response = service.spreadsheets().values()
+                        .append(GOOGLE_SHEET_ID, range, content)
+                        .setValueInputOption("RAW")
+                        .execute();
+
+            } catch (GeneralSecurityException | IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

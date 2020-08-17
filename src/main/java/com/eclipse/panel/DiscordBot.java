@@ -3,16 +3,10 @@ package com.eclipse.panel;
 import com.eclipse.panel.gameObject.Monster;
 import com.eclipse.panel.gameObject.ROMap;
 import com.eclipse.panel.viewController.ViewController;
-import com.google.gson.JsonObject;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.utils.AttachmentOption;
-import okhttp3.EventListener;
 
 import javax.imageio.ImageIO;
 import javax.security.auth.login.LoginException;
@@ -34,9 +28,9 @@ public class DiscordBot {
     private static final String TAG_PROFILE_ID = "744004665607454760";
     public static final String MAP_PATH = ViewController.FILEPATH +"assets/img/ro/maps/";
     public static final String MAP_POINTER_PATH = ViewController.FILEPATH +"assets/img/icons/";
+    private static Date lastSpawnReport;
 
     private Map<Integer, Monster> monstersReport = new HashMap<>();
-    private Date lastSpawnReport;
     private Guild server;
     private MessageChannel messageChannel;
     private JDA jda;
@@ -152,17 +146,21 @@ public class DiscordBot {
     }
 
     public void reportDelayTime(List<Monster> spawnList) {
-
+        System.out.println("Prepare report "+ spawnList);
         spawnList.sort(Comparator.comparingLong(Monster::getTimestamp));
         if (spawnList.get(0).getTimestamp() <= 300000) {
+            System.out.println("Menos de 5min!");
             if (lastSpawnReport != null) {
+                System.out.println("Existe tiempo anterior... calculando");
                 Calendar c = Calendar.getInstance();
                 c.setTime(lastSpawnReport);
                 c.add(Calendar.MINUTE, 5);
-                if ((new Date()).after(c.getTime())) {
+                if ((new Date()).before(c.getTime())) {
+                    System.out.println("Ya se ha reportado, skip!");
                     return;
                 }
             }
+            System.out.println("Reortando tiempos!");
             StringBuilder msg = new StringBuilder();
             msg.append("Oe! <@&"+ TAG_PROFILE_ID +"> atentos con los siguientes respawn!");
             msg.append("\n```nim");
@@ -194,8 +192,9 @@ public class DiscordBot {
 
     public Monster getMonsterReport(int mapMonsterId) {
         if (monstersReport.containsKey(mapMonsterId)) {
-            return monstersReport.get(mapMonsterId);
+            return monstersReport.remove(mapMonsterId);
         }
         return null;
     }
+
 }
