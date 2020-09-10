@@ -3,10 +3,15 @@ package com.eclipse.panel;
 import com.eclipse.panel.gameObject.Monster;
 import com.eclipse.panel.gameObject.ROMap;
 import com.eclipse.panel.viewController.ViewController;
+import com.eclipse.panel.viewController.rest.APIKeys;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import javax.security.auth.login.LoginException;
@@ -45,6 +50,7 @@ public class DiscordBot {
             newDisc = new DiscordBot();
             newDisc.jda = JDABuilder
                     .createDefault(DISCORD_CLIENT_SECRET)
+                    .addEventListeners(new MessageListener())
                     .build();
             newDisc.jda.awaitReady();
         } catch (LoginException | InterruptedException e) {
@@ -72,8 +78,29 @@ public class DiscordBot {
         }
     }
 
+    private static class MessageListener extends ListenerAdapter {
+        @Override
+        public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+            if (event.getChannel().getId().equals(CHANNEL_ID)) {
+                Message message = event.getMessage();
+                MessageChannel channel = event.getChannel();
+                String msg = message.getContentDisplay();
 
-    public void reportMonsterLocation(Monster monster) {
+                if ("!t".equals(msg)) {
+                    MVPSheetMonitoring mvpSheetMonitoring = new MVPSheetMonitoring();
+                    List<Monster> spawnList = mvpSheetMonitoring.getMonsterTimes();
+                    spawnList.sort(Comparator.comparingLong(Monster::getTimestamp));
+
+                    StringBuilder reportMsg = new StringBuilder();
+                    reportMsg.append(displayMonster(spawnList));
+
+                    channel.sendMessage(reportMsg).queue();
+                }
+            }
+        }
+    }
+
+    public void reportMonsterLocation(Monster monster, APIKeys userShow) {
         if(monstersReport.containsKey(monster.getId())) {
             Monster oldReport = monstersReport.get(monster.getId());
             long diff = oldReport.getTimestamp() - monster.getTimestamp();
@@ -107,7 +134,7 @@ public class DiscordBot {
             prepareServer();
             // Prepare message:
             SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-            String msg = monster.getMonster_name() +" ```["+ monster.getId() +"] "+ monster.getMap_name() +" ("+ monster.getX() +","+ monster.getY() +") --> "+ df.format(monster.getTimestamp()) +"```";
+            String msg = monster.getMonster_name() +" ```nim\n("+ userShow +") ["+ monster.getId() +"] "+ monster.getMap_name() +" ("+ monster.getX() +","+ monster.getY() +") --> "+ df.format(monster.getTimestamp()) +"```";
 
             // Prepare map view:
             try {
@@ -146,48 +173,50 @@ public class DiscordBot {
     }
 
     public void reportDelayTime(List<Monster> spawnList) {
-        System.out.println("Prepare report "+ spawnList);
         spawnList.sort(Comparator.comparingLong(Monster::getTimestamp));
         if (spawnList.get(0).getTimestamp() <= 300000) {
-            System.out.println("Menos de 5min!");
             if (lastSpawnReport != null) {
-                System.out.println("Existe tiempo anterior... calculando");
                 Calendar c = Calendar.getInstance();
                 c.setTime(lastSpawnReport);
                 c.add(Calendar.MINUTE, 5);
                 if ((new Date()).before(c.getTime())) {
-                    System.out.println("Ya se ha reportado, skip!");
                     return;
                 }
             }
-            System.out.println("Reortando tiempos!");
             StringBuilder msg = new StringBuilder();
-            msg.append("Oe! <@&"+ TAG_PROFILE_ID +"> atentos con los siguientes respawn!");
-            msg.append("\n```nim");
-            for(Monster m : spawnList) {
-                long diff = m.getTimestamp();
-                long diffSeconds = diff / 1000 % 60;
-                long diffMinutes = diff / (60 * 1000) % 60;
-                long diffHours = diff / (60 * 60 * 1000);
-                // Show info
-                String hor = ((diffHours < 10)? "0":"")+""+ diffHours;
-                String min = ((diffMinutes < 10)? "0":"")+""+ diffMinutes;
-                msg
-                        .append("\n - ")
-                        .append("[")
-                        .append(hor)
-                        .append(":")
-                        .append(min)
-                        .append("] --> ")
-                        .append(m.getMonster_name());
-            }
-            msg.append("\n```");
+            msg.append("<@&"+ TAG_PROFILE_ID +"> atentos con los siguientes respawn!");
+            msg.append("\n").append(displayMonster(spawnList));
 
             prepareServer();
             messageChannel.sendMessage(msg).queue();
             lastSpawnReport = new Date();
         }
 
+    }
+
+    private static StringBuilder displayMonster(List<Monster> spawnList) {
+        StringBuilder msg = new StringBuilder();
+        msg.append("```nim");
+        for(Monster m : spawnList) {
+            long diff = m.getTimestamp();
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000);
+            // Show info
+            String hor = ((diffHours < 10)? "0":"")+""+ diffHours;
+            String min = ((diffMinutes < 10)? "0":"")+""+ diffMinutes;
+            msg
+                    .append("\n - ")
+                    .append("[")
+                    .append(hor)
+                    .append(":")
+                    .append(min)
+                    .append("] --> ")
+                    .append(m.getMonster_name());
+        }
+        msg.append("\n```");
+
+        return msg;
     }
 
     public Monster getMonsterReport(int mapMonsterId) {

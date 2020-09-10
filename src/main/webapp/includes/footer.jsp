@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <div id="footer">
-    <div class="fill">
+    <div class="container fill">
         <div class="copyRight">
             <br>
             * Page in construction...

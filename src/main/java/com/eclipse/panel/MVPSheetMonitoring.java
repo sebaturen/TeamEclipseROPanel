@@ -46,10 +46,8 @@ public class MVPSheetMonitoring implements Runnable {
         // Load client secrets.
         ClassLoader classLoader = MVPSheetMonitoring.class.getClassLoader();
         InputStream in = new FileInputStream(Objects.requireNonNull(classLoader.getResource(CREDENTIALS_FILE_PATH)).getFile());
-        if (in == null) {
-            throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
-        }
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+
 
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
@@ -64,7 +62,7 @@ public class MVPSheetMonitoring implements Runnable {
     /**
      * Prints the names and majors of students in a sample spreadsheet:
      */
-    public void inspectTime() {
+    public List<Monster> getMonsterTimes() {
         try {
             // Build a new authorized API client service.
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -102,12 +100,18 @@ public class MVPSheetMonitoring implements Runnable {
                     }
                 }
             }
-            // Sort and check if need notification
-            if (spawnMonsterList.size() != 0) {
-                DiscordBot.shared.reportDelayTime(spawnMonsterList);
-            }
+            return spawnMonsterList;
         } catch (IOException | GeneralSecurityException e) {
             Logs.fatalLog(this.getClass(), "FAILED to inspect mvp sheets - "+ e);
+        }
+        return null;
+    }
+
+    private void inspectTime() {
+        // Sort and check if need notification
+        List<Monster> spawnMonsterList = getMonsterTimes();
+        if (spawnMonsterList != null && spawnMonsterList.size() != 0) {
+            DiscordBot.shared.reportDelayTime(spawnMonsterList);
         }
     }
 
@@ -136,7 +140,7 @@ public class MVPSheetMonitoring implements Runnable {
                     content.setRange(range);
                     content.setValues(Collections.singletonList(Collections.singletonList((Object) sFormula)));
 
-                    updateResponse = service.spreadsheets().values()
+                    service.spreadsheets().values()
                             .update(GOOGLE_SHEET_ID, range, content)
                             .setValueInputOption("USER_ENTERED")
                             .setIncludeValuesInResponse(Boolean.TRUE)
@@ -157,7 +161,9 @@ public class MVPSheetMonitoring implements Runnable {
                 Calendar dieTime = Calendar.getInstance();
                 dieTime.setTimeInMillis(monsterInf.get("timestamp").getAsLong());
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat dateSdf = new SimpleDateFormat("dd/MM/yyyy");
                 sdf.setTimeZone(TimeZone.getTimeZone("GMT-7"));
+                dateSdf.setTimeZone(TimeZone.getTimeZone("GMT-7"));
 
                 // Build a new authorized API client service.
                 final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -167,8 +173,13 @@ public class MVPSheetMonitoring implements Runnable {
                 cellData.add(monster.getId()+"");
                 cellData.add(monster.getMonster_id()+"");
                 cellData.add(monster.getMonster_name()+"");
-                cellData.add(monster.getMap_name());
+                if (monster.getMonster_name() != null) {
+                    cellData.add(monster.getMap_name());
+                } else {
+                    cellData.add("unknown");
+                }
                 cellData.add(sdf.format(dieTime.getTime()));
+                cellData.add(dateSdf.format(dieTime.getTime()));
                 infInsert.add(cellData);
 
                 ValueRange content = new ValueRange();

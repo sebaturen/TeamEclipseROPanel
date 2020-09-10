@@ -34,8 +34,9 @@ public class Monster {
             return Response.status(403).entity("Key not match").build();
         }
 
+        APIKeys userShow = APIKeys.getValue(monsterData.get("api_key").getAsString());
         com.eclipse.panel.gameObject.Monster monster = gson.fromJson(monsterData, com.eclipse.panel.gameObject.Monster.class);
-        DiscordBot.shared.reportMonsterLocation(monster);
+        DiscordBot.shared.reportMonsterLocation(monster, userShow);
 
         return Response.ok().build();
 

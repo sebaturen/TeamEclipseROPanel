@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.eclipse.panel.viewController.rest.APIKeysTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-08-26T16:06:46" hostname="SEBA-PC" time="0.009">
+  <properties/>
+  <testcase name="testAPIKeyInfo" classname="com.eclipse.panel.viewController.rest.APIKeysTest" time="0.009"/>
+  <system-out><![CDATA[CLEIN
+CLEIN
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

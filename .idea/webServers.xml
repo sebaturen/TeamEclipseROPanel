@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="790a3b60-3ab8-4e06-8f9d-daecf993c4b3" name="ArtOfWar-Server" url="https://panel.delmal.cl/">
+        <fileTransfer rootFolder="/opt/tomcat/team_eclipse/ROOT" accessType="SFTP" host="104.156.56.51" port="2224" sshConfigId="90ee803d-f08a-4cdb-b459-82c3a9d4ab44" sshConfig="root@104.156.56.51:2224 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

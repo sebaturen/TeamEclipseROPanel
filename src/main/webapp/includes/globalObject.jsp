@@ -16,13 +16,13 @@
 <jsp:useBean id="dateObject" class="java.util.Date" />
 <!-- Language locale -->
 <c:if test="${empty locale}">
-    <c:set var="locale" value="es_MX" />
+    <c:set var="locale" value="en_US" />
     <c:if test="${cookie['locale'].value != null}">
         <c:set var="locale" value="${cookie['locale'].value}"/>
     </c:if>
     <c:if test="${cookie['locale'] == null}">
         <%
-            Cookie newLocale = new Cookie("locale", "es_MX");
+            Cookie newLocale = new Cookie("locale", "en_US");
             response.addCookie(newLocale);
         %>
     </c:if>

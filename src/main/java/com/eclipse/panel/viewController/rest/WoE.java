@@ -88,7 +88,7 @@ public class WoE {
         return Response.serverError().build();
     }
 
-    @PUT
+    @POST
     @Path("/break/cast/{cast_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response guildBreaker(
@@ -96,7 +96,7 @@ public class WoE {
             String inputData
     ) {
         JsonObject okInfo = new JsonObject();
-        okInfo.addProperty("cast", castId);
+        okInfo.addProperty("cast", castId+"");
 
         // Save info
         JsonObject breakCast = JsonParser.parseString(inputData).getAsJsonObject();
@@ -131,6 +131,8 @@ public class WoE {
             );
 
             Logs.infoLog(this.getClass(), "Add CAST Breaker! ["+ castId +"]: ["+ breakCast.get("guild_name") +"]");
+
+            return Response.ok().build();
 
         } catch (Exception e) {
             Logs.fatalLog(this.getClass(), "FAILED to input WoE Breaker info! [guildBreaker]: "+ e);

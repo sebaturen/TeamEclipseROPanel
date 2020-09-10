@@ -2,8 +2,8 @@ html {
     height: 100%;
 }
 body {
-    background-color: #181a1a;
-    color: white;
+    background-color: #f2f3f4;
+    color: #525b77;
     position: relative;
     min-height: 100%;
     font-family: 'Montserrat', sans-serif;
@@ -11,7 +11,9 @@ body {
 body > .container {
     padding: 25px;
 }
-
+a {
+    color: #525b77;
+}
 /** =========================== jobs ======================= **/
 
 .job_show {
@@ -23,13 +25,13 @@ body > .container {
 }
 
 .job_show_stand {
-    background-position: 0px, 0px;
+    background-position: 0, 0;
 }
 
 /** Personal fix **/
 .job_show_f_20 { width: 54px; margin-left: 5px; }
 .job_show_m_7 { margin-left: 4px; }
-.job_show_m_15 { margin-left: 0px; margin-top: 8px; }
+.job_show_m_15 { margin-left: 0; margin-top: 8px; }
 .job_show_m_19 { margin-left: 3px; margin-top: 8px; }
 .job_show_f_7 { margin-left: 4px; width: 54px; }
 .job_show_f_18 { margin-left: 4px; }
@@ -49,7 +51,7 @@ body > .container {
     background-repeat: no-repeat !important;
 }
 .hair_show_stand {
-    background-position: 0px, 0px;
+    background-position: 0, 0;
 }
 
 /** person style **/
@@ -65,3 +67,30 @@ body > .container {
 .hair_show_m_9 { margin-left: 16px; }
 .hair_show_m_5 { margin-left: 19px; margin-top: 1px; }
 .hair_show_m_14 { margin-left: 19px; }
+
+/** =========================== FOOTER ======================= **/
+#footer {
+    padding: 50px 0;
+    background: #1c2135;
+    font-size: 14px;
+    color: #fff;
+}
+
+/** =========================== NAV MENU ======================= **/
+a.nav-link {
+    font-size: 14px;
+    font-weight: 600;
+    /* line-height: 35px; */
+    color: #000;
+    /* margin: 18px 15px 19px; */
+    /* position: relative; */
+}
+a.nav-link:hover {
+    color: #3664ef;
+}
+.active > a {
+    color: #3664ef;
+}
+#menu_content {
+    padding: 0;
+}
