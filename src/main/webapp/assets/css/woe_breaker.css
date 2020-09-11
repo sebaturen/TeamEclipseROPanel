@@ -15,6 +15,12 @@
     border-bottom: 2px solid;
 }
 
+@media (max-width: 768px) {
+    .dateTimeContent {
+        margin: 0;
+        padding: 0;
+    }
+}
 /* =================== BREAK DETAIL ============ */
 #break_info, #loading {
     padding: 1em;
@@ -105,4 +111,7 @@
     float: right;
     padding-top: 3px;
     cursor: pointer;
+}
+.despIcons {
+    left: -24px;
 }

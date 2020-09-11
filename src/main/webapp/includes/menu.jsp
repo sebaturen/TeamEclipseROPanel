@@ -20,10 +20,10 @@
                 <li class="nav-item <%= (currentPath.equals("index.jsp") || currentPath.equals(""))? "active":"" %>">
                     <a class="nav-link" href="<%= request.getContextPath() %>/index.jsp"><fmt:message key="label.home" /></a>
                 </li>
-                <li class="nav-item <%= (currentPath.equals("woe_breaker.jsp") || currentPath.equals(""))? "active":"" %>">
+                <li class="nav-item <%= (currentPath.equals("woe_breaker.jsp"))? "active":"" %>">
                     <a class="nav-link" href="<%= request.getContextPath() %>/woe_breaker.jsp"><fmt:message key="label.woe_breaker" /></a>
                 </li>
-                <li class="nav-item <%= (currentPath.equals("woe2_breaker.jsp") || currentPath.equals(""))? "active":"" %>">
+                <li class="nav-item <%= (currentPath.equals("woe2_breaker.jsp"))? "active":"" %>">
                     <a class="nav-link" href="<%= request.getContextPath() %>/woe2_breaker.jsp"><fmt:message key="label.woe2_breaker" /></a>
                 </li>
             </ul>

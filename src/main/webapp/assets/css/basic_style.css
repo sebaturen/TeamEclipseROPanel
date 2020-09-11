@@ -8,11 +8,19 @@ body {
     min-height: 100%;
     font-family: 'Montserrat', sans-serif;
 }
-body > .container {
-    padding: 25px;
+@media (min-width: 768px) {
+    body > .container {
+        padding: 25px;
+    }
 }
+
 a {
     color: #525b77;
+}
+@media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+    }
 }
 /** =========================== jobs ======================= **/
 
