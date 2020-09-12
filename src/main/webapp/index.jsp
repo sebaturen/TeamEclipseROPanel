@@ -14,7 +14,7 @@
     <body>
     <%@include file="includes/menu.jsp" %>
     <div class="container fill">
-        :eyes
+        <img src="assets/img/4_M_ROTERT.gif">
     </div>
     <%@include file="includes/footer.jsp" %>
     </body>

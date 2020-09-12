@@ -33,6 +33,7 @@
     box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.10), 0 3px 6px 0 rgba(0,0,0, 0.10);
     position: relative;
     margin-bottom: 2em;
+    cursor: pointer;
 }
 .city_header {
     border-radius: 4px 4px 0 0;
@@ -114,4 +115,9 @@
 }
 .despIcons {
     left: -24px;
+}
+@media (min-width: 768px) {
+    .infoBreaksContent {
+        margin-top: -48px;
+    }
 }

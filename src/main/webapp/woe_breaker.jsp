@@ -23,7 +23,7 @@
         <div class="dateTimeContent container fill">
             <div id="date_times" class="row"></div>
         </div>
-        <div class="container fill">
+        <div class="infoBreaksContent container fill">
             <div id="loading">
                 Loading... :eyes
             </div>

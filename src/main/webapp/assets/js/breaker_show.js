@@ -1,27 +1,44 @@
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var selected = "";
 $(document).ready(function() {
     $(document).on('click','.woe_event_day',function(){
         woeBreaker($(this).data("time_break"));
     });
 
-    $(document).on('click', '.hide_city', function () {
-        showHideCity($(this).parent('p'), false);
-    })
+    $(document).on('click', '.city_header', function () {
+        let st = $(this).data('open_status');
+        showHideCity(this, st);
+    });
 
-    $(document).on('click', '.show_city', function () {
-        showHideCity($(this).parent('p'), true);
-    })
+    $(document).on('click', '.day_move_up', function () {
+        let lastDate = $(this).data("last_date");
+        let diff = $(this).data("diff");
+        lastDate = moment(String(lastDate)).add(5, 'weeks');
+        lastDate = lastDate.subtract(1, 'day');
+        renderLastWeeks(lastDate, diff);
+        $(`.day_${selected}`).addClass("day_selected");
+    });
+
+    $(document).on('click', '.day_move_down', function () {
+        let lastDate = $(this).data("last_date");
+        let diff = $(this).data("diff");
+        renderLastWeeks(moment(String(lastDate)), diff);
+        $(`.day_${selected}`).addClass("day_selected");
+    });
 
 });
 
 function showHideCity(city, status) {
     let cityBlock = $(city).parents(".city_castle");
+    let pBlock = $(city).children('p');
     if (status) {
         $(cityBlock).children(".castles").show('fast');
-        $(city).html('<i class="fas fa-plus hide_city"></i>');
+        $(pBlock).html('<i class="fas fa-minus hide_city"></i>');
+        $(city).data('open_status', false);
     } else {
         $(cityBlock).children(".castles").hide('fast');
-        $(city).html('<i class="fas fa-plus show_city"></i>');
+        $(pBlock).html('<i class="fas fa-plus show_city"></i>');
+        $(city).data('open_status', true);
     }
 }
 
@@ -94,6 +111,7 @@ function renderCastle(inf, castNumber) {
 }
 
 function woeBreaker(dateBreaker) {
+    selected = dateBreaker
     $(".woe_event_day").removeClass("day_selected");
     $(`.day_${dateBreaker}`).addClass("day_selected");
     $("#loading").show();
@@ -106,6 +124,7 @@ function woeBreaker(dateBreaker) {
         '<div id="aru_gld" class="city_castle"></div>'
     );
     $.get("rest/woe/breaker/"+ dateBreaker, function(data) {
+        console.log(data);
         $("#loading").hide();
         castBreaker(data);
     }).always(function() {
@@ -115,7 +134,8 @@ function woeBreaker(dateBreaker) {
 
 function renderLastWeeks(d, diff) {
     let dContent = $("#date_times");
-    dContent.append("<i class='col fas fa-angle-right day_move_up'></i>");
+    dContent.html("");
+    dContent.append("<i class='col fas fa-angle-right day_move_up' data-last_date='"+ d.format("YYYYMMDD") +"' data-diff='"+ diff +"'></i>");
     let i = 0;
     do {
         d = getLastWoE(d, diff)
@@ -123,7 +143,7 @@ function renderLastWeeks(d, diff) {
         i++;
         d.subtract(1, 'day')
     } while (i < 5);
-    dContent.append("<i class='col fas fa-angle-left day_move_down'></i>");
+    dContent.append("<i class='col fas fa-angle-left day_move_down' data-last_date='"+ d.format("YYYYMMDD") +"' data-diff='"+ diff +"'></i>");
     dContent.children().each(function(i,li){dContent.prepend(li)})
 }
 
