@@ -100,8 +100,11 @@ public class WoE {
 
         // Save info
         JsonObject breakCast = JsonParser.parseString(inputData).getAsJsonObject();
-        if (!breakCast.has("api_key") || APIKeys.getValue(breakCast.get("api_key").getAsString()) != APIKeys.WOE_KEY_AUTH) {
+        if (!breakCast.has("api_key") || breakCast.get("api_key").isJsonNull()) {
             return Response.status(403).entity("Key not match").build();
+        }
+        if (APIKeys.getValue(breakCast.get("api_key").getAsString()) != APIKeys.WOE_KEY_AUTH) {
+            return Response.status(403).entity("Key not auth").build();
         }
 
         // Get guild id

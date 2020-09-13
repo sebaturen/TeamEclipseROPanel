@@ -347,7 +347,9 @@ public class DBConnect {
                         if (elem != null) {
                             try {
                                 JsonElement jObject = JsonParser.parseString(elem);
-                                if (jObject.isJsonPrimitive()) {
+                                // Use "name" in column, because the characters or guilds have a `[name]` so,
+                                // json parse think `[name]` it is a json array, not a String
+                                if (jObject.isJsonPrimitive() || column_name.equals("name")) {
                                     obj.addProperty(column_name, elem);
                                 } else {
                                     obj.add(column_name, jObject);

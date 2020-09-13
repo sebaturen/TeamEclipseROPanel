@@ -19,6 +19,7 @@
 <html lang="es">
 <head>
     <title>Jobs...</title>
+    <meta property="og:title" content="Jobs lists" />
     <%@include file="includes/header.jsp" %>
     <link type="text/css" rel="stylesheet" href="assets/css/index.css">
     <script>

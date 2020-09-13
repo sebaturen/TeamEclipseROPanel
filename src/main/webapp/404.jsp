@@ -10,6 +10,7 @@
 <html lang="es">
 <head>
     <title>${guild.name} - 404</title>
+    <meta property="og:title" content="Page not found" />
     <%@include file="includes/header.jsp" %>
 </head>
 <body>

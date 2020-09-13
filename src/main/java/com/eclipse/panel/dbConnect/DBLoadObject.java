@@ -33,7 +33,7 @@ public abstract class DBLoadObject {
                     whereValue,
                     true
             );
-
+            
             if (dbSelect.size() == 1) {
                 JsonObject eachElem = dbSelect.get(0).getAsJsonObject();
                 JsonObject jElem = dbSelect.get(0).getAsJsonObject().deepCopy();

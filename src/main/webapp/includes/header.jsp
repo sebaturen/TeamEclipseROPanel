@@ -43,3 +43,7 @@
 <!--END ICON fontawesome -->
 <!-- Moment JS Lib -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
+<!-- META DATA -->
+<meta property="og:site_name" content="Panel del Mal">
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Ragnarok Transcendance Game Database" />

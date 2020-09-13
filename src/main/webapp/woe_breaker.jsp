@@ -13,6 +13,7 @@
 <html>
     <head>
         <title>WoE Cast Breaker TimeLine</title>
+        <meta property="og:title" content="WoE 2 Break Timeline" />
         <%@include file="includes/header.jsp" %>
         <link rel="stylesheet" href="assets/css/woe_breaker.css">
         <script src="assets/js/breaker_show.js"></script>
@@ -28,6 +29,9 @@
                 Loading... :eyes
             </div>
             <div id="break_info" style="padding-top: 48px;">
+            </div>
+            <div id="break_no_data" style="display: none">
+                <fmt:message key="label.woe_breaker_no_data" />
             </div>
         </div>
         <script></script>

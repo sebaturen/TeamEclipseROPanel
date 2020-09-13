@@ -21,6 +21,7 @@
 <html lang="es">
     <head>
         <title>Guild - ${guild.name}</title>
+        <meta property="og:title" content="Guild Detail" />
         <%@include file="includes/header.jsp" %>
         <link type="text/css" rel="stylesheet" href="assets/css/index.css">
         <script>

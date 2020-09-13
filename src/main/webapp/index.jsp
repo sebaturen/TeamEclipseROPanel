@@ -9,7 +9,16 @@
 <html>
     <head>
         <title>RO Del mal Panel</title>
+        <meta property="og:title" content="Home" />
         <%@include file="includes/header.jsp" %>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=500" />
+
+        <!-- standard meta content -->
+        <meta name="description" content="Sample Website is a ..." />
+        <meta name="keywords" content="..." />
+
     </head>
     <body>
     <%@include file="includes/menu.jsp" %>

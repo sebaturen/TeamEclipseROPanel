@@ -111,9 +111,11 @@ function renderCastle(inf, castNumber) {
 }
 
 function woeBreaker(dateBreaker) {
+    window.history.pushState("", "", "?date="+ dateBreaker);
     selected = dateBreaker
     $(".woe_event_day").removeClass("day_selected");
     $(`.day_${dateBreaker}`).addClass("day_selected");
+    $("#break_no_data").hide();
     $("#loading").show();
     $("#break_info").html('' +
         '<div id="prt_gld" class="city_castle"></div>' +
@@ -126,7 +128,13 @@ function woeBreaker(dateBreaker) {
     $.get("rest/woe/breaker/"+ dateBreaker, function(data) {
         console.log(data);
         $("#loading").hide();
-        castBreaker(data);
+        if (Object.keys(data).length > 0) {
+            $("#break_info").show();
+            castBreaker(data);
+        } else {
+            $("#break_info").hide();
+            $("#break_no_data").show();
+        }
     }).always(function() {
         //complete();
     });
@@ -148,5 +156,11 @@ function renderLastWeeks(d, diff) {
 }
 
 function getLastWoE(d, diff) {
+    if (d.day() == 6 && diff == 1) {
+        return d;
+    }
+    if (d.day() == 0 && diff == 0) {
+        return d;
+    }
     return d.subtract(parseInt(d.format("d"))+diff, 'day')
 }
