@@ -17,8 +17,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item <%= (currentPath.equals("index.jsp") || currentPath.equals(""))? "active":"" %>">
-                    <a class="nav-link" href="<%= request.getContextPath() %>/index.jsp"><fmt:message key="label.home" /></a>
+                <li class="nav-item <%= (currentPath.equals("guild_info.jsp"))? "active":"" %>">
+                    <a class="nav-link" href="<%= request.getContextPath() %>/guild_info.jsp"><fmt:message key="label.guilds" /></a>
+                </li>
+                <li class="nav-item <%= (currentPath.equals("class_list.jsp"))? "active":"" %>">
+                    <a class="nav-link" href="<%= request.getContextPath() %>/class_list.jsp"><fmt:message key="label.classes" /></a>
                 </li>
                 <li class="nav-item <%= (currentPath.equals("woe_breaker.jsp"))? "active":"" %>">
                     <a class="nav-link" href="<%= request.getContextPath() %>/woe_breaker.jsp"><fmt:message key="label.woe_breaker" /></a>

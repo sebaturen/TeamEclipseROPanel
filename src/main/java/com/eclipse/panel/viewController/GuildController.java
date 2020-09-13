@@ -23,7 +23,9 @@ public class GuildController {
         try {
             JsonArray guilds_db = DBLoadObject.dbConnect.select(
                     Guild.TABLE_NAME,
-                    new String[]{"id"}
+                    new String[]{"id"},
+                    "1=? AND name is not null order by id",
+                    new String[] {"1"}
             );
 
             for(JsonElement guildInf : guilds_db) {

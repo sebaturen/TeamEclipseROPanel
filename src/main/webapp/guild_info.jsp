@@ -10,9 +10,6 @@
 <%@ page import ="com.eclipse.panel.viewController.GuildController" %>
 <%@ page import ="com.eclipse.panel.gameObject.Guild" %>
 <%@ page import ="java.util.List" %>
-<c:if test="${empty param.id}">
-    <c:redirect url="index.jsp"/>
-</c:if>
 <c:set var="guilds" scope="request" value="${GuildController.getGuildList()}"/>
 <c:if test="${param.id > 0}">
     <c:set var="guild" scope="request" value="${GuildController.getGuild(param.id)}"/>
@@ -35,19 +32,21 @@
         <div class="container fill">
             <div id="welcome">
                 <select onchange="urlHandler(this.value)">
+                    <option disabled <c:if test="${empty param.id}">selected</c:if>><fmt:message key="label.guilds_list" /></option>
                     <c:forEach items="${guilds}" var="gDet">
                         <option value="${gDet.id}" <c:if test="${gDet.id == guild.id}">selected</c:if>>
                             [${gDet.id}] ${gDet.name}
                         </option>
                     </c:forEach>
                 </select>
-                <div class="row guild_logoName divder">
-                    <div class="col col-md-6 align-self-center">
-                        <img src="assets/img/ro/guilds/emblems/Poring_${guild.id}_${guild.emblem_id}.png"/>
-                        <p class='home_name'>${guild.name}</p>
+                <c:if test="${not empty param.id}">
+                    <div class="row guild_logoName divder">
+                        <div class="col col-md-6 align-self-center">
+                            <img src="assets/img/ro/guilds/emblems/Poring_${guild.id}_${guild.emblem_id}.png"/>
+                            <p class='home_name'>${guild.name}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
+                    <div class="row">
                     <div class="col">
                         <p>Recaller:</p>
                         <div class="pj_info char_${guild.recaller.id}">
@@ -73,6 +72,12 @@
                         </c:if>
                     </c:forEach>
                 </div>
+                </c:if>
+                <c:if test="${empty param.id}">
+                    <div>
+                        <fmt:message key="label.guild_empty_info" />
+                    </div>
+                </c:if>
             </div>
         </div>
     <%@include file="includes/footer.jsp" %>
