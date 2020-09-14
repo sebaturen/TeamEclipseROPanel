@@ -19,7 +19,9 @@ public class JobsController {
         try {
             JsonArray jobs_db = DBLoadObject.dbConnect.select(
                     PlayableJob.TABLE_NAME,
-                    new String[]{"id"}
+                    new String[]{"id"},
+                    "id in (select DISTINCT job_id from `characters`) order by id asc",
+                    new String[]{}
             );
 
             for(JsonElement jobsInf : jobs_db) {

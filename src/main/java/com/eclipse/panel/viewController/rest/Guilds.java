@@ -106,7 +106,7 @@ public class Guilds {
                         }
                     }
 
-                    if (needUpdate) {
+                    if (needUpdate && APIKeys.getValue(guildData.get("api_key").getAsString()) == APIKeys.WOE_KEY_AUTH) {
 
                         Map<Object, Object> inf = new HashMap<>();
                         inf.put("name", guildData.get("guild_name").getAsString());

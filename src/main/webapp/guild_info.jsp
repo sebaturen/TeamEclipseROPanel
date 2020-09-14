@@ -35,7 +35,7 @@
                     <option disabled <c:if test="${empty param.id}">selected</c:if>><fmt:message key="label.guilds_list" /></option>
                     <c:forEach items="${guilds}" var="gDet">
                         <option value="${gDet.id}" <c:if test="${gDet.id == guild.id}">selected</c:if>>
-                            [${gDet.id}] ${gDet.name}
+                            ${gDet.name} [${gDet.id}]
                         </option>
                     </c:forEach>
                 </select>
