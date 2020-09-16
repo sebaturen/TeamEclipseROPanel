@@ -43,56 +43,66 @@ public class CharacterController {
         //Character charPlayer = new Character.Builder(charId).build();
 
         int job = 0;
-        int head = 0;
+        int head = 4;
         int sex = 0;
-        int bodyPalette = 1;
-        int headPalette = 2;
+        int bodyPalette = 2;
+        int headPalette = 6;
         int frame = 0;
 
-        BufferedImage bodyImg = getBodySprite(
+        ROFrame bodyFrame = getBodySprite(
                 job+"",
                 sex+"",
                 bodyPalette,
                 frame
         );
-        ImageIO.write(bodyImg, "png", new File("body.png"));
+        System.out.println(Arrays.toString(bodyFrame.getOffSet()));
+        BufferedImage bodyImg = bodyFrame.getPng();
 
-        BufferedImage headImg = getHeadSprite(
+        ROFrame headFrame = getHeadSprite(
                 head+"",
                 sex+"",
                 headPalette,
                 frame
         );
-        ImageIO.write(headImg, "png", new File("head.png"));
+        System.out.println(Arrays.toString(headFrame.getOffSet()));
+        BufferedImage headImg = headFrame.getPng();
 
     }
 
-    private static BufferedImage getBodySprite(String jobId, String sexId, int bodyPalette, int postActor) throws IOException {
+    private static ROFrame getBodySprite(String jobId, String sexId, int bodyPalette, int postActor) throws IOException {
 
         String jobSpriteAct = RO_SPRITES_LOC + JOB_LOC + jobsNameProp.getProperty(jobId) +"_"+ sexProp.getProperty(sexId);
         String palettePal = RO_SPRITES_LOC + JOB_PALETTE + jobsNameProp.getProperty(jobId) +"_"+ sexProp.getProperty(sexId) +"_"+ bodyPalette;
 
         URL jobSprite = classLoader.getResource(jobSpriteAct+".spr");
+        URL actSprite = classLoader.getResource(jobSpriteAct+".act");
         URL palette = null;
         if (bodyPalette != 0) {
             palette = classLoader.getResource(palettePal+".pal");
         }
-        return ROFrame.processSPR(jobSprite, palette, postActor);
+        ROFrame roFrame = ROFrame.processSPR(jobSprite, palette, postActor);
+        if (roFrame != null) {
+            roFrame.setAct(actSprite);
+        }
+        return roFrame;
     }
 
-    private static BufferedImage getHeadSprite(String headId, String sexId, int headPalette, int postHead) throws IOException {
+    private static ROFrame getHeadSprite(String headId, String sexId, int headPalette, int postHead) throws IOException {
 
         String headSpriteAct = RO_SPRITES_LOC + HEADS_LOC + headsProp.getProperty(headId) +"_"+ sexProp.getProperty(sexId);
         String palettePal = RO_SPRITES_LOC + HEADS_PALETTE +"머리"+ headsProp.getProperty(headId) +"_"+ sexProp.getProperty(sexId) +"_"+ headPalette;
 
         URL headSprite = classLoader.getResource(headSpriteAct+".spr");
+        URL actSprite = classLoader.getResource(headSpriteAct+".act");
         URL palette = null;
         if (headPalette != 0) {
             palette = classLoader.getResource(palettePal+".pal");
-            System.out.println(palettePal);
         }
-        return ROFrame.processSPR(headSprite, palette, postHead);
-
+        ROFrame roFrame = ROFrame.processSPR(headSprite, palette, postHead);
+        if (roFrame != null) {
+            roFrame.setAct(actSprite);
+        }
+        return roFrame;
     }
 
     public static void main(String... args) throws IOException {

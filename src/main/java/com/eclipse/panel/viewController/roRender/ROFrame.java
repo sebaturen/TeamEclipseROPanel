@@ -1,10 +1,8 @@
 package com.eclipse.panel.viewController.roRender;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -18,6 +16,9 @@ public class ROFrame {
     private byte[] frame;
     private short sizeX;
     private short sizeY;
+    private int position;
+    private byte[] bSendPalette;
+    private byte[] bAct;
 
     public ROFrame(short sizeX, short sizeY, byte[] frame) {
         this.sizeX = sizeX;
@@ -55,12 +56,12 @@ public class ROFrame {
         return bMapName;
     }
 
-    public BufferedImage getPng(byte[] palette) {
+    public BufferedImage getPng() {
         uncompress();
         // Prepare palette
         List<byte[]> rgbPalette = new ArrayList<>();
-        for(int i = 0; i < palette.length; i+=4) {
-            byte[] rgbIndex = Arrays.copyOfRange(palette, i, i+4);
+        for(int i = 0; i < bSendPalette.length; i+=4) {
+            byte[] rgbIndex = Arrays.copyOfRange(bSendPalette, i, i+4);
             rgbPalette.add(rgbIndex);
         }
         // Prepare image
@@ -82,11 +83,76 @@ public class ROFrame {
         
     }
 
+    public void setPalette(byte[] bPalette) {
+        bSendPalette = bPalette;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public void setAct(URL act) throws IOException {
+        if (act != null) {
+            bAct = urlToByte(act);
+        }
+    }
+
+    public static final int VERSION_START = 2;
+    public static final int N_ANIMATIONS_START = 4;
+    public int[] getOffSet() {
+
+        short version = bAct[VERSION_START];
+        byte[] bNAnimations = reverseContent(Arrays.copyOfRange(bAct, N_ANIMATIONS_START, N_ANIMATIONS_START+2));
+        short nAnimations = (ByteBuffer.wrap(bNAnimations)).getShort();
+        int readBytePost = N_ANIMATIONS_START+2+10;
+        while (nAnimations > 1) {
+            byte[] bNFrames = reverseContent(Arrays.copyOfRange(bAct, readBytePost, readBytePost+4));
+            int nFrames = (ByteBuffer.wrap(bNFrames)).getInt();
+            readBytePost += 4;
+            while (nFrames > 1) {
+                readBytePost += 32;
+
+                byte[] bNSubFrames = reverseContent(Arrays.copyOfRange(bAct, readBytePost, readBytePost+4));
+                int nSubFrames = (ByteBuffer.wrap(bNSubFrames)).getInt();
+                readBytePost += 4;
+
+                while (nSubFrames >= 1) {
+                    byte[] bOffsetX = reverseContent(Arrays.copyOfRange(bAct, readBytePost, readBytePost+4));
+                    byte[] bOffsetY = reverseContent(Arrays.copyOfRange(bAct, readBytePost+4, readBytePost+8));
+                    int offsetX = (ByteBuffer.wrap(bOffsetX)).getInt();
+                    int offsetY = (ByteBuffer.wrap(bOffsetY)).getInt();
+
+                    return new int[] {offsetX, offsetY};
+                    /** TO DO = http://mist.in/gratia/ro/spr/ActFileFormatFix.html
+                     * WE NO COMPLETE BECOUSE ONLY USE THE FRONT AND STAND POSITION IN FIRST MVP
+                     *                     readBytePost += 4 + 4 + 4 + 4 + 4; // offset x, offset y, image, direction, color
+                     *                     if (version >= 2) readBytePost += 4 + 4 + 4; // scale x, rotation, dontjumps
+                     *                     if (version >= 4) readBytePost += 4;
+                     *
+                     *                     System.out.println("offset"+convertBytesToHex(Arrays.copyOfRange(bAct, readBytePost, readBytePost+8)));
+                     *
+                     *                     System.out.println(Arrays.toString(bOffsetX));
+                     *                     System.out.println(Arrays.toString(bOffsetY));
+                     *
+                     *                     System.out.println(offsetX +","+ offsetY);
+                     *                     System.exit(-1);
+                     *                     readBytePost += 4 + 4;
+                     *
+                     *                     nSubFrames--;
+                     */
+                }
+                nFrames--;
+            }
+            nAnimations--;
+        }
+        return null;
+    }
+
     // JOB SPRITE INFO
     private static final int JOB_HEADER_START =  0;
     private static final int JOB_TOTAL_FRAME_START = 4;
 
-    public static BufferedImage processSPR(URL sprite, URL palette, int spritePosition) throws IOException {
+    public static ROFrame processSPR(URL sprite, URL palette, int spritePosition) throws IOException {
 
         byte[] spriteSPR;
         byte[] orgPalette = null;
@@ -124,7 +190,9 @@ public class ROFrame {
             } else {
                 sendPalette = orgPalette;
             }
-            return framesList.get(spritePosition).getPng(sendPalette);
+            framesList.get(spritePosition).setPalette(sendPalette);
+            framesList.get(spritePosition).setPosition(spritePosition);
+            return framesList.get(spritePosition);
         }
 
         return null;
@@ -157,8 +225,5 @@ public class ROFrame {
 
         return outByte;
     }
-
-
-
 
 }

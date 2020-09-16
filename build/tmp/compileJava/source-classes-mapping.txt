@@ -1,10 +1,11 @@
 com/eclipse/panel/viewController/ViewController.java
  com.eclipse.panel.viewController.ViewController
-com/eclipse/panel/DiscordBot.java
- com.eclipse.panel.DiscordBot
- com.eclipse.panel.DiscordBot$MessageListener
 com/eclipse/panel/dbConnect/Database.java
  com.eclipse.panel.dbConnect.Database
+com/eclipse/panel/DiscordBot.java
+ com.eclipse.panel.DiscordBot
+ com.eclipse.panel.DiscordBot$1
+ com.eclipse.panel.DiscordBot$MessageListener
 com/eclipse/panel/gameObject/character/CharacterEquipSet.java
  com.eclipse.panel.gameObject.character.CharacterEquipSet
  com.eclipse.panel.gameObject.character.CharacterEquipSet$Builder
