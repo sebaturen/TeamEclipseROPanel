@@ -17,6 +17,7 @@ public class ROFrame {
     private short sizeX;
     private short sizeY;
     private int position;
+    private int[] offSet;
     private byte[] bSendPalette;
     private byte[] bAct;
 
@@ -97,9 +98,20 @@ public class ROFrame {
         }
     }
 
+    public short getSizeX() {
+        return sizeX;
+    }
+
+    public short getSizeY() {
+        return sizeY;
+    }
+
     public static final int VERSION_START = 2;
     public static final int N_ANIMATIONS_START = 4;
     public int[] getOffSet() {
+        if (offSet != null) {
+            return offSet;
+        }
 
         short version = bAct[VERSION_START];
         byte[] bNAnimations = reverseContent(Arrays.copyOfRange(bAct, N_ANIMATIONS_START, N_ANIMATIONS_START+2));
@@ -122,7 +134,8 @@ public class ROFrame {
                     int offsetX = (ByteBuffer.wrap(bOffsetX)).getInt();
                     int offsetY = (ByteBuffer.wrap(bOffsetY)).getInt();
 
-                    return new int[] {offsetX, offsetY};
+                    offSet = new int[] {offsetX, offsetY};
+                    return offSet;
                     /** TO DO = http://mist.in/gratia/ro/spr/ActFileFormatFix.html
                      * WE NO COMPLETE BECOUSE ONLY USE THE FRONT AND STAND POSITION IN FIRST MVP
                      *                     readBytePost += 4 + 4 + 4 + 4 + 4; // offset x, offset y, image, direction, color
@@ -210,6 +223,9 @@ public class ROFrame {
 
     private static byte[] urlToByte(URL elem) throws IOException {
         byte[] outByte;
+        if (elem == null) {
+            throw new IOException("url null");
+        }
         try (InputStream fis = elem.openStream();
              ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
 
