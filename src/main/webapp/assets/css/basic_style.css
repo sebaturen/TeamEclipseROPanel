@@ -23,7 +23,11 @@ a {
     }
 }
 /** =========================== jobs ======================= **/
-
+.char_show {
+    float: left;
+    position: absolute;
+    z-index: -1;
+}
 .job_show {
     height: 87px;
     width: 55px;
@@ -50,6 +54,9 @@ a {
 .job_show_f_17 { margin-top: 3px; margin-left: -2px; height: 90px; width: 57px; }
 .job_show_f_0 { margin-left: 3px; }
 /** =========================== head ======================= **/
+.acc_show {
+
+}
 .hair_show {
     height: 40px;
     width: 26px;

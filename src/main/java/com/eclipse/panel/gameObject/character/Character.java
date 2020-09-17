@@ -80,12 +80,28 @@ public class Character {
         }
     }
 
+    public int getSexId() {
+        return sex;
+    }
+
     public int getLvl() {
         return lvl;
     }
 
     public int getHairStyle() {
         return character_view.get("hair_style_id").getAsInt();
+    }
+
+    public JsonObject getShow_equip() {
+        return show_equip;
+    }
+
+    public JsonObject getHead_view() {
+        return head_view;
+    }
+
+    public JsonObject getCharacter_view() {
+        return character_view;
     }
 
     @Override

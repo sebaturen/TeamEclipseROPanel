@@ -136,7 +136,7 @@ public class ROFrame {
 
                     offSet = new int[] {offsetX, offsetY};
                     return offSet;
-                    /** TO DO = http://mist.in/gratia/ro/spr/ActFileFormatFix.html
+                    /** TODO = http://mist.in/gratia/ro/spr/ActFileFormatFix.html
                      * WE NO COMPLETE BECOUSE ONLY USE THE FRONT AND STAND POSITION IN FIRST MVP
                      *                     readBytePost += 4 + 4 + 4 + 4 + 4; // offset x, offset y, image, direction, color
                      *                     if (version >= 2) readBytePost += 4 + 4 + 4; // scale x, rotation, dontjumps
@@ -165,13 +165,15 @@ public class ROFrame {
     private static final int JOB_HEADER_START =  0;
     private static final int JOB_TOTAL_FRAME_START = 4;
 
-    public static ROFrame processSPR(URL sprite, URL palette, int spritePosition) throws IOException {
+    public static ROFrame processSPR(URL sprite, URL palette, int spritePosition) throws Exception {
 
-        byte[] spriteSPR;
+        byte[] spriteSPR = null;
         byte[] orgPalette = null;
         byte[] altPalette = null;
         List<ROFrame> framesList = new ArrayList<>();
-        spriteSPR = urlToByte(sprite);
+        if (sprite != null) {
+            spriteSPR = urlToByte(sprite);
+        }
         if (palette != null) {
             altPalette = urlToByte(palette);
         }
@@ -181,13 +183,22 @@ public class ROFrame {
             int totalFrames = (ByteBuffer.wrap(bTotalFrames)).getInt();
             int bytePosition = JOB_TOTAL_FRAME_START+4;
             while (totalFrames != 0) {
+
+                System.out.println("SPR: "+ sprite);
+                System.out.println("("+ totalFrames +") bytePost "+ bytePosition +" == "+ spriteSPR.length);
                 byte[] bSizeX = reverseContent(Arrays.copyOfRange(spriteSPR, bytePosition, bytePosition+2));
                 byte[] bSizeY = reverseContent(Arrays.copyOfRange(spriteSPR, bytePosition+2, bytePosition+4));
-                byte[] bByteSize = reverseContent(Arrays.copyOfRange(spriteSPR, bytePosition+4, bytePosition+6));
+                byte[] bByteSize = Arrays.copyOfRange(spriteSPR, bytePosition+4, bytePosition+6);
 
                 short sizeX = (ByteBuffer.wrap(bSizeX)).getShort();
                 short sizeY = (ByteBuffer.wrap(bSizeY)).getShort();
-                short byteSize = (ByteBuffer.wrap(bByteSize)).getShort();
+                ByteBuffer bb = ByteBuffer.allocate(4);
+                bb.put((byte) 0);
+                bb.put((byte) 0);
+                bb.put(bByteSize[1]);
+                bb.put(bByteSize[0]);
+                bb.rewind();
+                int byteSize = bb.getInt();
                 framesList.add(new ROFrame(sizeX, sizeY, Arrays.copyOfRange(spriteSPR, bytePosition+6, bytePosition+6+byteSize)));
 
                 bytePosition += 6 + byteSize;
@@ -196,14 +207,18 @@ public class ROFrame {
             orgPalette = Arrays.copyOfRange(spriteSPR, bytePosition, spriteSPR.length);
         }
 
-        if (framesList.size() >= spritePosition) {
-            byte[] sendPalette;
+        if (sprite != null && framesList.size() >= spritePosition) {
+            byte[] sendPalette = null;
             if (palette != null) {
-                sendPalette = altPalette;
+                if (altPalette != null) {
+                    sendPalette = altPalette;
+                }
             } else {
                 sendPalette = orgPalette;
             }
-            framesList.get(spritePosition).setPalette(sendPalette);
+            if (sendPalette != null) {
+                framesList.get(spritePosition).setPalette(sendPalette);
+            }
             framesList.get(spritePosition).setPosition(spritePosition);
             return framesList.get(spritePosition);
         }

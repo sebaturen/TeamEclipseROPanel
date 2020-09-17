@@ -1,5 +1,7 @@
 package com.eclipse.panel.viewController;
 
+import com.eclipse.panel.Logs;
+import com.eclipse.panel.gameObject.character.Character;
 import com.eclipse.panel.viewController.roRender.ROFrame;
 
 import javax.imageio.ImageIO;
@@ -13,6 +15,7 @@ import java.util.*;
 
 public class CharacterController {
 
+    public static final String CHARACTER_PATH = ViewController.FILEPATH +"assets/img/ro/characters/";
     private static final String RO_SPRITES_LOC = "ro_sprites/";
     private static final String HEADS_PROPERTIES = "head_id.properties";
     private static final String HEADS_JOB_POST_PROPERTIES = "head_job_position.properties";
@@ -49,149 +52,150 @@ public class CharacterController {
         }
     }
 
-    public static void renderCharacter(int job) throws IOException {
-        //Character charPlayer = new Character.Builder(charId).build();
+    public static void renderCharacter(Character character) {
 
-        //int job = 13;
-        /*
-        // Martin
-        job = 15;
-        int head = 23;
-        int sex = 0;
-        int bodyPalette = 0;
-        int headPalette = 6;
+        int job = character.getJob_id();
+        int head = character.getCharacter_view().get("hair_style_id").getAsInt();
+        int sex = character.getSexId();
+        int bodyPalette = character.getCharacter_view().get("clothes_color_id").getAsInt();
+        int headPalette = character.getCharacter_view().get("hair_color_id").getAsInt();
         int frame = 0;
-        int accTop = 224;
-        int accMid = 0;
-        int accLow = 194;
-        // Galamir
-        job = 14;
-        int head = 4;
-        int sex = 0;
-        int bodyPalette = 2;
-        int headPalette = 6;
-        int frame = 0;
-        int accTop = 224;
-        int accMid = 100;
-        int accLow = 829;
-        // Clein
-        job = 8;
-        int head = 7;
-        int sex = 0;
-        int bodyPalette = 2;
-        int headPalette = 0;
-        int frame = 0;
-        int accTop = 1675;
-        int accMid = 12;
-        int accLow = 1691;
-        // Sawako
-        job = 16;
-        int head = 21;
-        int sex = 1;
-        int bodyPalette = 0;
-        int headPalette = 6;
-        int frame = 0;
-        int accTop = 283;
-        int accMid = 1582;
-        int accLow = 1579;
-         */
-        job = 3;
-        int head = 9;
-        int sex = 0;
-        int bodyPalette = 0;
-        int headPalette = 8;
-        int frame = 0;
-        int accTop = 0;
-        int accMid = 0;
-        int accLow = 0;
 
-        ROFrame bodyFrame = getBodySprite(job+"", sex+"", bodyPalette, frame);
-        BufferedImage bodyImg = bodyFrame.getPng();
+        int accTop = character.getHead_view().get("top_head_view_id").getAsInt();
+        int accMid = character.getHead_view().get("mid_head_view_id").getAsInt();
+        int accLow = character.getHead_view().get("low_head_view_id").getAsInt();
 
-        ROFrame headFrame = getHeadSprite(head+"", sex+"", headPalette, frame);
-        BufferedImage headImg = headFrame.getPng();
+        File bodyPng = new File(CHARACTER_PATH+"char_"+ job +"_"+ head +"_"+ sex +"_"+ bodyPalette +"_"+ headPalette +"_"+ frame +".png");
+        File accPng = new File(CHARACTER_PATH+"acc_"+ job +"_"+ sex +"_"+ accTop +"_"+ accMid +"_"+ accLow +"_"+ frame +".png");
 
-        ROFrame accTopFrame = null;
-        BufferedImage accTopImg = null;
-        if (accTop > 0) {
-            accTopFrame = getAccSprite(accTop+"", sex+"", frame);
-            accTopImg = accTopFrame.getPng();
+        // General Render data
+        if (!bodyPng.exists() || !accPng.exists()) {
+            int floorX = 75;
+            int floorY = 125;
+            int fixPostY = 0;
+            int fixPostX = 0;
+            int xPos;
+            int yPos;
+
+            try {
+                // Body render
+                if (!bodyPng.exists()) {
+                    System.out.println("body png not exist! "+ bodyPng);
+
+                    ROFrame bodyFrame = getBodySprite(job+"", sex+"", bodyPalette, frame);
+                    if (bodyFrame == null) {
+                        return;
+                    }
+                    BufferedImage bodyImg = bodyFrame.getPng();
+
+                    ROFrame headFrame = getHeadSprite(head+"", sex+"", headPalette, frame);
+                    if (headFrame == null) {
+                        return;
+                    }
+                    BufferedImage headImg = headFrame.getPng();
+
+                    // Mix elements
+                    BufferedImage bodyMapLoc = new BufferedImage(150, 170, BufferedImage.TYPE_INT_ARGB);
+                    Graphics gBody = bodyMapLoc.getGraphics();
+
+                    // Draw body
+                    xPos = floorX - (bodyFrame.getSizeX()/2) - bodyFrame.getOffSet()[0];
+                    yPos = floorY - (bodyFrame.getSizeY()/2) + bodyFrame.getOffSet()[1];
+                    gBody.drawImage(bodyImg, xPos, yPos, null);
+
+                    // Draw head
+                    String fixHeadID = job+"_"+sex+"_";
+                    fixPostX = bodyFrame.getOffSet()[0];
+                    if (headsJobProp.get(fixHeadID+"x") != null) {
+                        fixPostX += Integer.parseInt(headsJobProp.get(fixHeadID+"x").toString());
+                    }
+                    fixPostY = bodyFrame.getSizeY() - 73;
+                    if (headsJobProp.get(fixHeadID+"y") != null) {
+                        fixPostY += Integer.parseInt(headsJobProp.get(fixHeadID+"y").toString());
+                    }
+                    xPos = floorX - (headFrame.getSizeX()/2) - headFrame.getOffSet()[0] - fixPostX;
+                    yPos = floorY - (headFrame.getSizeY()/2) + headFrame.getOffSet()[1] - fixPostY;
+                    gBody.drawImage(headImg, xPos, yPos, null);
+
+                    ImageIO.write(bodyMapLoc, "png", bodyPng);
+                }
+
+                // Acc render
+                if (!accPng.exists()) {
+                    System.out.println("acc png not exist! "+ accPng);
+
+                    ROFrame accTopFrame = null;
+                    BufferedImage accTopImg = null;
+                    if (accTop > 0) {
+                        accTopFrame = getAccSprite(accTop+"", sex+"", frame);
+                        if (accTopFrame != null) {
+                            accTopImg = accTopFrame.getPng();
+                        }
+                    }
+
+                    ROFrame accMidFrame = null;
+                    BufferedImage accMidFrameImg = null;
+                    if (accMid > 0) {
+                        accMidFrame = getAccSprite(accMid+"", sex+"", frame);
+                        if (accMidFrame != null) {
+                            accMidFrameImg = accMidFrame.getPng();
+                        }
+                    }
+
+                    ROFrame accLowFrame = null;
+                    BufferedImage accLowFrameImg = null;
+                    if (accLow > 0) {
+                        accLowFrame = getAccSprite(accLow+"", sex+"", frame);
+                        if (accLowFrame != null) {
+                            accLowFrameImg = accLowFrame.getPng();
+                        }
+                    }
+
+                    // Mix elements
+                    BufferedImage accMapLoc = new BufferedImage(150, 170, BufferedImage.TYPE_INT_ARGB);
+                    Graphics gAcc = accMapLoc.getGraphics();
+
+                    if (fixPostX == 0) {
+                        ROFrame bodyFrame = getBodySprite(job+"", sex+"", bodyPalette, frame);
+                        fixPostX = getFixPost('x', bodyFrame, job, sex);
+                        fixPostY = getFixPost('y', bodyFrame, job, sex);
+                    }
+
+                    // Draw accessory MID
+                    if (accMidFrame != null) {
+                        xPos = floorX - (accMidFrame.getSizeX()/2) - accMidFrame.getOffSet()[0] - fixPostX + 2;
+                        yPos = floorY - (accMidFrame.getSizeY()/2) + accMidFrame.getOffSet()[1] - fixPostY;
+                        gAcc.drawImage(accMidFrameImg, xPos, yPos, null);
+                    }
+
+                    // Draw accessory LOW
+                    if (accLowFrame != null) {
+                        xPos = floorX - (accLowFrame.getSizeX()/2) - accLowFrame.getOffSet()[0] - fixPostX + 2;
+                        yPos = floorY - (accLowFrame.getSizeY()/2) + accLowFrame.getOffSet()[1] - fixPostY;
+                        gAcc.drawImage(accLowFrameImg, xPos, yPos, null);
+                    }
+
+                    // Draw accessory TOP
+                    if (accTopFrame != null) {
+                        xPos = floorX - (accTopFrame.getSizeX()/2) - accTopFrame.getOffSet()[0] - fixPostX + 2;
+                        yPos = floorY - (accTopFrame.getSizeY()/2) + accTopFrame.getOffSet()[1] - fixPostY;
+                        gAcc.drawImage(accTopImg, xPos, yPos, null);
+                    }
+
+                    ImageIO.write(accMapLoc, "png", accPng);
+                }
+            } catch (Exception e) {
+                Logs.errorLog(CharacterController.class, "Failed to render character\n" +
+                        "-> "+ "char_"+ job +"_"+ head +"_"+ sex +"_"+ bodyPalette +"_"+ headPalette +"_"+ frame +".png\n" +
+                        "-> "+ "acc_"+ job +"_"+ sex +"_"+ accTop +"_"+ accMid +"_"+ accLow +"_"+ frame +".png\n" +
+                        "e-> "+ e);
+            }
+        } else {
+            System.out.println("OK Char y acc "+ bodyPng +" | "+ accPng);
         }
-
-        ROFrame accMidFrame = null;
-        BufferedImage accMidFrameImg = null;
-        if (accMid > 0) {
-            accMidFrame = getAccSprite(accMid+"", sex+"", frame);
-            accMidFrameImg = accMidFrame.getPng();
-        }
-
-        ROFrame accLowFrame = null;
-        BufferedImage accLowFrameImg = null;
-        if (accLow > 0) {
-            accLowFrame = getAccSprite(accLow+"", sex+"", frame);
-            accLowFrameImg = accLowFrame.getPng();
-        }
-
-        // Mix elements
-        BufferedImage bodyMapLoc = new BufferedImage(150, 170, BufferedImage.TYPE_INT_ARGB);
-        BufferedImage accMapLoc = new BufferedImage(150, 170, BufferedImage.TYPE_INT_ARGB);
-        Graphics gBody = bodyMapLoc.getGraphics();
-        Graphics gAcc = accMapLoc.getGraphics();
-        int floorX = 75;
-        int floorY = 125;
-
-        // Draw body
-        int xPos = floorX - (bodyFrame.getSizeX()/2) - bodyFrame.getOffSet()[0];
-        int yPos = floorY - (bodyFrame.getSizeY()/2) + bodyFrame.getOffSet()[1];
-        gBody.drawImage(bodyImg, xPos, yPos, null);
-
-        // Draw head
-        String fixHeadID = job+"_"+sex+"_";
-        int fixPostY = bodyFrame.getSizeY() - 73;
-        if (headsJobProp.get(fixHeadID+"y") != null) {
-            fixPostY += Integer.parseInt(headsJobProp.get(fixHeadID+"y").toString());
-        }
-        int fixPostX = bodyFrame.getOffSet()[0];
-        if (headsJobProp.get(fixHeadID+"x") != null) {
-            fixPostX += Integer.parseInt(headsJobProp.get(fixHeadID+"x").toString());
-        }
-        xPos = floorX - (headFrame.getSizeX()/2) - headFrame.getOffSet()[0] - fixPostX;
-        yPos = floorY - (headFrame.getSizeY()/2) + headFrame.getOffSet()[1] - fixPostY;
-        gBody.drawImage(headImg, xPos, yPos, null);
-
-        // Draw accessory MID
-        if (accMidFrame != null) {
-            xPos = floorX - (accMidFrame.getSizeX()/2) - accMidFrame.getOffSet()[0] - fixPostX + 2;
-            yPos = floorY - (accMidFrame.getSizeY()/2) + accMidFrame.getOffSet()[1] - fixPostY;
-            gAcc.drawImage(accMidFrameImg, xPos, yPos, null);
-        }
-
-        // Draw accessory LOW
-        if (accLowFrame != null) {
-            xPos = floorX - (accLowFrame.getSizeX()/2) - accLowFrame.getOffSet()[0] - fixPostX + 2;
-            yPos = floorY - (accLowFrame.getSizeY()/2) + accLowFrame.getOffSet()[1] - fixPostY;
-            gAcc.drawImage(accLowFrameImg, xPos, yPos, null);
-        }
-
-        // Draw accessory TOP
-        if (accTopFrame != null) {
-            xPos = floorX - (accTopFrame.getSizeX()/2) - accTopFrame.getOffSet()[0] - fixPostX + 2;
-            yPos = floorY - (accTopFrame.getSizeY()/2) + accTopFrame.getOffSet()[1] - fixPostY;
-            gAcc.drawImage(accTopImg, xPos, yPos, null);
-        }
-
-        // reference position
-        //g.drawLine(0, floorY, 200, floorY);
-        //g.drawLine(floorX, 0, floorX, 200);
-        //g.fillOval(floorX-5, floorY-5, 10,10);
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(bodyMapLoc, "png", new File("body_meg_"+ job +"_"+ sex +".png"));
-        ImageIO.write(accMapLoc, "png", new File("acc_meg_"+ job +"_"+ sex +".png"));
-
     }
 
-    private static ROFrame getBodySprite(String jobId, String sexId, int bodyPalette, int postActor) throws IOException {
+    private static ROFrame getBodySprite(String jobId, String sexId, int bodyPalette, int postActor) throws Exception {
 
         String jobSpriteAct = RO_SPRITES_LOC + JOB_LOC + jobsNameProp.getProperty(jobId) +"_"+ sexProp.getProperty(sexId);
         String palettePal = RO_SPRITES_LOC + JOB_PALETTE + jobsNameProp.getProperty(jobId) +"_"+ sexProp.getProperty(sexId) +"_"+ bodyPalette;
@@ -209,7 +213,7 @@ public class CharacterController {
         return roFrame;
     }
 
-    private static ROFrame getHeadSprite(String headId, String sexId, int headPalette, int postHead) throws IOException {
+    private static ROFrame getHeadSprite(String headId, String sexId, int headPalette, int postHead) throws Exception {
 
         String headSpriteAct = RO_SPRITES_LOC + HEADS_LOC + headsProp.getProperty(headId) +"_"+ sexProp.getProperty(sexId);
         String palettePal = RO_SPRITES_LOC + HEADS_PALETTE +"머리"+ headsProp.getProperty(headId) +"_"+ sexProp.getProperty(sexId) +"_"+ headPalette;
@@ -227,7 +231,7 @@ public class CharacterController {
         return roFrame;
     }
 
-    private static ROFrame getAccSprite(String accTopId, String sexId, int postHead) throws IOException {
+    private static ROFrame getAccSprite(String accTopId, String sexId, int postHead) throws Exception {
 
         String accSpriteAct = RO_SPRITES_LOC + ACCESSORY_ID_NAME + sexProp.getProperty(sexId) + accessoryIdName.getProperty(accTopId);
 
@@ -240,17 +244,18 @@ public class CharacterController {
         return roFrame;
     }
 
-    public static void main(String... args) {
-        int i = 0;
-        while (i != 25) {
-            try {
-                renderCharacter(i);
-                break;
-            } catch (IOException e) {
-                System.out.println("error "+ i);
-            }
-            i++;
+    private static int getFixPost(char cord, ROFrame rFrame, int job, int sex) {
+        String fixHeadID = job+"_"+sex+"_";
+        int fixPost = 0;
+        if (cord == 'x') {
+            fixPost = rFrame.getOffSet()[0];
         }
+        if (cord == 'y') {
+            fixPost = rFrame.getSizeY() - 73;
+        }
+        if (headsJobProp.get(fixHeadID+cord) != null) {
+            fixPost += Integer.parseInt(headsJobProp.get(fixHeadID+cord).toString());
+        }
+        return fixPost;
     }
-
 }
