@@ -52,6 +52,10 @@ public class CharacterController {
         }
     }
 
+    public static Character getCharacter(String id) {
+        return new Character.Builder(Integer.parseInt(id)).build();
+    }
+
     public static void renderCharacter(Character character) {
 
         int job = character.getJob_id();
@@ -80,7 +84,6 @@ public class CharacterController {
             try {
                 // Body render
                 if (!bodyPng.exists()) {
-                    System.out.println("body png not exist! "+ bodyPng);
 
                     ROFrame bodyFrame = getBodySprite(job+"", sex+"", bodyPalette, frame);
                     if (bodyFrame == null) {
@@ -122,7 +125,6 @@ public class CharacterController {
 
                 // Acc render
                 if (!accPng.exists()) {
-                    System.out.println("acc png not exist! "+ accPng);
 
                     ROFrame accTopFrame = null;
                     BufferedImage accTopImg = null;
@@ -190,8 +192,6 @@ public class CharacterController {
                         "-> "+ "acc_"+ job +"_"+ sex +"_"+ accTop +"_"+ accMid +"_"+ accLow +"_"+ frame +".png\n" +
                         "e-> "+ e);
             }
-        } else {
-            System.out.println("OK Char y acc "+ bodyPng +" | "+ accPng);
         }
     }
 

@@ -184,8 +184,6 @@ public class ROFrame {
             int bytePosition = JOB_TOTAL_FRAME_START+4;
             while (totalFrames != 0) {
 
-                System.out.println("SPR: "+ sprite);
-                System.out.println("("+ totalFrames +") bytePost "+ bytePosition +" == "+ spriteSPR.length);
                 byte[] bSizeX = reverseContent(Arrays.copyOfRange(spriteSPR, bytePosition, bytePosition+2));
                 byte[] bSizeY = reverseContent(Arrays.copyOfRange(spriteSPR, bytePosition+2, bytePosition+4));
                 byte[] bByteSize = Arrays.copyOfRange(spriteSPR, bytePosition+4, bytePosition+6);
