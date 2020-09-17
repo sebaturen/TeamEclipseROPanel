@@ -15,7 +15,7 @@ import java.util.*;
 
 public class CharacterController {
 
-    public static final String CHARACTER_PATH = ViewController.FILEPATH +"assets/img/ro/characters/";
+    public static String CHARACTER_PATH = ViewController.FILEPATH +"assets/img/ro/characters/";
     private static final String RO_SPRITES_LOC = "ro_sprites/";
     private static final String HEADS_PROPERTIES = "head_id.properties";
     private static final String HEADS_JOB_POST_PROPERTIES = "head_job_position.properties";
@@ -27,11 +27,11 @@ public class CharacterController {
     private static final String SEX_PROPERTIES = "sex_id.properties";
     private static final String ACCESSORY_ID_NAME_PROPERTIES = "accessory_id_name.properties";
     private static final String ACCESSORY_ID_NAME = "accessory/";
-    private static final Properties headsProp = new Properties();
+    public static final Properties headsProp = new Properties();
+    public static final Properties jobsNameProp = new Properties();
+    public static final Properties accessoryIdName = new Properties();
     private static final Properties headsJobProp = new Properties();
-    private static final Properties jobsNameProp = new Properties();
     private static final Properties sexProp = new Properties();
-    private static final Properties accessoryIdName = new Properties();
     private static ClassLoader classLoader;
 
     static {
@@ -57,17 +57,24 @@ public class CharacterController {
     }
 
     public static void renderCharacter(Character character) {
+        renderCharacter(
+                character.getJob_id(),
+                character.getCharacter_view().get("hair_style_id").getAsInt(),
+                character.getSexId(),
+                character.getCharacter_view().get("clothes_color_id").getAsInt(),
+                character.getCharacter_view().get("hair_color_id").getAsInt(),
+                character.getHead_view().get("top_head_view_id").getAsInt(),
+                character.getHead_view().get("mid_head_view_id").getAsInt(),
+                character.getHead_view().get("low_head_view_id").getAsInt(),
+                0
+        );
+    }
 
-        int job = character.getJob_id();
-        int head = character.getCharacter_view().get("hair_style_id").getAsInt();
-        int sex = character.getSexId();
-        int bodyPalette = character.getCharacter_view().get("clothes_color_id").getAsInt();
-        int headPalette = character.getCharacter_view().get("hair_color_id").getAsInt();
-        int frame = 0;
-
-        int accTop = character.getHead_view().get("top_head_view_id").getAsInt();
-        int accMid = character.getHead_view().get("mid_head_view_id").getAsInt();
-        int accLow = character.getHead_view().get("low_head_view_id").getAsInt();
+    public static void renderCharacter(
+            int job, int head, int sex, int bodyPalette, int headPalette,
+            int accTop, int accMid, int accLow,
+            int frame
+    ) {
 
         File bodyPng = new File(CHARACTER_PATH+"char_"+ job +"_"+ head +"_"+ sex +"_"+ bodyPalette +"_"+ headPalette +"_"+ frame +".png");
         File accPng = new File(CHARACTER_PATH+"acc_"+ job +"_"+ sex +"_"+ accTop +"_"+ accMid +"_"+ accLow +"_"+ frame +".png");
