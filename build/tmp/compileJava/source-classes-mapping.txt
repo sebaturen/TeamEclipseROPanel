@@ -1,11 +1,10 @@
 com/eclipse/panel/viewController/ViewController.java
  com.eclipse.panel.viewController.ViewController
-com/eclipse/panel/dbConnect/Database.java
- com.eclipse.panel.dbConnect.Database
 com/eclipse/panel/DiscordBot.java
  com.eclipse.panel.DiscordBot
- com.eclipse.panel.DiscordBot$1
  com.eclipse.panel.DiscordBot$MessageListener
+com/eclipse/panel/dbConnect/Database.java
+ com.eclipse.panel.dbConnect.Database
 com/eclipse/panel/gameObject/character/CharacterEquipSet.java
  com.eclipse.panel.gameObject.character.CharacterEquipSet
  com.eclipse.panel.gameObject.character.CharacterEquipSet$Builder
@@ -68,8 +67,9 @@ com/eclipse/panel/viewController/GuildController.java
 com/eclipse/panel/gameObject/Accounts.java
  com.eclipse.panel.gameObject.Accounts
  com.eclipse.panel.gameObject.Accounts$Builder
-com/eclipse/panel/viewController/CharacterController.java
- com.eclipse.panel.viewController.CharacterController
+com/eclipse/panel/gameObject/roDB/Item.java
+ com.eclipse.panel.gameObject.roDB.Item
+ com.eclipse.panel.gameObject.roDB.Item$Builder
 com/eclipse/panel/viewController/rest/APIKeys.java
  com.eclipse.panel.viewController.rest.APIKeys
 com/eclipse/panel/gameObject/Guild.java
@@ -80,6 +80,5 @@ com/eclipse/panel/gameObject/character/CharacterInfo.java
  com.eclipse.panel.gameObject.character.CharacterInfo$Builder
 com/eclipse/panel/User.java
  com.eclipse.panel.User
-com/eclipse/panel/gameObject/roDB/Item.java
- com.eclipse.panel.gameObject.roDB.Item
- com.eclipse.panel.gameObject.roDB.Item$Builder
+com/eclipse/panel/viewController/CharacterController.java
+ com.eclipse.panel.viewController.CharacterController

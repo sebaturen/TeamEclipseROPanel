@@ -21,6 +21,7 @@ public class CharacterController {
     private static final String HEADS_JOB_POST_PROPERTIES = "head_job_position.properties";
     private static final String HEADS_LOC = "head/";
     private static final String HEADS_PALETTE = "palette/head/";
+    private static final String HEADS_POSITIONS = "head_position.properties";
     private static final String JOB_NAME_PROPERTIES = "job_names.properties";
     private static final String JOB_LOC = "body/";
     private static final String JOB_PALETTE = "palette/body/";
@@ -28,6 +29,7 @@ public class CharacterController {
     private static final String ACCESSORY_ID_NAME_PROPERTIES = "accessory_id_name.properties";
     private static final String ACCESSORY_ID_NAME = "accessory/";
     public static final Properties headsProp = new Properties();
+    public static final Properties headPosition = new Properties();
     public static final Properties jobsNameProp = new Properties();
     public static final Properties accessoryIdName = new Properties();
     private static final Properties headsJobProp = new Properties();
@@ -41,12 +43,14 @@ public class CharacterController {
             FileInputStream fsSex = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+SEX_PROPERTIES)).getFile());
             FileInputStream fsHeads = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+HEADS_PROPERTIES)).getFile());
             FileInputStream fsHeadsJob = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+HEADS_JOB_POST_PROPERTIES)).getFile());
+            FileInputStream fsHeadPosition = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+HEADS_POSITIONS)).getFile());
             FileInputStream fsAccIdName = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+ACCESSORY_ID_NAME_PROPERTIES)).getFile());
             jobsNameProp.load(new InputStreamReader(fsJobs, StandardCharsets.UTF_8));
             sexProp.load(new InputStreamReader(fsSex, StandardCharsets.UTF_8));
             accessoryIdName.load(new InputStreamReader(fsAccIdName, StandardCharsets.UTF_8));
             headsProp.load(fsHeads);
             headsJobProp.load(fsHeadsJob);
+            headPosition.load(fsHeadPosition);
         } catch(IOException e) {
             System.out.println(e.toString());
         }
@@ -115,13 +119,20 @@ public class CharacterController {
 
                     // Draw head
                     String fixHeadID = job+"_"+sex+"_";
+                    String fixHeadPost = head+"_"+sex+"_";
                     fixPostX = bodyFrame.getOffSet()[0];
                     if (headsJobProp.get(fixHeadID+"x") != null) {
                         fixPostX += Integer.parseInt(headsJobProp.get(fixHeadID+"x").toString());
                     }
+                    if (headPosition.get(fixHeadPost+"x") != null) {
+                        fixPostX += Integer.parseInt(headPosition.get(fixHeadPost+"x").toString());
+                    }
                     fixPostY = bodyFrame.getSizeY() - 73;
                     if (headsJobProp.get(fixHeadID+"y") != null) {
                         fixPostY += Integer.parseInt(headsJobProp.get(fixHeadID+"y").toString());
+                    }
+                    if (headPosition.get(fixHeadPost+"y") != null) {
+                        fixPostY     += Integer.parseInt(headPosition.get(fixHeadPost+"y").toString());
                     }
                     xPos = floorX - (headFrame.getSizeX()/2) - headFrame.getOffSet()[0] - fixPostX;
                     yPos = floorY - (headFrame.getSizeY()/2) + headFrame.getOffSet()[1] - fixPostY;

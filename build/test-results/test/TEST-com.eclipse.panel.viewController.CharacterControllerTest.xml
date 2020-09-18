@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.eclipse.panel.viewController.CharacterControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-17T23:08:01" hostname="SEBA-PC" time="10.723">
+<testsuite name="com.eclipse.panel.viewController.CharacterControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-18T00:46:08" hostname="MacBook-Pro-de-Sebastian.local" time="1.252">
   <properties/>
-  <testcase name="testRenderCharacter" classname="com.eclipse.panel.viewController.CharacterControllerTest" time="10.723"/>
+  <testcase name="testRenderCharacter" classname="com.eclipse.panel.viewController.CharacterControllerTest" time="1.252"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
