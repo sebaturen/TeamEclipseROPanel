@@ -68,7 +68,7 @@ public class Guild {
             JsonArray characters_db = DBLoadObject.dbConnect.select(
                     Character.TABLE_NAME,
                     new String[]{Character.TABLE_KEY},
-                    "guild_id=?",
+                    "guild_id=? ORDER BY lvl DESC, job_id DESC",
                     new String[]{id+""}
             );
 

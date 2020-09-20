@@ -183,7 +183,7 @@ public class CharacterController {
 
                     // Draw accessory MID
                     if (accMidFrame != null) {
-                        xPos = floorX - (accMidFrame.getSizeX()/2) - accMidFrame.getOffSet()[0] - fixPostX + 2;
+                        xPos = floorX - (accMidFrame.getSizeX()/2) - accMidFrame.getOffSet()[0] - fixPostX + 1;
                         yPos = floorY - (accMidFrame.getSizeY()/2) + accMidFrame.getOffSet()[1] - fixPostY;
                         gAcc.drawImage(accMidFrameImg, xPos, yPos, null);
                     }
@@ -197,8 +197,8 @@ public class CharacterController {
 
                     // Draw accessory TOP
                     if (accTopFrame != null) {
-                        xPos = floorX - (accTopFrame.getSizeX()/2) - accTopFrame.getOffSet()[0] - fixPostX + 2;
-                        yPos = floorY - (accTopFrame.getSizeY()/2) + accTopFrame.getOffSet()[1] - fixPostY;
+                        xPos = floorX - (accTopFrame.getSizeX()/2) - accTopFrame.getOffSet()[0] - fixPostX + 1;
+                        yPos = floorY - (accTopFrame.getSizeY()/2) + accTopFrame.getOffSet()[1] - fixPostY - 1;
                         gAcc.drawImage(accTopImg, xPos, yPos, null);
                     }
 

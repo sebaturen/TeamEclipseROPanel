@@ -13,7 +13,8 @@ public class CharacterControllerTest extends TestCase {
         CharacterController.jobsNameProp.forEach((k, v) -> {
             int job = Integer.parseInt(k.toString());
             //CharacterController.headsProp.forEach((i, z) -> {
-                int head = 1;//Integer.parseInt(i.toString());
+                //int head = Integer.parseInt(i.toString());
+                int head = 1;
                 CharacterController.CHARACTER_PATH ="RENDER_TEST/0/";
                 CharacterController.renderCharacter(job, head, 0, bodyPalette, headPalette, accTop, accMid, accLow, 0);
                 CharacterController.CHARACTER_PATH ="RENDER_TEST/1/";
