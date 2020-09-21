@@ -21,5 +21,8 @@ public class CharacterControllerTest extends TestCase {
                 CharacterController.renderCharacter(job, head, 1, bodyPalette, headPalette, accTop, accMid, accLow, 0);
             //});
         });
+        //CharacterController.CHARACTER_PATH ="RENDER_TEST/0/";
+
+        //CharacterController.renderCharacter(4009, 7, 1, 2, 0 , 0, 0, 1691, 0);
     }
 }

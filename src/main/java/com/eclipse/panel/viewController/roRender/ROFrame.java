@@ -28,25 +28,20 @@ public class ROFrame {
     }
 
     private void uncompress() {
-        List<Byte> buff = new ArrayList<>();
-        Byte prev = null;
-        for(byte b : frame) {
-            if (prev != null && prev == (byte) 0) {
-                if (b == 0) {
-                    buff.add(b);
-                } else {
-                    byte compressByte = b;
-                    while (compressByte-- > 1) {
-                        buff.add((byte) 0);
-                    }
-                }
-            } else {
-                buff.add(b);
-            }
-            prev = b;
-        }
+        List<Byte> data = new ArrayList<>();
 
-        frame = listToPrimitive(buff);
+        for (int i = 0; i < frame.length; i++) {
+            if (frame[i] == 0) {
+                int  cantBlanc = frame[i+1] & 0xFF;
+                do {
+                    data.add((byte) 0);
+                } while (cantBlanc-- > 1);
+                i += 1;
+            } else {
+                data.add(frame[i]);
+            }
+        }
+        frame = listToPrimitive(data);
     }
 
     private byte[] listToPrimitive(List<Byte> buffer) {

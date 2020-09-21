@@ -188,18 +188,18 @@ public class CharacterController {
                         gAcc.drawImage(accMidFrameImg, xPos, yPos, null);
                     }
 
-                    // Draw accessory LOW
-                    if (accLowFrame != null) {
-                        xPos = floorX - (accLowFrame.getSizeX()/2) - accLowFrame.getOffSet()[0] - fixPostX + 2;
-                        yPos = floorY - (accLowFrame.getSizeY()/2) + accLowFrame.getOffSet()[1] - fixPostY;
-                        gAcc.drawImage(accLowFrameImg, xPos, yPos, null);
-                    }
-
                     // Draw accessory TOP
                     if (accTopFrame != null) {
                         xPos = floorX - (accTopFrame.getSizeX()/2) - accTopFrame.getOffSet()[0] - fixPostX + 1;
                         yPos = floorY - (accTopFrame.getSizeY()/2) + accTopFrame.getOffSet()[1] - fixPostY - 1;
                         gAcc.drawImage(accTopImg, xPos, yPos, null);
+                    }
+
+                    // Draw accessory LOW
+                    if (accLowFrame != null) {
+                        xPos = floorX - (accLowFrame.getSizeX()/2) - accLowFrame.getOffSet()[0] - fixPostX + 2;
+                        yPos = floorY - (accLowFrame.getSizeY()/2) + accLowFrame.getOffSet()[1] - fixPostY;
+                        gAcc.drawImage(accLowFrameImg, xPos, yPos, null);
                     }
 
                     ImageIO.write(accMapLoc, "png", accPng);

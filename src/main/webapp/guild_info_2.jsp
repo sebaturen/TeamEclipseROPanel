@@ -51,7 +51,9 @@
                     <div class="col">
                         <p>Recaller:</p>
                         <div class="pj_info char_${guild.recaller.id}">
-                            ${CharacterController.renderCharacter(guild.recaller)}
+                            <c:if test="${not empty guild.recaller}">
+                                ${CharacterController.renderCharacter(guild.recaller)}
+                            </c:if>
                             <div class="char_show">
                                 <img src="assets/img/ro/characters/char_${guild.recaller.job_id}_${guild.recaller.getCharacter_view().get("hair_style_id").getAsInt()}_${guild.recaller.sexId}_${guild.recaller.getCharacter_view().get("clothes_color_id").getAsInt()}_${guild.recaller.getCharacter_view().get("hair_color_id").getAsInt()}_0.png" alt="${guild.recaller.name}"/>
                             </div>
