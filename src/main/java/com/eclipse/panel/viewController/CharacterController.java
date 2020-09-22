@@ -148,6 +148,7 @@ public class CharacterController {
                     yPos = floorY - (headFrame.getSizeY()/2) + headFrame.getOffSet()[1] - fixPostY;
                     gBody.drawImage(headImg, xPos, yPos, null);
 
+                    System.exit(-1);
                     // reference position
                     gBody.drawLine(0, floorY, 200, floorY);
                     gBody.drawLine(floorX, 0, floorX, 200);
@@ -232,6 +233,7 @@ public class CharacterController {
 
         String jobSpriteAct = RO_SPRITES_LOC + JOB_LOC + jobsNameProp.getProperty(jobId) +"_"+ sexProp.getProperty(sexId);
         String palettePal = RO_SPRITES_LOC + JOB_PALETTE + jobsNameProp.getProperty(jobId) +"_"+ sexProp.getProperty(sexId) +"_"+ bodyPalette;
+        System.out.println("Body Sprite: "+ jobSpriteAct);
 
         URL jobSprite = classLoader.getResource(jobSpriteAct+".spr");
         URL actSprite = classLoader.getResource(jobSpriteAct+".act");
@@ -250,6 +252,7 @@ public class CharacterController {
 
         String headSpriteAct = RO_SPRITES_LOC + HEADS_LOC + headsProp.getProperty(headId) +"_"+ sexProp.getProperty(sexId);
         String palettePal = RO_SPRITES_LOC + HEADS_PALETTE +"머리"+ headsProp.getProperty(headId) +"_"+ sexProp.getProperty(sexId) +"_"+ headPalette;
+        System.out.println("Head Sprite: "+ headSpriteAct);
 
         URL headSprite = classLoader.getResource(headSpriteAct+".spr");
         URL actSprite = classLoader.getResource(headSpriteAct+".act");

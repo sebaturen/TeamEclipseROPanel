@@ -107,29 +107,32 @@ public class ROFrame {
         if (offSet != null) {
             return offSet;
         }
-
         short version = bAct[VERSION_START];
         byte[] bNAnimations = reverseContent(Arrays.copyOfRange(bAct, N_ANIMATIONS_START, N_ANIMATIONS_START+2));
         short nAnimations = (ByteBuffer.wrap(bNAnimations)).getShort();
         int readBytePost = N_ANIMATIONS_START+2+10;
-        while (nAnimations > 1) {
+        System.out.println("Numer Animations: "+ nAnimations +" "+ Arrays.toString(bNAnimations));
+        System.out.println("Read Byte Position "+ readBytePost);
+        while (nAnimations-- > 1) {
             byte[] bNFrames = reverseContent(Arrays.copyOfRange(bAct, readBytePost, readBytePost+4));
             int nFrames = (ByteBuffer.wrap(bNFrames)).getInt();
             readBytePost += 4;
-            while (nFrames > 1) {
+            while (nFrames-- > 1) {
                 readBytePost += 32;
 
                 byte[] bNSubFrames = reverseContent(Arrays.copyOfRange(bAct, readBytePost, readBytePost+4));
                 int nSubFrames = (ByteBuffer.wrap(bNSubFrames)).getInt();
                 readBytePost += 4;
 
-                while (nSubFrames >= 1) {
+                while (nSubFrames-- > 1) {
                     byte[] bOffsetX = reverseContent(Arrays.copyOfRange(bAct, readBytePost, readBytePost+4));
                     byte[] bOffsetY = reverseContent(Arrays.copyOfRange(bAct, readBytePost+4, readBytePost+8));
                     int offsetX = (ByteBuffer.wrap(bOffsetX)).getInt();
                     int offsetY = (ByteBuffer.wrap(bOffsetY)).getInt();
 
                     offSet = new int[] {offsetX, offsetY};
+
+                    //nSubFrames--;
                     return offSet;
                     /** TODO = http://mist.in/gratia/ro/spr/ActFileFormatFix.html
                      * WE NO COMPLETE BECOUSE ONLY USE THE FRONT AND STAND POSITION IN FIRST MVP
@@ -149,9 +152,7 @@ public class ROFrame {
                      *                     nSubFrames--;
                      */
                 }
-                nFrames--;
             }
-            nAnimations--;
         }
         return null;
     }

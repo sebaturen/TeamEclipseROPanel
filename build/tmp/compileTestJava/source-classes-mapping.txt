@@ -1,4 +1,4 @@
-com/eclipse/panel/viewController/CharacterControllerTest.java
- com.eclipse.panel.viewController.CharacterControllerTest
 com/eclipse/panel/viewController/rest/APIKeysTest.java
  com.eclipse.panel.viewController.rest.APIKeysTest
+com/eclipse/panel/viewController/CharacterControllerTest.java
+ com.eclipse.panel.viewController.CharacterControllerTest
