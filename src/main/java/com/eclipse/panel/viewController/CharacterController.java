@@ -28,10 +28,12 @@ public class CharacterController {
     private static final String SEX_PROPERTIES = "sex_id.properties";
     private static final String ACCESSORY_ID_NAME_PROPERTIES = "accessory_id_name.properties";
     private static final String ACCESSORY_ID_NAME = "accessory/";
+    private static final String JOB_BODY_CENTER_PROPERTIES = "job_body_center.properties";
     public static final Properties headsProp = new Properties();
     public static final Properties headPosition = new Properties();
     public static final Properties jobsNameProp = new Properties();
     public static final Properties accessoryIdName = new Properties();
+    private static final Properties jobBodyCenterProp = new Properties();
     private static final Properties headsJobProp = new Properties();
     private static final Properties sexProp = new Properties();
     private static ClassLoader classLoader;
@@ -45,9 +47,11 @@ public class CharacterController {
             FileInputStream fsHeadsJob = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+HEADS_JOB_POST_PROPERTIES)).getFile());
             FileInputStream fsHeadPosition = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+HEADS_POSITIONS)).getFile());
             FileInputStream fsAccIdName = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+ACCESSORY_ID_NAME_PROPERTIES)).getFile());
+            FileInputStream fsJobBodyProp = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+JOB_BODY_CENTER_PROPERTIES)).getFile());
             jobsNameProp.load(new InputStreamReader(fsJobs, StandardCharsets.UTF_8));
             sexProp.load(new InputStreamReader(fsSex, StandardCharsets.UTF_8));
             accessoryIdName.load(new InputStreamReader(fsAccIdName, StandardCharsets.UTF_8));
+            jobBodyCenterProp.load(fsJobBodyProp);
             headsProp.load(fsHeads);
             headsJobProp.load(fsHeadsJob);
             headPosition.load(fsHeadPosition);
@@ -89,8 +93,14 @@ public class CharacterController {
             int floorY = 125;
             int fixPostY = 0;
             int fixPostX = 0;
+            int fixBodyCenter = 0;
             int xPos;
             int yPos;
+
+            String fixBodyID = job+"_"+sex;
+            if (jobBodyCenterProp.get(fixBodyID) != null) {
+                fixBodyCenter = Integer.parseInt(jobBodyCenterProp.get(fixBodyID).toString());
+            }
 
             try {
                 // Body render
@@ -113,7 +123,7 @@ public class CharacterController {
                     Graphics gBody = bodyMapLoc.getGraphics();
 
                     // Draw body
-                    xPos = floorX - (bodyFrame.getSizeX()/2) - bodyFrame.getOffSet()[0];
+                    xPos = floorX - (bodyFrame.getSizeX()/2) - bodyFrame.getOffSet()[0] + fixBodyCenter;
                     yPos = floorY - (bodyFrame.getSizeY()/2) + bodyFrame.getOffSet()[1];
                     gBody.drawImage(bodyImg, xPos, yPos, null);
 
@@ -132,12 +142,17 @@ public class CharacterController {
                         fixPostY += Integer.parseInt(headsJobProp.get(fixHeadID+"y").toString());
                     }
                     if (headPosition.get(fixHeadPost+"y") != null) {
-                        fixPostY     += Integer.parseInt(headPosition.get(fixHeadPost+"y").toString());
+                        fixPostY += Integer.parseInt(headPosition.get(fixHeadPost+"y").toString());
                     }
-                    xPos = floorX - (headFrame.getSizeX()/2) - headFrame.getOffSet()[0] - fixPostX;
+                    xPos = floorX - (headFrame.getSizeX()/2) - headFrame.getOffSet()[0] - fixPostX + fixBodyCenter;
                     yPos = floorY - (headFrame.getSizeY()/2) + headFrame.getOffSet()[1] - fixPostY;
                     gBody.drawImage(headImg, xPos, yPos, null);
 
+                    // reference position
+                    gBody.drawLine(0, floorY, 200, floorY);
+                    gBody.drawLine(floorX, 0, floorX, 200);
+                    gBody.fillOval(floorX-5, floorY-5, 10,10);
+                    
                     ImageIO.write(bodyMapLoc, "png", bodyPng);
                 }
 
@@ -183,21 +198,21 @@ public class CharacterController {
 
                     // Draw accessory MID
                     if (accMidFrame != null) {
-                        xPos = floorX - (accMidFrame.getSizeX()/2) - accMidFrame.getOffSet()[0] - fixPostX + 1;
+                        xPos = floorX - (accMidFrame.getSizeX()/2) - accMidFrame.getOffSet()[0] + 1;
                         yPos = floorY - (accMidFrame.getSizeY()/2) + accMidFrame.getOffSet()[1] - fixPostY;
                         gAcc.drawImage(accMidFrameImg, xPos, yPos, null);
                     }
 
                     // Draw accessory TOP
                     if (accTopFrame != null) {
-                        xPos = floorX - (accTopFrame.getSizeX()/2) - accTopFrame.getOffSet()[0] - fixPostX + 1;
-                        yPos = floorY - (accTopFrame.getSizeY()/2) + accTopFrame.getOffSet()[1] - fixPostY - 1;
+                        xPos = floorX - (accTopFrame.getSizeX()/2) - accTopFrame.getOffSet()[0] + 1;
+                        yPos = floorY - (accTopFrame.getSizeY()/2) + accTopFrame.getOffSet()[1] - fixPostY;
                         gAcc.drawImage(accTopImg, xPos, yPos, null);
                     }
 
                     // Draw accessory LOW
                     if (accLowFrame != null) {
-                        xPos = floorX - (accLowFrame.getSizeX()/2) - accLowFrame.getOffSet()[0] - fixPostX + 2;
+                        xPos = floorX - (accLowFrame.getSizeX()/2) - accLowFrame.getOffSet()[0] + 1;
                         yPos = floorY - (accLowFrame.getSizeY()/2) + accLowFrame.getOffSet()[1] - fixPostY;
                         gAcc.drawImage(accLowFrameImg, xPos, yPos, null);
                     }
