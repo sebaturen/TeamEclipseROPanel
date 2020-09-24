@@ -15,7 +15,6 @@ public class ROSubFrame {
     private int dontJump;
     private int sizeX;
     private int sizeY;
-    private int soundNo;
 
     public ROSubFrame() {
 
@@ -101,14 +100,6 @@ public class ROSubFrame {
         this.sizeY = sizeY;
     }
 
-    public int getSoundNo() {
-        return soundNo;
-    }
-
-    public void setSoundNo(int soundNo) {
-        this.soundNo = soundNo;
-    }
-
     public byte[] getColor() {
         return color;
     }
@@ -119,19 +110,18 @@ public class ROSubFrame {
 
     @Override
     public String toString() {
-        return "{\"_class\":\"ROSubFrame\", " +
-                "\"offSetX\":\"" + offSetX + "\"" + ", " +
-                "\"offSetY\":\"" + offSetY + "\"" + ", " +
-                "\"image\":\"" + image + "\"" + ", " +
-                "\"direction\":\"" + direction + "\"" + ", " +
-                "\"color\":" + Arrays.toString(color) + ", " +
-                "\"scaleX\":\"" + scaleX + "\"" + ", " +
-                "\"scaleY\":\"" + scaleY + "\"" + ", " +
-                "\"rotation\":\"" + rotation + "\"" + ", " +
-                "\"dontJump\":\"" + dontJump + "\"" + ", " +
-                "\"sizeX\":\"" + sizeX + "\"" + ", " +
-                "\"sizeY\":\"" + sizeY + "\"" + ", " +
-                "\"soundNo\":\"" + soundNo + "\"" +
-                "}";
+        return "ROSubFrame{" +
+                "offSetX=" + offSetX +
+                ", offSetY=" + offSetY +
+                ", image=" + image +
+                ", direction=" + direction +
+                ", color=" + Arrays.toString(color) +
+                ", scaleX=" + scaleX +
+                ", scaleY=" + scaleY +
+                ", rotation=" + rotation +
+                ", dontJump=" + dontJump +
+                ", sizeX=" + sizeX +
+                ", sizeY=" + sizeY +
+                '}';
     }
 }

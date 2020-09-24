@@ -8,6 +8,7 @@ public class ROFrame {
     private int extraInfo;
     private int extraX;
     private int extraY;
+    private int soundNo;
     private final List<ROSubFrame> subFrames = new ArrayList<>();
 
     public ROFrame() {
@@ -40,6 +41,14 @@ public class ROFrame {
 
     public void setExtraY(int extraY) {
         this.extraY = extraY;
+    }
+
+    public int getSoundNo() {
+        return soundNo;
+    }
+
+    public void setSoundNo(int soundNo) {
+        this.soundNo = soundNo;
     }
 
     public List<ROSubFrame> getSubFrames() {

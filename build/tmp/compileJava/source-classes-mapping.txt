@@ -48,8 +48,8 @@ com/eclipse/panel/viewController/JobsController.java
  com.eclipse.panel.viewController.JobsController
 com/eclipse/panel/viewController/roRender/ROActSpr.java
  com.eclipse.panel.viewController.roRender.ROActSpr
-com/eclipse/panel/User.java
- com.eclipse.panel.User
+com/eclipse/panel/viewController/roRender/ROSprite.java
+ com.eclipse.panel.viewController.roRender.ROSprite
 com/eclipse/panel/viewController/rest/Monster.java
  com.eclipse.panel.viewController.rest.Monster
 com/eclipse/panel/gameObject/woe/CastleBreaker.java
@@ -94,7 +94,7 @@ com/eclipse/panel/gameObject/character/CharacterInfo.java
  com.eclipse.panel.gameObject.character.CharacterInfo$Builder
 com/eclipse/panel/viewController/roRender/roAct/ROFrame.java
  com.eclipse.panel.viewController.roRender.roAct.ROFrame
-com/eclipse/panel/viewController/roRender/ROSprite.java
- com.eclipse.panel.viewController.roRender.ROSprite
+com/eclipse/panel/User.java
+ com.eclipse.panel.User
 com/eclipse/panel/viewController/CharacterController.java
  com.eclipse.panel.viewController.CharacterController

@@ -46,13 +46,13 @@
                     </div>
                     <div class="row">
                         <c:forEach items="${characters}" var="pj" varStatus="loop">
-                            ${CharacterController.renderCharacter(pj)}
+                            <c:set var="renderChar" value="${CharacterController.renderCharacter(pj)}" />
                             <div class="pj_info col char_${pj.id}">
                                 <div class="char_show">
-                                    <img src="assets/img/ro/characters/char_${pj.job_id}_${pj.getCharacter_view().get("hair_style_id").getAsInt()}_${pj.sexId}_${pj.getCharacter_view().get("clothes_color_id").getAsInt()}_${pj.getCharacter_view().get("hair_color_id").getAsInt()}_0.png" alt="${pj.name}"/>
+                                    <img src="assets/img/ro/characters/${renderChar[0]}" alt="${pj.name}"/>
                                 </div>
                                 <div class="acc_show">
-                                    <img src="assets/img/ro/characters/acc_${pj.job_id}_${pj.sexId}_${pj.getHead_view().get("top_head_view_id").getAsInt()}_${pj.getHead_view().get("mid_head_view_id").getAsInt()}_${pj.getHead_view().get("low_head_view_id").getAsInt()}_0.png" alt="${pj.name}"/>
+                                    <img src="assets/img/ro/characters/${renderChar[1]}" alt="${pj.name}"/>
                                 </div>
                                 <p class="pj_name">${pj.name}</p>
                                 <p class="pj_lvl">Lvl ${pj.lvl}</p>
