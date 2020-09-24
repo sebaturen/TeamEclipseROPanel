@@ -52,15 +52,15 @@
                         <p>Recaller:</p>
                         <div class="pj_info char_${guild.recaller.id}">
                             <c:if test="${not empty guild.recaller}">
-                                <c:set var="renderChar" value="${CharacterController.renderCharacter(pj)}" />
+                                <c:set var="renderChar" value="${CharacterController.renderCharacter(guild.recaller)}" />
                                 <div class="char_show">
-                                    <img src="assets/img/ro/characters/${renderChar[0]}" alt="${pj.name}"/>
+                                    <img src="assets/img/ro/characters/${renderChar[0]}" alt="${guild.recaller.name}"/>
                                 </div>
                                 <div class="acc_show">
-                                    <img src="assets/img/ro/characters/${renderChar[1]}" alt="${pj.name}"/>
+                                    <img src="assets/img/ro/characters/${renderChar[1]}" alt="${guild.recaller.name}"/>
                                 </div>
-                                <p class="pj_name">${pj.name}</p>
-                                <p class="pj_lvl">Lvl ${pj.lvl}</p>
+                                <p class="pj_name">${guild.recaller.name}</p>
+                                <p class="pj_lvl">Lvl ${guild.recaller.lvl}</p>
                             </c:if>
                         </div>
                     </div>

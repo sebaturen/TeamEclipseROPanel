@@ -55,9 +55,8 @@ public class ROAct {
                     readBytePost += 32;
                     //if (DEBUG) System.out.println(nFrames +". Frames Read Byte Position "+ readBytePost);
 
-                    byte[] bNSubFrames = ROActSpr.reverseContent(Arrays.copyOfRange(bAct, readBytePost, readBytePost+4));
+                    byte[] bNSubFrames = ROActSpr.reverseContent(Arrays.copyOfRange(bAct, readBytePost, readBytePost+=4));
                     int nSubFrames = (ByteBuffer.wrap(bNSubFrames)).getInt();
-                    readBytePost += 4;
 
                     //if (DEBUG) System.out.println("nSubFrames: "+ nSubFrames +" "+ Arrays.toString(bNSubFrames));
                     //if (DEBUG) System.out.println("nFrames Read Byte Position "+ readBytePost);
