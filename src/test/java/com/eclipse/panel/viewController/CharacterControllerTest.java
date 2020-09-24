@@ -23,6 +23,8 @@ public class CharacterControllerTest extends TestCase {
         });*/
         CharacterController.CHARACTER_PATH ="RENDER_TEST/0/";
 
-        CharacterController.renderCharacter(4009, 7, 1, 2, 0 , 0, 0, 1691, 0);
+        CharacterController.renderCharacter(4017, 7, 0, 0, 6 , 283, 1528, 1579, 41,3);
+        //CharacterController.renderCharacter(4014, 7, 0, 2, 0 , 1675, 12, 1691, 41,3);
+        //CharacterController.renderCharacter(4009, 7, 1, 2, 0 , 1675, 12, 1691, 0,0);
     }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ROAnimation {
 
-    private List<ROFrame> roFrames = new ArrayList<>();
+    private final List<ROFrame> roFrames = new ArrayList<>();
 
     public ROAnimation() {
 

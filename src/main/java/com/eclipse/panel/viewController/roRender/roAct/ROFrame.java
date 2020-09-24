@@ -42,13 +42,7 @@ public class ROFrame {
         this.extraY = extraY;
     }
 
-    public ROSubFrame getFirstSprite() {
-        for(ROSubFrame subF : subFrames) {
-            if (subF.getImage() != -1) {
-                return subF;
-            }
-        }
-
-        return null;
+    public List<ROSubFrame> getSubFrames() {
+        return subFrames;
     }
 }
