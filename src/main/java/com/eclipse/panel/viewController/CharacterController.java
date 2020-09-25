@@ -239,8 +239,8 @@ public class CharacterController {
             } catch (Exception e) {
                 e.printStackTrace();
                 Logs.errorLog(CharacterController.class, "Failed to render character\n" +
-                        "-> "+ "char_"+ job +"_"+ head +"_"+ sex +"_"+ bodyPalette +"_"+ headPalette +"_"+ frameId +".png\n" +
-                        "-> "+ "acc_"+ job +"_"+ sex +"_"+ accTop +"_"+ accMid +"_"+ accLow +"_"+ frameId +".png\n" +
+                        "-> "+ bodyPngFileName +"\n" +
+                        "-> "+ accPngFileName +"\n" +
                         "e-> "+ e);
             }
         }

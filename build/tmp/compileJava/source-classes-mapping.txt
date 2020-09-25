@@ -43,8 +43,8 @@ com/eclipse/panel/gameObject/roDB/PlayableJob.java
 com/eclipse/panel/gameObject/roDB/Skill.java
  com.eclipse.panel.gameObject.roDB.Skill
  com.eclipse.panel.gameObject.roDB.Skill$Builder
-com/eclipse/panel/viewController/CharacterController.java
- com.eclipse.panel.viewController.CharacterController
+com/eclipse/panel/viewController/JobsController.java
+ com.eclipse.panel.viewController.JobsController
 com/eclipse/panel/viewController/roRender/roAct/ROFrame.java
  com.eclipse.panel.viewController.roRender.roAct.ROFrame
 com/eclipse/panel/viewController/roRender/ROSprite.java
@@ -96,5 +96,5 @@ com/eclipse/panel/viewController/roRender/roSpr/ROSpr.java
 com/eclipse/panel/viewController/roRender/roAct/ROAct.java
  com.eclipse.panel.viewController.roRender.roAct.ROAct
  com.eclipse.panel.viewController.roRender.roAct.ROAct$Builder
-com/eclipse/panel/viewController/JobsController.java
- com.eclipse.panel.viewController.JobsController
+com/eclipse/panel/viewController/CharacterController.java
+ com.eclipse.panel.viewController.CharacterController
