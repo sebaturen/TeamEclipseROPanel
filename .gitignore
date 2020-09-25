@@ -23,5 +23,6 @@
 hs_err_pid*
 src/main/webapp/META-INF/context.xml
 .gradle/
+.gradle
 build/
 out/
