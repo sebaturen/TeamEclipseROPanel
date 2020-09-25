@@ -76,6 +76,9 @@ public class CharacterController {
             int accTop, int accMid, int accLow,
             int actionId, int frameId
     ) {
+        // Fix sex if sex is incorrect
+        if (job == 19 || job == 4020 || job == 4042) sex = 1;
+        if (job == 20 || job == 4021 || job == 4043) sex = 0;
 
         String bodyPngFileName = "char_"+ job +"_"+ head +"_"+ sex +"_"+ bodyPalette +"_"+ headPalette +"_"+ actionId +"_"+ frameId +".png";
         String accPngFileName = "acc_"+ job +"_"+ sex +"_"+ accTop +"_"+ accMid +"_"+ accLow +"_"+ actionId +"_"+ frameId +".png";

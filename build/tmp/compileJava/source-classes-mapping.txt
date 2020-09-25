@@ -25,9 +25,8 @@ com/eclipse/panel/gameObject/character/CharacterItemOb.java
 com/eclipse/panel/gameObject/character/CharacterItem.java
  com.eclipse.panel.gameObject.character.CharacterItem
  com.eclipse.panel.gameObject.character.CharacterItem$Builder
-com/eclipse/panel/viewController/roRender/roSpr/ROSpr.java
- com.eclipse.panel.viewController.roRender.roSpr.ROSpr
- com.eclipse.panel.viewController.roRender.roSpr.ROSpr$Builder
+com/eclipse/panel/viewController/rest/WoE.java
+ com.eclipse.panel.viewController.rest.WoE
 com/eclipse/panel/gameObject/roDB/PlayableSex.java
  com.eclipse.panel.gameObject.roDB.PlayableSex
 com/eclipse/panel/dbConnect/DBConnect.java
@@ -46,8 +45,8 @@ com/eclipse/panel/gameObject/roDB/Skill.java
  com.eclipse.panel.gameObject.roDB.Skill$Builder
 com/eclipse/panel/viewController/JobsController.java
  com.eclipse.panel.viewController.JobsController
-com/eclipse/panel/viewController/roRender/ROActSpr.java
- com.eclipse.panel.viewController.roRender.ROActSpr
+com/eclipse/panel/viewController/roRender/roAct/ROFrame.java
+ com.eclipse.panel.viewController.roRender.roAct.ROFrame
 com/eclipse/panel/viewController/roRender/ROSprite.java
  com.eclipse.panel.viewController.roRender.ROSprite
 com/eclipse/panel/viewController/rest/Monster.java
@@ -79,22 +78,23 @@ com/eclipse/panel/gameObject/roDB/Item.java
 com/eclipse/panel/gameObject/Accounts.java
  com.eclipse.panel.gameObject.Accounts
  com.eclipse.panel.gameObject.Accounts$Builder
-com/eclipse/panel/viewController/CharacterController.java
- com.eclipse.panel.viewController.CharacterController
+com/eclipse/panel/gameObject/character/CharacterInfo.java
+ com.eclipse.panel.gameObject.character.CharacterInfo
+ com.eclipse.panel.gameObject.character.CharacterInfo$Builder
 com/eclipse/panel/viewController/rest/APIKeys.java
  com.eclipse.panel.viewController.rest.APIKeys
 com/eclipse/panel/gameObject/Guild.java
  com.eclipse.panel.gameObject.Guild
  com.eclipse.panel.gameObject.Guild$Builder
+com/eclipse/panel/viewController/GuildController.java
+ com.eclipse.panel.viewController.GuildController
+com/eclipse/panel/viewController/roRender/ROActSpr.java
+ com.eclipse.panel.viewController.roRender.ROActSpr
+com/eclipse/panel/viewController/roRender/roSpr/ROSpr.java
+ com.eclipse.panel.viewController.roRender.roSpr.ROSpr
+ com.eclipse.panel.viewController.roRender.roSpr.ROSpr$Builder
 com/eclipse/panel/viewController/roRender/roAct/ROAct.java
  com.eclipse.panel.viewController.roRender.roAct.ROAct
  com.eclipse.panel.viewController.roRender.roAct.ROAct$Builder
-com/eclipse/panel/gameObject/character/CharacterInfo.java
- com.eclipse.panel.gameObject.character.CharacterInfo
- com.eclipse.panel.gameObject.character.CharacterInfo$Builder
-com/eclipse/panel/viewController/roRender/roAct/ROFrame.java
- com.eclipse.panel.viewController.roRender.roAct.ROFrame
-com/eclipse/panel/viewController/GuildController.java
- com.eclipse.panel.viewController.GuildController
-com/eclipse/panel/viewController/rest/WoE.java
- com.eclipse.panel.viewController.rest.WoE
+com/eclipse/panel/viewController/CharacterController.java
+ com.eclipse.panel.viewController.CharacterController

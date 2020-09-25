@@ -10,7 +10,7 @@ public class CharacterControllerTest extends TestCase {
         int accTop = 0;
         int accMid = 0;
         int accLow = 0;
-        CharacterController.jobsNameProp.forEach((k, v) -> {
+        /*CharacterController.jobsNameProp.forEach((k, v) -> {
             int job = Integer.parseInt(k.toString());
             //CharacterController.headsProp.forEach((i, z) -> {
                 //int head = Integer.parseInt(i.toString());
@@ -20,10 +20,11 @@ public class CharacterControllerTest extends TestCase {
                 CharacterController.CHARACTER_PATH ="RENDER_TEST/1/";
                 CharacterController.renderCharacter(job, head, 1, bodyPalette, headPalette, accTop, accMid, accLow, 41,3);
             //});
-        });
+        });*/
 
 
         CharacterController.CHARACTER_PATH ="RENDER_TEST/0/";
+        CharacterController.renderCharacter(19, 3, 0, 0, 0 , 522, 403, 0, 0,0);
         //CharacterController.renderCharacter(4018, 21, 0, 2, 6 , 224, 125, 829, 0,0);
         //CharacterController.renderCharacter(4017, 2, 0, 0, 6 , 0, 0, 0, 0,0);
         //CharacterController.renderCharacter(4017, 7, 0, 0, 6 , 283, 1528, 1579, 41,3);
