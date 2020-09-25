@@ -11,7 +11,16 @@
             <br>
             * Page in construction...
             <br>
-            Eclipse RO Panel ... Warp warp! juego ql mal hecho
+            <div class="row">
+                <div class="col-2">
+                    <img class="footer_eclipse_logo" src="assets/img/eclipse3.png" height="150px"/>
+                </div>
+                <div class="col-10 footer_content_inf">
+                    <span>
+                        Eclipse RO Panel ... Warp warp! juego ql mal hecho
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

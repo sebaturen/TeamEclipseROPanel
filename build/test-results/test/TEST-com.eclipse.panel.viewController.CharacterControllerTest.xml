@@ -1,20 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.eclipse.panel.viewController.CharacterControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-25T03:03:21" hostname="MacBook-Pro-de-Sebastian.local" time="0.492">
+<testsuite name="com.eclipse.panel.viewController.CharacterControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-25T03:25:38" hostname="MacBook-Pro-de-Sebastian.local" time="1.269">
   <properties/>
-  <testcase name="testRenderCharacter" classname="com.eclipse.panel.viewController.CharacterControllerTest" time="0.492"/>
-  <system-out><![CDATA[ro_sprites/body/바드_여
-ro_sprites/palette/body/바드_여_0
-null
-[ERROR] 2020-09-25 00:03:22.149 [Test worker] CharacterController - Failed to render character
--> char_19_3_0_0_0_0.png
--> acc_19_0_522_403_0_0.png
-e-> java.io.IOException: url null
+  <testcase name="testRenderCharacter" classname="com.eclipse.panel.viewController.CharacterControllerTest" time="1.269"/>
+  <system-out><![CDATA[file:/Users/sebastianturen/Documents/GitHub/EclipseROPanel/build/resources/main/ro_sprites/body/%eb%b0%94%eb%93%9c_%eb%82%a8.spr
+file:/Users/sebastianturen/Documents/GitHub/EclipseROPanel/build/resources/main/ro_sprites/body/%eb%b0%94%eb%93%9c_%eb%82%a8.act
+file:/Users/sebastianturen/Documents/GitHub/EclipseROPanel/build/resources/main/ro_sprites/head/7_%eb%82%a8.spr
+file:/Users/sebastianturen/Documents/GitHub/EclipseROPanel/build/resources/main/ro_sprites/head/7_%eb%82%a8.act
+[ERROR] 2020-09-25 00:25:39.330 [Test worker] CharacterController - Failed to render character
+-> char_19_3_1_0_0_0.png
+-> acc_19_1_522_403_0_0.png
+e-> javax.imageio.IIOException: Can't create an ImageOutputStream!
 ]]></system-out>
-  <system-err><![CDATA[java.io.IOException: url null
-	at com.eclipse.panel.viewController.roRender.ROActSpr.urlToByte(ROActSpr.java:24)
-	at com.eclipse.panel.viewController.roRender.roSpr.ROSpr$Builder.build(ROSpr.java:38)
-	at com.eclipse.panel.viewController.CharacterController.getBodySprite(CharacterController.java:258)
-	at com.eclipse.panel.viewController.CharacterController.renderCharacter(CharacterController.java:98)
+  <system-err><![CDATA[java.io.FileNotFoundException: RENDER_TEST/0/char_19_3_1_0_0_0_0.png (No such file or directory)
+	at java.base/java.io.RandomAccessFile.open0(Native Method)
+	at java.base/java.io.RandomAccessFile.open(RandomAccessFile.java:347)
+	at java.base/java.io.RandomAccessFile.<init>(RandomAccessFile.java:261)
+	at java.base/java.io.RandomAccessFile.<init>(RandomAccessFile.java:216)
+	at java.desktop/javax.imageio.stream.FileImageOutputStream.<init>(FileImageOutputStream.java:69)
+	at java.desktop/com.sun.imageio.spi.FileImageOutputStreamSpi.createOutputStreamInstance(FileImageOutputStreamSpi.java:55)
+	at java.desktop/javax.imageio.ImageIO.createImageOutputStream(ImageIO.java:419)
+	at java.desktop/javax.imageio.ImageIO.write(ImageIO.java:1549)
+	at com.eclipse.panel.viewController.CharacterController.renderCharacter(CharacterController.java:141)
+	at com.eclipse.panel.viewController.CharacterControllerTest.testRenderCharacter(CharacterControllerTest.java:27)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at junit.framework.TestSuite.runTest(TestSuite.java:252)
+	at junit.framework.TestSuite.run(TestSuite.java:247)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:110)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)
+	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:62)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:94)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:119)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:182)
+	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:164)
+	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:414)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
+	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:56)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+javax.imageio.IIOException: Can't create an ImageOutputStream!
+	at java.desktop/javax.imageio.ImageIO.write(ImageIO.java:1551)
+	at com.eclipse.panel.viewController.CharacterController.renderCharacter(CharacterController.java:141)
 	at com.eclipse.panel.viewController.CharacterControllerTest.testRenderCharacter(CharacterControllerTest.java:27)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)

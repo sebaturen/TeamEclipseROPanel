@@ -9,6 +9,7 @@
 <!-- GUILD CONTROLLER-->
 <%@ page import ="com.eclipse.panel.viewController.JobsController" %>
 <%@ page import ="com.eclipse.panel.gameObject.character.Character" %>
+<%@ page import ="com.eclipse.panel.viewController.CharacterController" %>
 <%@ page import ="java.util.List" %>
 <c:set var="jobs" scope="request" value="${JobsController.getJobList()}"/>
 <c:set var="characters" scope="request" value="${JobsController.getAllCharacters(param.id)}"/>
@@ -19,6 +20,7 @@
         <meta property="og:title" content="Jobs lists" />
         <%@include file="includes/header.jsp" %>
         <link type="text/css" rel="stylesheet" href="assets/css/index.css">
+        <link type="text/css" rel="stylesheet" href="assets/css/class_info.css">
         <script>
             function urlHandler(v) {
                 window.location.assign('?id='+ v);
@@ -28,40 +30,58 @@
     <body>
         <%@include file="includes/menu.jsp" %>
         <div class="container fill">
-            <div id="welcome">
-                <select onchange="urlHandler(this.value)">
+            <div class="character_selector">
+                <select onchange="urlHandler(this.value)" class="form-control">
                     <option disabled <c:if test="${empty param.id}">selected</c:if>><fmt:message key="label.classes_list" /></option>
                     <c:forEach items="${jobs}" var="jDet">
-                        <option value="${jDet.id}" <c:if test="${jDet.id == param.id}">selected</c:if>>
-                            ${jDet.name}
+                        <option value="${jDet.id}"
+                                <c:if test="${jDet.id == param.id}">
+                                    selected
+                                    <c:set var="jobName" value="${jDet.name}"/>
+                                </c:if>
+                        >
+                                ${jDet.name}
                         </option>
                     </c:forEach>
                 </select>
-                <c:if test="${not empty param.id}">
-                    <div class="row guild_logoName divder">
-                        <div class="col col-md-6 align-self-center">
-                            <p class='home_name'><fmt:message key="label.total" />: ${characters.size()}</p>
-                        </div>
+            </div>
+            <c:if test="${not empty param.id}">
+                <div class="character_content">
+                    <div class="character_header">
+                        <p class="job_name">${jobName}</p>
+                        <p class="job_totals"><fmt:message key="label.total" />: ${characters.size()}</p>
                     </div>
-                    <div class="row">
+                    <div class="row c_character_content">
                         <c:forEach items="${characters}" var="pj" varStatus="loop">
+                            <c:set var="renderChar" value="${CharacterController.renderCharacter(pj)}" />
                             <div class="pj_info col char_${pj.id}">
-                                <div class="hair_show hair_show_stand hair_show_${pj.sex}_${pj.hairStyle}" style="background: transparent url('assets/img/ro/hair/${pj.sex}/${pj.hairStyle}.png')"></div>
-                                <div class="job_show job_show_stand job_show_${pj.sex}_${pj.job_id}" style="background: transparent url('assets/img/ro/jobs/${pj.sex}/${pj.job_id}.png')"></div>
-                                <p class="pj_name">${pj.name}</p>
-                                <p class="pj_lvl">Lvl ${pj.lvl}</p>
+                                <div class="character_name_lvl">
+                                        ${pj.name}<br>
+                                    Lvl ${pj.lvl}
+                                </div>
+                                <div class="character_display">
+                                    <div class="acc_show">
+                                        <img src="assets/img/ro/characters/${renderChar[1]}"/>
+                                    </div>
+                                    <div class="char_show">
+                                        <img src="assets/img/ro/characters/${renderChar[0]}"/>
+                                    </div>
+                                </div>
                             </div>
                             <c:if test="${(loop.index+1)%3 == 0}">
                                 <div class="w-100"></div>
                             </c:if>
                         </c:forEach>
                     </div>
-                </c:if>
-                <c:if test="${empty param.id}">
-                    <div>
-                        <fmt:message key="label.class_empty_info" />
-                    </div>
-                </c:if>
+                </div>
+            </c:if>
+            <c:if test="${empty param.id}">
+                <div>
+                    <fmt:message key="label.class_empty_info" />
+                </div>
+            </c:if>
+            <div>
+                * last 30 days
             </div>
         </div>
         <%@include file="includes/footer.jsp" %>

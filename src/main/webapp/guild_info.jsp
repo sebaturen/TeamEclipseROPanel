@@ -8,6 +8,7 @@
 <%@include file="includes/globalObject.jsp" %>
 <!-- GUILD CONTROLLER-->
 <%@ page import ="com.eclipse.panel.viewController.GuildController" %>
+<%@ page import ="com.eclipse.panel.viewController.CharacterController" %>
 <%@ page import ="com.eclipse.panel.gameObject.Guild" %>
 <%@ page import ="java.util.List" %>
 <c:set var="guilds" scope="request" value="${GuildController.getGuildList()}"/>
@@ -21,6 +22,7 @@
         <meta property="og:title" content="Guild Detail" />
         <%@include file="includes/header.jsp" %>
         <link type="text/css" rel="stylesheet" href="assets/css/index.css">
+        <link type="text/css" rel="stylesheet" href="assets/css/guild_info.css">
         <script>
             function urlHandler(v) {
                 window.location.assign('?id='+ v);
@@ -30,54 +32,81 @@
     <body>
     <%@include file="includes/menu.jsp" %>
         <div class="container fill">
-            <div id="welcome">
-                <select onchange="urlHandler(this.value)">
+            <div class="guild_selector">
+                <select onchange="urlHandler(this.value)" class="form-control">
                     <option disabled <c:if test="${empty param.id}">selected</c:if>><fmt:message key="label.guilds_list" /></option>
                     <c:forEach items="${guilds}" var="gDet">
                         <option value="${gDet.id}" <c:if test="${gDet.id == guild.id}">selected</c:if>>
-                            ${gDet.name} [${gDet.id}]
+                                ${gDet.name} [${gDet.id}]
                         </option>
                     </c:forEach>
                 </select>
-                <c:if test="${not empty param.id}">
-                    <div class="row guild_logoName divder">
-                        <div class="col col-md-6 align-self-center">
-                            <img src="assets/img/ro/guilds/emblems/Poring_${guild.id}_${guild.emblem_id}.png"/>
-                            <p class='home_name'>${guild.name}</p>
-                        </div>
+            </div>
+            <c:if test="${not empty param.id}">
+                <div class="guild_content">
+                    <div class="guild_header">
+                        <img class="guild_emblem_img" src="assets/img/ro/guilds/emblems/Poring_${guild.id}_${guild.emblem_id}.png"/>
+                        <p class="guild_name">${guild.name}</p>
                     </div>
-                    <div class="row">
-                    <div class="col">
-                        <p>Recaller:</p>
-                        <div class="pj_info char_${guild.recaller.id}">
-                            <div class="hair_show hair_show_stand hair_show_${guild.recaller.sex}_${guild.recaller.hairStyle}" style="background: transparent url('assets/img/ro/hair/${guild.recaller.sex}/${guild.recaller.hairStyle}.png')"></div>
-                            <div class="job_show job_show_stand job_show_${guild.recaller.sex}_${guild.recaller.job_id}" style="background: transparent url('assets/img/ro/jobs/${guild.recaller.sex}/${guild.recaller.job_id}.png')"></div>
-                            <p class="pj_name">${guild.recaller.name}</p>
+                    <div class="row guild_character_content">
+                        <div class="col recaller">
+                            <div class="guild_group_title">Recaller:</div>
+                            <div class="pj_info char_${guild.recaller.id}">
+                                <c:if test="${not empty guild.recaller}">
+                                    <c:set var="renderChar" value="${CharacterController.renderCharacter(guild.recaller)}" />
+                                    <div class="character_name_lvl">
+                                        ${guild.recaller.name}<br>
+                                        Lvl ${guild.recaller.lvl}
+                                    </div>
+                                    <div class="character_display">
+                                        <div class="acc_show">
+                                            <img src="assets/img/ro/characters/${renderChar[1]}" alt="${guild.recaller.name}"/>
+                                        </div>
+                                        <div class="char_show">
+                                            <img src="assets/img/ro/characters/${renderChar[0]}" alt="${guild.recaller.name}"/>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col">
-                        <p>All members:</p>
-                    </div>
-                    <div class="w-100"></div>
-                    <c:forEach items="${guild.characterList}" var="pj" varStatus="loop">
-                        <div class="pj_info col char_${pj.id}">
-                            <div class="hair_show hair_show_stand hair_show_${pj.sex}_${pj.hairStyle}" style="background: transparent url('assets/img/ro/hair/${pj.sex}/${pj.hairStyle}.png')"></div>
-                            <div class="job_show job_show_stand job_show_${pj.sex}_${pj.job_id}" style="background: transparent url('assets/img/ro/jobs/${pj.sex}/${pj.job_id}.png')"></div>
-                            <p class="pj_name">${pj.name}</p>
-                            <p class="pj_lvl">Lvl ${pj.lvl}</p>
+                        <div class="col">
+                            WoE info?
                         </div>
-                        <c:if test="${(loop.index+1)%3 == 0}">
-                            <div class="w-100"></div>
-                        </c:if>
-                    </c:forEach>
+                        <div class="w-100"></div>
+                        <div class="col">
+                            <div class="guild_group_title">All members:</div>
+                        </div>
+                        <div class="w-100"></div>
+                        <c:forEach items="${guild.characterList}" var="pj" varStatus="loop">
+                            <c:set var="renderChar" value="${CharacterController.renderCharacter(pj)}" />
+                            <div class="pj_info col char_${pj.id}">
+                                <div class="character_name_lvl">
+                                    ${pj.name}<br>
+                                    Lvl ${pj.lvl}
+                                </div>
+                                <div class="character_display">
+                                    <div class="acc_show">
+                                        <img src="assets/img/ro/characters/${renderChar[1]}"/>
+                                    </div>
+                                    <div class="char_show">
+                                        <img src="assets/img/ro/characters/${renderChar[0]}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <c:if test="${(loop.index+1)%3 == 0}">
+                                <div class="w-100"></div>
+                            </c:if>
+                        </c:forEach>
+                    </div>
                 </div>
-                </c:if>
-                <c:if test="${empty param.id}">
-                    <div>
-                        <fmt:message key="label.guild_empty_info" />
-                    </div>
-                </c:if>
+            </c:if>
+            <c:if test="${empty param.id}">
+                <div>
+                    <fmt:message key="label.guild_empty_info" />
+                </div>
+            </c:if>
+            <div>
+                * last 30 days
             </div>
         </div>
     <%@include file="includes/footer.jsp" %>

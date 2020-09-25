@@ -22,6 +22,16 @@ a {
         max-width: 100%;
     }
 }
+.footer_content_inf {
+    position: relative;
+}
+.footer_content_inf span {
+    position: absolute;
+    bottom: 0;
+}
+.footer_eclipse_logo {
+    transform: scaleX(-1);
+}
 /** =========================== Character show ======================= **/
 .acc_show {
     float: left;

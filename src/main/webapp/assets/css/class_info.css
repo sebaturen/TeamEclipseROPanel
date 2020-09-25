@@ -1,0 +1,40 @@
+.character_content {
+    display: block;
+    width: 100%;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.10), 0 3px 6px 0 rgba(0,0,0, 0.10);
+    position: relative;
+    margin-bottom: 2em;
+}
+
+.character_header {
+    border-radius: 4px 4px 0 0;
+    height: 47px;
+    background: #cfd3d8;
+    padding: 12px 15px 0;
+    /* padding-bottom: 17px; */
+}
+
+.job_name {
+    font-weight: 600;
+}
+
+.job_totals {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
+}
+
+.c_character_content {
+    padding: 2em;
+}
+
+.character_selector {
+    padding-bottom: 1em;
+}
+
+.guild_group_title {
+    font-weight: bold;
+}

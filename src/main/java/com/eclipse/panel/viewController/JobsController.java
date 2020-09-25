@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class JobsController {
@@ -40,10 +41,12 @@ public class JobsController {
         List<Character> allCharacters = new ArrayList<>();
 
         try {
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.MONTH, -1);
             JsonArray character_db = DBLoadObject.dbConnect.select(
                     Character.TABLE_NAME,
                     new String[]{"id"},
-                    "job_id = ?",
+                    "job_id = ? AND last_update > "+ c.getTimeInMillis() +" ORDER BY lvl DESC",
                     new String[]{jobId+""}
             );
 
