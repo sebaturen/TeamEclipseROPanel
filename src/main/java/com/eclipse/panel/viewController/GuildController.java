@@ -21,11 +21,24 @@ public class GuildController {
     public static List<Guild> getGuildList() {
         List<Guild> guilds = new ArrayList<>();
         try {
-            JsonArray guilds_db = DBLoadObject.dbConnect.select(
-                    Guild.TABLE_NAME,
-                    new String[]{"id"},
-                    "1=? AND name is not null order by name ASC",
-                    new String[] {"1"}
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.MONTH, -1);
+            JsonArray guilds_db = DBLoadObject.dbConnect.selectQuery(
+                    "SELECT " +
+                    "    id " +
+                    "FROM " +
+                    "    guilds g " +
+                    "WHERE " +
+                    "    name IS NOT NULL " +
+                    "    AND( " +
+                    "        SELECT " +
+                    "            last_update FROM `characters` " +
+                    "        WHERE " +
+                    "            guild_id = g.id " +
+                    "        ORDER BY " +
+                    "            last_update DESC " +
+                    "        LIMIT 1) >= "+ c.getTimeInMillis() +" " +
+                    "ORDER BY g.name DESC;"
             );
 
             for(JsonElement guildInf : guilds_db) {

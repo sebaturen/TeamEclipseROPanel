@@ -22,12 +22,22 @@ a {
         max-width: 100%;
     }
 }
-/** =========================== jobs ======================= **/
-.char_show {
+/** =========================== Character show ======================= **/
+.acc_show {
     float: left;
     position: absolute;
-    z-index: -1;
+    left: 0;
+    right: 0;
 }
+.character_name_lvl {
+    padding-top: 0px;
+    position: absolute;
+    line-height: initial;
+}
+.character_display {
+    text-align: center;
+}
+
 .job_show {
     height: 87px;
     width: 55px;

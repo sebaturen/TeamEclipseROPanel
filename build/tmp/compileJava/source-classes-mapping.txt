@@ -55,8 +55,8 @@ com/eclipse/panel/viewController/rest/Monster.java
 com/eclipse/panel/gameObject/woe/CastleBreaker.java
  com.eclipse.panel.gameObject.woe.CastleBreaker
  com.eclipse.panel.gameObject.woe.CastleBreaker$Builder
-com/eclipse/panel/viewController/rest/WoE.java
- com.eclipse.panel.viewController.rest.WoE
+com/eclipse/panel/User.java
+ com.eclipse.panel.User
 com/eclipse/panel/gameObject/Enchant.java
  com.eclipse.panel.gameObject.Enchant
 com/eclipse/panel/viewController/roRender/roAct/ROAnimation.java
@@ -73,14 +73,14 @@ com/eclipse/panel/Logs.java
 com/eclipse/panel/gameObject/ROMap.java
  com.eclipse.panel.gameObject.ROMap
  com.eclipse.panel.gameObject.ROMap$Builder
-com/eclipse/panel/viewController/GuildController.java
- com.eclipse.panel.viewController.GuildController
-com/eclipse/panel/gameObject/Accounts.java
- com.eclipse.panel.gameObject.Accounts
- com.eclipse.panel.gameObject.Accounts$Builder
 com/eclipse/panel/gameObject/roDB/Item.java
  com.eclipse.panel.gameObject.roDB.Item
  com.eclipse.panel.gameObject.roDB.Item$Builder
+com/eclipse/panel/gameObject/Accounts.java
+ com.eclipse.panel.gameObject.Accounts
+ com.eclipse.panel.gameObject.Accounts$Builder
+com/eclipse/panel/viewController/CharacterController.java
+ com.eclipse.panel.viewController.CharacterController
 com/eclipse/panel/viewController/rest/APIKeys.java
  com.eclipse.panel.viewController.rest.APIKeys
 com/eclipse/panel/gameObject/Guild.java
@@ -94,7 +94,7 @@ com/eclipse/panel/gameObject/character/CharacterInfo.java
  com.eclipse.panel.gameObject.character.CharacterInfo$Builder
 com/eclipse/panel/viewController/roRender/roAct/ROFrame.java
  com.eclipse.panel.viewController.roRender.roAct.ROFrame
-com/eclipse/panel/User.java
- com.eclipse.panel.User
-com/eclipse/panel/viewController/CharacterController.java
- com.eclipse.panel.viewController.CharacterController
+com/eclipse/panel/viewController/GuildController.java
+ com.eclipse.panel.viewController.GuildController
+com/eclipse/panel/viewController/rest/WoE.java
+ com.eclipse.panel.viewController.rest.WoE
