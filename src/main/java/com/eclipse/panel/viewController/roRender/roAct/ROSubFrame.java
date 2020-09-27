@@ -1,5 +1,7 @@
 package com.eclipse.panel.viewController.roRender.roAct;
 
+import com.eclipse.panel.viewController.roRender.roSpr.ROImg;
+
 import java.util.Arrays;
 
 public class ROSubFrame {
@@ -12,7 +14,7 @@ public class ROSubFrame {
     private float scaleX;
     private float scaleY;
     private int rotation;
-    private int dontJump;
+    private ROImg.ROImageVersion spriteVersion;
     private int sizeX;
     private int sizeY;
 
@@ -76,12 +78,12 @@ public class ROSubFrame {
         this.rotation = rotation;
     }
 
-    public int getDontJump() {
-        return dontJump;
+    public ROImg.ROImageVersion getSpriteVersion() {
+        return spriteVersion;
     }
 
-    public void setDontJump(int dontJump) {
-        this.dontJump = dontJump;
+    public void setSpriteVersion(ROImg.ROImageVersion spriteVersion) {
+        this.spriteVersion = spriteVersion;
     }
 
     public int getSizeX() {
@@ -110,18 +112,18 @@ public class ROSubFrame {
 
     @Override
     public String toString() {
-        return "ROSubFrame{" +
-                "offSetX=" + offSetX +
-                ", offSetY=" + offSetY +
-                ", image=" + image +
-                ", direction=" + direction +
-                ", color=" + Arrays.toString(color) +
-                ", scaleX=" + scaleX +
-                ", scaleY=" + scaleY +
-                ", rotation=" + rotation +
-                ", dontJump=" + dontJump +
-                ", sizeX=" + sizeX +
-                ", sizeY=" + sizeY +
-                '}';
+        return "{\"_class\":\"ROSubFrame\", " +
+                "\"offSetX\":\"" + offSetX + "\"" + ", " +
+                "\"offSetY\":\"" + offSetY + "\"" + ", " +
+                "\"image\":\"" + image + "\"" + ", " +
+                "\"direction\":\"" + direction + "\"" + ", " +
+                "\"color\":" + Arrays.toString(color) + ", " +
+                "\"scaleX\":\"" + scaleX + "\"" + ", " +
+                "\"scaleY\":\"" + scaleY + "\"" + ", " +
+                "\"rotation\":\"" + rotation + "\"" + ", " +
+                "\"spriteVersion\":\"" + spriteVersion + "\"" + ", " +
+                "\"sizeX\":\"" + sizeX + "\"" + ", " +
+                "\"sizeY\":\"" + sizeY + "\"" +
+                "}";
     }
 }

@@ -1,6 +1,7 @@
 package com.eclipse.panel.viewController.roRender.roAct;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ROFrame {
@@ -53,5 +54,16 @@ public class ROFrame {
 
     public List<ROSubFrame> getSubFrames() {
         return subFrames;
+    }
+
+    @Override
+    public String toString() {
+        return "{\"_class\":\"ROFrame\", " +
+                "\"extraInfo\":\"" + extraInfo + "\"" + ", " +
+                "\"extraX\":\"" + extraX + "\"" + ", " +
+                "\"extraY\":\"" + extraY + "\"" + ", " +
+                "\"soundNo\":\"" + soundNo + "\"" + ", " +
+                "\"subFrames\":" + (subFrames == null ? "null" : Arrays.toString(subFrames.toArray())) +
+                "}";
     }
 }

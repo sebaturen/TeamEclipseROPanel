@@ -24,54 +24,16 @@ public class ROSprite {
     private ROSpr roSpr;
     private ROAct roAct;
 
-    // Last elements
-    private ROFrame lastFrame;
-    private ROSubFrame lastSubFrame;
-    private ROImg lastImg;
-
     public ROSprite(ROSpr roSpr, ROAct roAct) {
         this.roSpr = roSpr;
         this.roAct = roAct;
     }
 
-    public BufferedImage getPng(int animationId, int frameId) {
-
-        lastFrame = roAct.getRoAnimation(animationId).getRoFrame(frameId);
-        for(ROSubFrame roSubFrame : lastFrame.getSubFrames()) {
-            int sprite = roSubFrame.getImage();
-            if (sprite >= 0) {
-                lastSubFrame = roSubFrame;
-                lastImg = roSpr.getROImg(sprite);
-                return roSpr.getPng(sprite);
-            }
-        }
-
-        return null;
+    public ROFrame getAnimationFrame(int animationId, int frameId) {
+        return roAct.getRoAnimation(animationId).getRoFrame(frameId);
     }
 
-    public void setAnimationFrame(int animationId, int frameId) {
-
-        lastFrame = roAct.getRoAnimation(animationId).getRoFrame(frameId);
-        for(ROSubFrame roSubFrame : lastFrame.getSubFrames()) {
-            int sprite = roSubFrame.getImage();
-            if (sprite >= 0) {
-                lastSubFrame = roSubFrame;
-                lastImg = roSpr.getROImg(sprite);
-                break;
-            }
-        }
+    public ROSpr getRoSpr() {
+        return roSpr;
     }
-
-    public ROImg getLastImg() {
-        return lastImg;
-    }
-
-    public ROFrame getLastFrame() {
-        return lastFrame;
-    }
-
-    public ROSubFrame getLastSubFrame() {
-        return lastSubFrame;
-    }
-
 }

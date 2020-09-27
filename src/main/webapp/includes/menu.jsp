@@ -8,7 +8,7 @@
 <% String[] path = (request.getRequestURI()).split("/");
     String currentPath = ""; if (path.length > 0) currentPath = path[path.length-1]; %>
 <div id="menu_content" class="fill container">
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg navbar-light bg-inverse">
         <a class="navbar-brand" href="<%= request.getContextPath() %>/index.jsp">
             <img src="<%= request.getContextPath() %>/assets/img/eclipse_logo.png" height="30" alt="">
         </a>

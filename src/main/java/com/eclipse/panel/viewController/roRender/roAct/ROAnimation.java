@@ -1,6 +1,7 @@
 package com.eclipse.panel.viewController.roRender.roAct;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ROAnimation {
@@ -17,5 +18,12 @@ public class ROAnimation {
 
     public ROFrame getRoFrame(int position) {
         return roFrames.get(position);
+    }
+
+    @Override
+    public String toString() {
+        return "{\"_class\":\"ROAnimation\", " +
+                "\"roFrames\":" + (roFrames == null ? "null" : Arrays.toString(roFrames.toArray())) +
+                "}";
     }
 }

@@ -18,7 +18,7 @@ public interface ROActSpr {
     }
 
     static byte[] urlToByte(URL elem) throws IOException {
-        System.out.println(elem);
+        //System.out.println(elem);
         byte[] outByte;
         if (elem == null) {
             throw new IOException("url null");

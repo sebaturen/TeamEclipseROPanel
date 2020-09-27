@@ -4,6 +4,7 @@ import com.eclipse.panel.Logs;
 import com.eclipse.panel.gameObject.character.Character;
 import com.eclipse.panel.viewController.roRender.ROSprite;
 import com.eclipse.panel.viewController.roRender.roAct.ROAct;
+import com.eclipse.panel.viewController.roRender.roAct.ROFrame;
 import com.eclipse.panel.viewController.roRender.roAct.ROSubFrame;
 import com.eclipse.panel.viewController.roRender.roSpr.ROSpr;
 
@@ -91,47 +92,43 @@ public class CharacterController {
             int floorY = 125;
             int xPos;
             int yPos;
-            ROSprite bodyFrame = null;
-            ROSprite headFrame = null;
+            ROSprite bodySprite = null;
+            ROFrame bodyFrame = null;
+            ROSprite headSprite = null;
 
             try {
                 // Body render
                 if (!bodyPng.exists()) {
 
-                    bodyFrame = getBodySprite(job+"", sex+"", bodyPalette);
-                    BufferedImage bodyImg = bodyFrame.getPng(actionId, frameId);
-
-                    headFrame = getHeadSprite(head+"", sex+"", headPalette);
-                    BufferedImage headImg = headFrame.getPng(actionId, frameId);
+                    bodySprite = getBodySprite(job+"", sex+"", bodyPalette);
+                    bodyFrame = bodySprite.getAnimationFrame(actionId, frameId);
+                    headSprite = getHeadSprite(head+"", sex+"", headPalette);
 
                     // Mix elements
                     BufferedImage bodyMapLoc = new BufferedImage(150, 170, BufferedImage.TYPE_INT_ARGB);
                     Graphics gBody = bodyMapLoc.getGraphics();
 
                     // Draw body
-                    xPos = floorX - (bodyFrame.getLastImg().getCenterX()) + bodyFrame.getLastSubFrame().getOffSetX();
-                    yPos = floorY - (bodyFrame.getLastImg().getCenterY()) + bodyFrame.getLastSubFrame().getOffSetY();
-                    gBody.drawImage(bodyImg, xPos, yPos, null);
+                    drawElement(
+                            gBody,
+                            null,
+                            bodySprite,
+                            floorX,
+                            floorY,
+                            actionId,
+                            frameId
+                    );
 
                     // Draw head
-                    int headPostX = 0;
-                    int headPostY = 0;
-                    /*System.out.println("Head FIX POST");
-                    System.out.println("Body ExtraX "+ bodyFrame.getLastFrame().getExtraX() +" - Head Extra X "+ headFrame.getLastFrame().getExtraX() +" -- OffsetX: "+ headFrame.getLastSubFrame().getOffSetX());
-                    System.out.println("Body ExtraY "+ bodyFrame.getLastFrame().getExtraY() +" - Head Extra Y "+ headFrame.getLastFrame().getExtraY() +" -- OffsetY: "+ headFrame.getLastSubFrame().getOffSetY());*/
-                    if (headFrame.getLastFrame().getExtraX() != 0 || headFrame.getLastFrame().getExtraY() != 0) {
-                        headPostX = bodyFrame.getLastFrame().getExtraX() - headFrame.getLastFrame().getExtraX();
-                        headPostY = bodyFrame.getLastFrame().getExtraY() - headFrame.getLastFrame().getExtraY();
-                    }
-                    //System.out.println("HeadPostX "+ headPostX +" - HeadPostY "+ headPostY);
-                    headPostX += headFrame.getLastSubFrame().getOffSetX();
-                    headPostY += headFrame.getLastSubFrame().getOffSetY();
-                    //System.out.println("READY HeadPostX "+ headPostX +" - HeadPostY "+ headPostY);
-                    xPos = floorX - (headFrame.getLastImg().getCenterX()) + headPostX;
-                    yPos = floorY - (headFrame.getLastImg().getCenterY()) + headPostY;
-                    //System.out.println("xpos "+ xPos +" - ypos "+ yPos);
-                    gBody.drawImage(headImg, xPos, yPos, null);
-
+                    drawElement(
+                            gBody,
+                            bodyFrame,
+                            headSprite,
+                            floorX,
+                            floorY,
+                            actionId,
+                            frameId
+                    );
 
                     /*/ reference position
                     gBody.drawLine(0, floorY, 200, floorY);
@@ -145,24 +142,23 @@ public class CharacterController {
                 if (!accPng.exists()) {
 
                     ROSprite accTopFrame = null;
-                    BufferedImage accTopImg = null;
                     if (accTop > 0) {
                         accTopFrame = getAccSprite(accTop+"", sex+"");
-                        accTopImg = accTopFrame.getPng(actionId, frameId);
                     }
 
                     ROSprite accMidFrame = null;
-                    BufferedImage accMidFrameImg = null;
                     if (accMid > 0) {
                         accMidFrame = getAccSprite(accMid+"", sex+"");
-                        accMidFrameImg = accMidFrame.getPng(actionId, frameId);
                     }
 
                     ROSprite accLowFrame = null;
-                    BufferedImage accLowFrameImg = null;
                     if (accLow > 0) {
                         accLowFrame = getAccSprite(accLow+"", sex+"");
-                        accLowFrameImg = accLowFrame.getPng(actionId, frameId);
+                    }
+
+                    if (bodySprite == null) {
+                        bodySprite = getBodySprite(job+"", sex+"", bodyPalette);
+                        bodyFrame = bodySprite.getAnimationFrame(actionId, frameId);
                     }
 
                     // Mix elements
@@ -170,64 +166,37 @@ public class CharacterController {
                     Graphics gAcc = accMapLoc.getGraphics();
 
                     // Draw accessory MID
-                    if (accMidFrame != null) {
-                        if (bodyFrame == null) {
-                            bodyFrame = getBodySprite(job+"", sex+"", bodyPalette);
-                            bodyFrame.setAnimationFrame(actionId, frameId);
-                        }
-                        // Draw
-                        int accMidFrameX = 0;
-                        int accMidFrameY = 0;
-                        if (accMidFrame.getLastFrame().getExtraX() != 0 || accMidFrame.getLastFrame().getExtraY() != 0) {
-                            accMidFrameX = bodyFrame.getLastFrame().getExtraX() - accMidFrame.getLastFrame().getExtraX();
-                            accMidFrameY = bodyFrame.getLastFrame().getExtraY() - accMidFrame.getLastFrame().getExtraY();
-                        }
-                        accMidFrameX += accMidFrame.getLastSubFrame().getOffSetX();
-                        accMidFrameY += accMidFrame.getLastSubFrame().getOffSetY();
-                        xPos = floorX - (accMidFrame.getLastImg().getCenterX()) + accMidFrameX;
-                        yPos = floorY - (accMidFrame.getLastImg().getCenterY()) + accMidFrameY;
-                        gAcc.drawImage(accMidFrameImg, xPos, yPos, null);
-                    }
+                    drawElement(
+                            gAcc,
+                            bodyFrame,
+                            accMidFrame,
+                            floorX,
+                            floorY,
+                            actionId,
+                            frameId
+                    );
 
                     // Draw accessory TOP
-                    if (accTopFrame != null) {
-                        if (bodyFrame == null) {
-                            bodyFrame = getBodySprite(job+"", sex+"", bodyPalette);
-                            bodyFrame.setAnimationFrame(actionId, frameId);
-                        }
-                        // Draw
-                        int accTopFrameX = 0;
-                        int accTopFrameY = 0;
-                        if (accTopFrame.getLastFrame().getExtraX() != 0 || accTopFrame.getLastFrame().getExtraY() != 0) {
-                            accTopFrameX = bodyFrame.getLastFrame().getExtraX() - accTopFrame.getLastFrame().getExtraX();
-                            accTopFrameY = bodyFrame.getLastFrame().getExtraY() - accTopFrame.getLastFrame().getExtraY();
-                        }
-                        accTopFrameX += accTopFrame.getLastSubFrame().getOffSetX();
-                        accTopFrameY += accTopFrame.getLastSubFrame().getOffSetY();
-                        xPos = floorX - (accTopFrame.getLastImg().getCenterX()) + accTopFrameX;
-                        yPos = floorY - (accTopFrame.getLastImg().getCenterY()) + accTopFrameY;
-                        gAcc.drawImage(accTopImg, xPos, yPos, null);
-                    }
+                    drawElement(
+                            gAcc,
+                            bodyFrame,
+                            accTopFrame,
+                            floorX,
+                            floorY,
+                            actionId,
+                            frameId
+                    );
 
                     // Draw accessory LOW
-                    if (accLowFrame != null) {
-                        if (bodyFrame == null) {
-                            bodyFrame = getBodySprite(job+"", sex+"", bodyPalette);
-                            bodyFrame.setAnimationFrame(actionId, frameId);
-                        }
-                        // Draw
-                        int accLowFrameX = 0;
-                        int accLowFrameY = 0;
-                        if (accLowFrame.getLastFrame().getExtraX() != 0 || accLowFrame.getLastFrame().getExtraY() != 0) {
-                            accLowFrameX = bodyFrame.getLastFrame().getExtraX() - accLowFrame.getLastFrame().getExtraX();
-                            accLowFrameY = bodyFrame.getLastFrame().getExtraY() - accLowFrame.getLastFrame().getExtraY();
-                        }
-                        accLowFrameX += accLowFrame.getLastSubFrame().getOffSetX();
-                        accLowFrameY += accLowFrame.getLastSubFrame().getOffSetY();
-                        xPos = floorX - (accLowFrame.getLastImg().getCenterX()) + accLowFrameX;
-                        yPos = floorY - (accLowFrame.getLastImg().getCenterY()) + accLowFrameY;
-                        gAcc.drawImage(accLowFrameImg, xPos, yPos, null);
-                    }
+                    drawElement(
+                            gAcc,
+                            bodyFrame,
+                            accLowFrame,
+                            floorX,
+                            floorY,
+                            actionId,
+                            frameId
+                    );
 
                     /*/ reference position
                     gAcc.drawLine(0, floorY, 200, floorY);
@@ -246,6 +215,41 @@ public class CharacterController {
         }
 
         return new String[] {bodyPngFileName, accPngFileName};
+    }
+
+    private static void drawElement(
+            Graphics graphics,
+            ROFrame referenceFrame,
+            ROSprite drawFrame,
+            int floorX,
+            int floorY,
+            int actionId,
+            int frameId
+    ) {
+
+        if (drawFrame != null) {
+            ROFrame roFrame = drawFrame.getAnimationFrame(actionId, frameId);
+            // Draw
+            int drawFrameX = 0;
+            int drawFrameY = 0;
+            if (roFrame.getExtraX() != 0 || roFrame.getExtraY() != 0) {
+                if (referenceFrame != null) {
+                    drawFrameX = referenceFrame.getExtraX() - roFrame.getExtraX();
+                    drawFrameY = referenceFrame.getExtraY() - roFrame.getExtraY();
+                }
+            }
+            for(ROSubFrame roSubFrame : roFrame.getSubFrames()) {
+                if (roSubFrame.getImage() >= 0) {
+                    drawFrameX += roSubFrame.getOffSetX();
+                    drawFrameY += roSubFrame.getOffSetY();
+                    BufferedImage img = drawFrame.getRoSpr().getPng(roSubFrame.getSpriteVersion(), roSubFrame.getImage());
+                    int xPos = floorX - (img.getWidth()/2) + drawFrameX;
+                    int yPos = floorY - (img.getHeight()/2) + drawFrameY;
+                    graphics.drawImage(img, xPos, yPos, null);
+                }
+            }
+        }
+
     }
 
     private static ROSprite getBodySprite(String jobId, String sexId, int bodyPalette) throws Exception {
