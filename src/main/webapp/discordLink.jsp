@@ -6,13 +6,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@include file="includes/globalObject.jsp" %>
-<% if (request.getParameter("code") == null) {
-    response.sendRedirect("index.jsp");
+<%
+    if (request.getParameter("code") == null) {
+        response.sendRedirect("index.jsp");
 } else { %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="es">
 <head>
-    <title>${guild.name} - Blizzard link account</title>
+    <title>RO Del mal Panel - Discord Login</title>
+    <meta property="og:title" content="Discord Login" />
     <%@include file="includes/header.jsp" %>
 </head>
 <body>
@@ -20,7 +22,7 @@
 <div class="container fill">
     <div id="loading" class="justify-content-md-center"><div class="loader"></div></div>
     <%
-        user.copy(new User.Builder().setCode(request.getParameter("code")).build());
+        user.copy(new User.Builder(request.getParameter("code")).build());
         if (user != null)  {
             if (session.getAttribute("internal_redirect") == null) {
                 response.sendRedirect("login.jsp");
@@ -30,7 +32,7 @@
                 response.sendRedirect(dirRed);
             }
         } else {
-            out.write("ERROR! when try save your blizzard information!");
+            out.write("ERROR! when try save your information!");
         }
     %>
 </div>

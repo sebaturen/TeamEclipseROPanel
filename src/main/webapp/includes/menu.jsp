@@ -30,14 +30,21 @@
                     <a class="nav-link" href="<%= request.getContextPath() %>/woe2_breaker.jsp"><fmt:message key="label.woe2_breaker" /></a>
                 </li>
             </ul>
-            <div class="form-inline my-2 my-lg-0" style="display: none">
-                <a href="/login.jsp">
-                    <button class="btn btn-outline-success" type="button">
+            <div class="form-inline my-2 my-lg-0">
+                <% // Link Blizzard account
+                    String redirectUri = request.getContextPath() +"/login.jsp";
+                    if(!user.isLogin()) {
+                        redirectUri = "https://discord.com/api/oauth2/authorize?client_id=739522446411169972&redirect_uri=https%3A%2F%2Fpanel.delmal.cl%2FdiscordLink.jsp&response_type=code&scope=identify";
+                    }
+                %>
+                <a href="<%= redirectUri %>">
+                    <button class="btn btn-dark" type="button">
                         <c:if test="${user.login}">
-                            <fmt:message key="label.account_info" />
+                            ${user.nick}
                         </c:if>
                         <c:if test="${!user.login}">
-                            <fmt:message key="label.login" />
+                            <img src="assets/img/icons/Discord-Logo-Color.png" alt="" style="width: 26px;">
+                            <fmt:message key="label.discord_login" />
                         </c:if>
                     </button>
                 </a>

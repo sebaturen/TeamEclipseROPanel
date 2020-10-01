@@ -29,10 +29,3 @@
 </c:if>
 <fmt:setLocale value="${locale}" />
 <fmt:setBundle basename="messages" />
-<%
-    // Setting if user is a guild member, or blizzardPanel is setting all information is public.
-    boolean guildMember = false;
-    if (user != null && user.isIs_guild_member()) {
-        guildMember = true;
-    }
-%>

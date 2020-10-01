@@ -22,10 +22,9 @@
     <Environment name="MAIN_URL"        value="" override="false" type="java.lang.String" />
 
     <!-- DISCORD API INFO -->
-    <Environment name="DISCORD_BOT_TOKEN" value="" override="false" type="java.lang.String" />
-    <Environment name="DISCORD_GUILD_NAME" value="" override="false" type="java.lang.String" />
-    <Environment name="DISCORD_GUILD_ID" value="" override="false" type="java.lang.String" />
-    <Environment name="DISCORD_CHANEL_NAME" value="" override="false" type="java.lang.String" />
+    <Environment name="DISCORD_CLIENT_ID" value="" override="false" type="java.lang.String" />
+    <Environment name="DISCORD_CLIENT_SECRET" value="" override="false" type="java.lang.String" />
+    <Environment name="DISCORD_REDIRECT_URI" value="" override="false" type="java.lang.String" />
 
     <!-- Rewrite value -->
     <Valve className="org.apache.catalina.valves.rewrite.RewriteValve" />
