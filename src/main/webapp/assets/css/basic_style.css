@@ -33,6 +33,9 @@ a {
     transform: scaleX(-1);
 }
 /** =========================== Character show ======================= **/
+.pj_info {
+    margin: 0.5em;
+}
 .acc_show {
     float: left;
     position: absolute;
@@ -40,12 +43,17 @@ a {
     right: 0;
 }
 .character_name_lvl {
-    padding-top: 0px;
-    position: absolute;
+    padding: 0.5em;
     line-height: initial;
+    background-color: #1c2135;
+    color: white;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.10), 0 3px 6px 0 rgba(0,0,0, 0.10);
 }
 .character_display {
     text-align: center;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.10), 0 3px 6px 0 rgba(0,0,0, 0.10);
 }
 
 .job_show {

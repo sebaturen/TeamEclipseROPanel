@@ -103,7 +103,7 @@ public class ROSpr {
          * All frame is a full info, the structure is:
          *      [total frame]:
          *          [size x] [size y] {
-         *              [RGBA] x frame
+         *              [RGBA] x sprite
          *          }
          * @param spriteSPR
          * @param roSpr
@@ -137,7 +137,7 @@ public class ROSpr {
         }
 
         /**
-         * V3 have a the last 2 type in one,
+         * V3 have the last 2 type in one,
          *      The First is N frames in v1 format
          *      The second group is N frame in v2 format
          * @param spriteSPR

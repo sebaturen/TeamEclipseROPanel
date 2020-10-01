@@ -55,10 +55,6 @@
                         <c:forEach items="${characters}" var="pj" varStatus="loop">
                             <c:set var="renderChar" value="${CharacterController.renderCharacter(pj)}" />
                             <div class="pj_info col char_${pj.id}">
-                                <div class="character_name_lvl">
-                                        ${pj.name}<br>
-                                    Lvl ${pj.lvl}
-                                </div>
                                 <div class="character_display">
                                     <div class="acc_show">
                                         <img src="assets/img/ro/characters/${renderChar[1]}"/>
@@ -66,6 +62,9 @@
                                     <div class="char_show">
                                         <img src="assets/img/ro/characters/${renderChar[0]}"/>
                                     </div>
+                                </div>
+                                <div class="character_name_lvl">
+                                        ${pj.name}<br>Lvl ${pj.lvl}
                                 </div>
                             </div>
                             <c:if test="${(loop.index+1)%3 == 0}">

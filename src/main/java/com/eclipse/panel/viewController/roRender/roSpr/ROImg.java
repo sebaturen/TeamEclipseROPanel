@@ -50,6 +50,7 @@ public class ROImg {
     public byte[] getFrame() {
         if (isCompress) {
             uncompress();
+            isCompress = false;
         }
         return frame;
     }
@@ -72,18 +73,6 @@ public class ROImg {
 
     public void setSizeY(short sizeY) {
         this.sizeY = sizeY;
-    }
-
-    public int getCenterX() {
-        return sizeX/2;
-    }
-
-    public int getCenterY() {
-        return sizeY/2;
-    }
-
-    public boolean isCompress() {
-        return isCompress;
     }
 
     public void setCompress(boolean compress) {
