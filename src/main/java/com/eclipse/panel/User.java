@@ -1,9 +1,11 @@
 package com.eclipse.panel;
 
 import com.eclipse.panel.dbConnect.DBLoadObject;
+import com.eclipse.panel.gameObject.Accounts;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -18,9 +20,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class User {
@@ -39,6 +39,9 @@ public class User {
     // Update control
     private long last_login;
     private long create_timestamp;
+
+    // Internal Info
+    private List<Accounts> accountsList;
 
     public static class Builder extends DBLoadObject {
 
@@ -105,7 +108,6 @@ public class User {
                     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                     JsonObject tokenInfo = new JsonParser().parse(response.body()).getAsJsonObject();
-                    System.out.println(tokenInfo);
 
                     if (tokenInfo.has("token_type")) {
 
@@ -234,6 +236,26 @@ public class User {
         return locale;
     }
 
+    public List<Accounts> getAccounts() {
+        accountsList = new ArrayList<>();
+        try {
+            JsonArray accounts = DBLoadObject.dbConnect.select(
+                    Accounts.TABLE_NAME,
+                    new String[]{Accounts.TABLE_KEY},
+                    "user_id = ?",
+                    new String[]{id+""}
+            );
+
+            for(JsonElement acs : accounts) {
+                JsonObject ac = acs.getAsJsonObject();
+                accountsList.add(new Accounts.Builder(ac.get(Accounts.TABLE_KEY).getAsInt()).build());
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return accountsList;
+    }
     @Override
     public String toString() {
         return "{\"_class\":\"User\", " +

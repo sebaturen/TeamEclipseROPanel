@@ -19,7 +19,6 @@
         <title>Jobs...</title>
         <meta property="og:title" content="Jobs lists" />
         <%@include file="includes/header.jsp" %>
-        <link type="text/css" rel="stylesheet" href="assets/css/index.css">
         <link type="text/css" rel="stylesheet" href="assets/css/class_info.css">
         <script>
             function urlHandler(v) {
