@@ -1,0 +1,12 @@
+.link_info {
+    background-color: #1c2135;
+    /* color: white; */
+    padding: 0.5em;
+    border-radius: 4px;
+    box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.10), 0 3px 6px 0 rgba(0,0,0, 0.10);
+    position: relative;
+}
+
+.link_info code {
+    color: white;
+}

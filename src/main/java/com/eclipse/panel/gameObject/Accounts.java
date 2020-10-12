@@ -76,6 +76,10 @@ public class Accounts {
         return id;
     }
 
+    public int getUser_id() {
+        return user_id;
+    }
+
     @Override
     public String toString() {
         return "{\"_class\":\"Accounts\", " +
