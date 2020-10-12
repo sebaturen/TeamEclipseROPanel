@@ -96,6 +96,7 @@ public class Guilds {
                 } else {
 
                     boolean needUpdate = false;
+                    boolean needForceUpdate = false;
                     if (!guild_db.get(0).getAsJsonObject().has("name")) {
                         needUpdate = true;
                     } else {
@@ -103,11 +104,15 @@ public class Guilds {
                         String name = guild_db.get(0).getAsJsonObject().get("name").getAsString();
                         if (!nName.equals(name)) {
                             needUpdate = true;
+                            needForceUpdate = true;
                         }
                     }
 
-                    if (needUpdate && APIKeys.getValue(guildData.get("api_key").getAsString()) == APIKeys.WOE_KEY_AUTH) {
+                    if (needUpdate) {
 
+                        if (needForceUpdate && APIKeys.getValue(guildData.get("api_key").getAsString()) != APIKeys.WOE_KEY_AUTH) {
+                            return Response.notModified().entity(okInfo.toString()).build();
+                        }
                         Map<Object, Object> inf = new HashMap<>();
                         inf.put("name", guildData.get("guild_name").getAsString());
 

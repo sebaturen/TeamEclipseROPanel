@@ -59,18 +59,40 @@
         <c:if test="${user.accounts.size() == 0}">
             <div class="row">
                 <div class="col">
-                    Not accounts found
+                    <div class="character_content">
+                        <div class="character_header">
+                            <p class="job_name">Not accounts found</p>
+                            <p class="job_totals">?</p>
+                        </div>
+                        <div class="row c_character_content">
+                            <div class="col">
+                                Conoce como vincular tus cuentas en:
+                                <br><br>
+                                <a href="/faq.jsp"><b>Link account FAQ</b></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </c:if>
         <div class="row">
-            <div class="col-7 link_info">
-                <code>
-                    Link code: ${user.link_code}
-                </code>
-            </div>
-            <div class="col-3">
-                <a href="/faq.jsp">Link account FAQ</a>
+            <div class="col">
+                <div class="character_content">
+                    <div class="character_header">
+                        <p class="job_name">Link account</p>
+                        <p class="job_totals">?</p>
+                    </div>
+                    <div class="row c_character_content">
+                        <div class="col-7 link_info">
+                            <code>
+                                Link code: ${user.link_code}
+                            </code>
+                        </div>
+                        <div class="col-3">
+                            <a href="/faq.jsp">Link account FAQ</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -139,7 +139,9 @@ public class User {
                         if (userExist.size() > 0) {
                             newUser = new User.Builder(userInfo.get("id").getAsLong()).build();
                             newUser.nick = userInfo.get("username").getAsString();
-                            newUser.avatar = userInfo.get("avatar").getAsString();
+                            if (userInfo.has("avatar") && !userInfo.get("avatar").isJsonNull()) {
+                                newUser.avatar = userInfo.get("avatar").getAsString();
+                            }
                             newUser.locale = userInfo.get("locale").getAsString();
                             newUser.link_code = generateLinkCode();
                             newUser.updateInfo();
@@ -148,7 +150,9 @@ public class User {
                             newUser = new User();
                             newUser.discord_id = userInfo.get("id").getAsLong();
                             newUser.nick = userInfo.get("username").getAsString();
-                            newUser.avatar = userInfo.get("avatar").getAsString();
+                            if (userInfo.has("avatar") && !userInfo.get("avatar").isJsonNull()) {
+                                newUser.avatar = userInfo.get("avatar").getAsString();
+                            }
                             newUser.locale = userInfo.get("locale").getAsString();
                             newUser.create_timestamp = new Date().getTime();
                             newUser.link_code = generateLinkCode();

@@ -49,7 +49,7 @@ public class CharacterController {
             accessoryIdName.load(new InputStreamReader(fsAccIdName, StandardCharsets.UTF_8));
             headsProp.load(fsHeads);
         } catch(IOException e) {
-            System.out.println(e.toString());
+            Logs.fatalLog(CharacterController.class, e.toString());
         }
     }
 

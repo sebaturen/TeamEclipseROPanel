@@ -38,7 +38,7 @@ public class GuildController {
                     "        ORDER BY " +
                     "            last_update DESC " +
                     "        LIMIT 1) >= "+ c.getTimeInMillis() +" " +
-                    "ORDER BY g.name DESC;"
+                    "ORDER BY g.name ASC;"
             );
 
             for(JsonElement guildInf : guilds_db) {

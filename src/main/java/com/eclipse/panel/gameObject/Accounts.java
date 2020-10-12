@@ -62,7 +62,6 @@ public class Accounts {
 
             for(JsonElement chars : characters) {
                 JsonObject roChar = chars.getAsJsonObject();
-                System.out.println(roChar);
                 charactersList.add(new Character.Builder(roChar.get(Character.TABLE_KEY).getAsInt()).build());
             }
         } catch (SQLException throwables) {

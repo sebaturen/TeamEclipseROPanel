@@ -63,6 +63,8 @@
                         <div class="col">
                             <br>
                             * Este proceso no debe tardar mas de 1 minuto, si aun asi no aparece informacion, intentelo de nuevo mas tarde
+                            <br>
+                            * El codigo cambia cada vez que inicias secion, preocura usar el ultimo siempre para vincular tu nueva cuenta
                         </div>
                     </div>
                 </div>
