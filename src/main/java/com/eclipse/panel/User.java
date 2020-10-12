@@ -35,6 +35,7 @@ public class User {
     private String nick;
     private String avatar;
     private String locale;
+    private String link_code;
 
     // Update control
     private long last_login;
@@ -49,6 +50,7 @@ public class User {
         private int id;
         private String code;
         private long discordId;
+        private String linkCode;
 
         public Builder() {
             super(TABLE_NAME, User.class);
@@ -69,6 +71,11 @@ public class User {
             this.discordId = discordId;
         }
 
+        public Builder(String linkCode, boolean inGame) {
+            super(TABLE_NAME, User.class);
+            this.linkCode = linkCode;
+        }
+
         public User build() {
             User newUser = null;
 
@@ -77,6 +84,9 @@ public class User {
             }
             if (discordId > 0) {
                 newUser = (User) load("discord_id", discordId);
+            }
+            if (linkCode != null) {
+                newUser = (User) load("link_code", linkCode);
             }
             if (code != null) {
                 String clientId = GeneralConfig.getStringConfig("DISCORD_CLIENT_ID");
@@ -131,6 +141,7 @@ public class User {
                             newUser.nick = userInfo.get("username").getAsString();
                             newUser.avatar = userInfo.get("avatar").getAsString();
                             newUser.locale = userInfo.get("locale").getAsString();
+                            newUser.link_code = generateLinkCode();
                             newUser.updateInfo();
                         } else {
                             // Save a new user
@@ -140,6 +151,7 @@ public class User {
                             newUser.avatar = userInfo.get("avatar").getAsString();
                             newUser.locale = userInfo.get("locale").getAsString();
                             newUser.create_timestamp = new Date().getTime();
+                            newUser.link_code = generateLinkCode();
                             newUser.id = User.saveUser(newUser);
 
                         }
@@ -157,7 +169,21 @@ public class User {
 
     // Constructor
     public User() {
+    }
 
+    public static String generateLinkCode() {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 36;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        return generatedString;
     }
 
     private void updateInfo() {
@@ -166,6 +192,7 @@ public class User {
             put("avatar", avatar);
             put("locale", locale);
             put("last_login", new Date().getTime());
+            put("link_code", link_code);
         }};
 
         try {
@@ -188,6 +215,7 @@ public class User {
             put("locale", u.locale);
             put("create_timestamp", u.create_timestamp);
             put("last_login", new Date().getTime());
+            put("link_code", u.link_code);
         }};
 
         int id = 0;
@@ -218,6 +246,7 @@ public class User {
         locale = u.locale;
         last_login = u.last_login;
         create_timestamp = u.create_timestamp;
+        link_code = u.link_code;
     }
 
     public long getDiscord_id() {
@@ -256,6 +285,15 @@ public class User {
 
         return accountsList;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getLink_code() {
+        return link_code;
+    }
+
     @Override
     public String toString() {
         return "{\"_class\":\"User\", " +
@@ -264,8 +302,10 @@ public class User {
                 "\"nick\":" + (nick == null ? "null" : "\"" + nick + "\"") + ", " +
                 "\"avatar\":" + (avatar == null ? "null" : "\"" + avatar + "\"") + ", " +
                 "\"locale\":" + (locale == null ? "null" : "\"" + locale + "\"") + ", " +
+                "\"link_code\":" + (link_code == null ? "null" : "\"" + link_code + "\"") + ", " +
                 "\"last_login\":\"" + last_login + "\"" + ", " +
-                "\"create_timestamp\":\"" + create_timestamp + "\"" +
+                "\"create_timestamp\":\"" + create_timestamp + "\"" + ", " +
+                "\"accountsList\":" + (accountsList == null ? "null" : Arrays.toString(accountsList.toArray())) +
                 "}";
     }
 }
