@@ -134,7 +134,7 @@
                                 <label>Action</label>
                                 <select class="form-control" id="char_action" name="char_action">
                                     <option value="0" selected>Idle</option>
-                                    <option value="8">Warlking</option>
+                                    <option value="8">Walking</option>
                                     <option value="32">Standby</option>
                                     <option value="48">Receiving</option>
                                     <option value="96">Casting spell</option>
