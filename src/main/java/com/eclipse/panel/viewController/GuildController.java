@@ -22,24 +22,25 @@ public class GuildController {
         List<Guild> guilds = new ArrayList<>();
         try {
             Calendar c = Calendar.getInstance();
-            c.add(Calendar.MONTH, -1);
-            JsonArray guilds_db = DBLoadObject.dbConnect.selectQuery(
+            c.add(Calendar.WEEK_OF_MONTH, -2);
+            String query =
                     "SELECT " +
                     "    id " +
                     "FROM " +
                     "    guilds g " +
                     "WHERE " +
                     "    name IS NOT NULL " +
-                    "    AND( " +
-                    "        SELECT " +
-                    "            last_update FROM `characters` " +
+                    "    AND ( " +
+                    "        SELECT last_update " +
+                    "        FROM `characters` " +
                     "        WHERE " +
                     "            guild_id = g.id " +
                     "        ORDER BY " +
                     "            last_update DESC " +
                     "        LIMIT 1) >= "+ c.getTimeInMillis() +" " +
-                    "ORDER BY g.name ASC;"
-            );
+                    "ORDER BY g.name ASC;";
+            //Logs.infoLog(GuildController.class, "Query -> "+ query);
+            JsonArray guilds_db = DBLoadObject.dbConnect.selectQuery(query);
 
             for(JsonElement guildInf : guilds_db) {
                 JsonObject guildIds = guildInf.getAsJsonObject();

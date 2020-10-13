@@ -67,7 +67,7 @@
                             <br>
                             * The code changes every time you login. Be sure to use the last one generated when linking your account.
                             <br>
-                            * PanelDelMal does not save discord password or any information, only discord is used as account manager
+                            * PanelDelMal does not get access to your discord password or any personal information. It's only using Discord as an account manager
                         </div>
                     </div>
                 </div>
