@@ -18,14 +18,14 @@
         <div class="container fill">
             <div class="character_content">
                 <div class="character_header">
-                    <p class="job_name">Vinculacion de cuenta</p>
+                    <p class="job_name">Account link</p>
                     <p class="job_totals">?</p>
                 </div>
                 <div class="row c_character_content">
-                    <h3>Como vincular tus cuentas:</h3>
+                    <h3>How to link your accounts:</h3>
                     <div class="row">
                         <div class="col">
-                            Primero, ingresa al panel de tu cuenta logeandote en el menu superior o aca:
+                            <b>Step one:</b> Login in your account from the top menu or use this button:
                             <a href="<%= redirectUri %>" target="_blank">
                                 <button class="btn btn-dark" type="button">
                                     <c:if test="${user.login}">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            Abajo de tus personajes, veras el codigo de vinculacion:
+                            Below your characters, you will see the link code:
                             <div class="link_info">
                                 <div class="col">
                                     <code>
@@ -55,16 +55,20 @@
                     <div class="row">
                         <div class="col">
                             <br>
-                            Ahora con este codigo, debes ir al Prontera (spawn kafra abajo) [116, 72] crear un cartel privado y copiar el codigo (no importa que contraseña tenga el chat)<br><br>
+                            <b>Step Two:</b> Copy the Link code and go to Prontera (Kafra spawn) [116, 72].
+                            <br>
+                            <b>Step Three:</b> create a Private room (/chat) and paste the link code. You can use any password on the Private room.
                             <img src="assets/img/chat_position.png" width="500px">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <br>
-                            * Este proceso no debe tardar mas de 1 minuto, si aun asi no aparece informacion, intentelo de nuevo mas tarde
+                            * This process shouldn't take more than 1 minute. If after that time, the information is still not apearing, please try again later.
                             <br>
-                            * El codigo cambia cada vez que inicias secion, preocura usar el ultimo siempre para vincular tu nueva cuenta
+                            * The code changes every time you login. Be sure to use the last one generated when linking your account.
+                            <br>
+                            * PanelDelMal does not save discord password or any information, only discord is used as account manager
                         </div>
                     </div>
                 </div>
