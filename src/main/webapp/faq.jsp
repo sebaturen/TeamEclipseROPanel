@@ -21,7 +21,7 @@
                     <p class="job_name">Account link</p>
                     <p class="job_totals">?</p>
                 </div>
-                <div class="row c_character_content">
+                <div class="c_character_content">
                     <h3>How to link your accounts:</h3>
                     <div class="row">
                         <div class="col">

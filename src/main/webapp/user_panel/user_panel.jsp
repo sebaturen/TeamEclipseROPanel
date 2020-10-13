@@ -123,6 +123,7 @@
                                     <option value="" selected>None</option>
                                     <option value="prontera.jpg">Prontera</option>
                                     <option value="geffen.jpg">Geffen</option>
+                                    <option value="morroc.jpg">Morroc</option>
                                     <option value="izlude.jpg">Izlude</option>
                                     <option value="aldebaran.jpg">Aldebaran</option>
                                     <option value="payon.jpg">Payon</option>

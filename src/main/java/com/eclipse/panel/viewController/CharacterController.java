@@ -330,6 +330,7 @@ public class CharacterController {
                         charBg.equals("")
                         || charBg.equals("prontera.jpg")
                         || charBg.equals("geffen.jpg")
+                        || charBg.equals("morroc.jpg")
                         || charBg.equals("izlude.jpg")
                         || charBg.equals("aldebaran.jpg")
                         || charBg.equals("payon.jpg")
