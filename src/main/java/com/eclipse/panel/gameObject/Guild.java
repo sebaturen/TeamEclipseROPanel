@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class Guild {
@@ -65,11 +66,14 @@ public class Guild {
 
         characterList = new ArrayList<>();
         try {
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.WEEK_OF_MONTH, -2);
+
             JsonArray characters_db = DBLoadObject.dbConnect.select(
                     Character.TABLE_NAME,
                     new String[]{Character.TABLE_KEY},
-                    "guild_id=? ORDER BY lvl DESC, job_id DESC",
-                    new String[]{id+""}
+                    "guild_id=? AND last_update >= ? ORDER BY job_id DESC, lvl DESC",
+                    new String[]{id+"", c.getTimeInMillis()+""}
             );
 
             if (characters_db.size() > 0) {

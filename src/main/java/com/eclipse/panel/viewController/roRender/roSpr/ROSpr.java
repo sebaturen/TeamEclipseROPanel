@@ -168,7 +168,7 @@ public class ROSpr {
         this.palette = ROActSpr.urlToByte(palette);
     }
 
-    public BufferedImage getPng(ROImg.ROImageVersion version, int framePost) {
+    public BufferedImage getPng(ROImg.ROImageVersion version, int framePost, boolean mirror) {
 
         ROImg roImg;
         if (version == ROImg.ROImageVersion.VERSION_1) {
@@ -177,14 +177,14 @@ public class ROSpr {
             roImg = framesV2.get(framePost);
         }
 
-        switch (roImg.getVersion()) {
-            case 1: return getPngV1(roImg);
-            case 2: return getPngV2(roImg);
-            default: return null;
-        }
+        return switch (roImg.getVersion()) {
+            case 1 -> getPngV1(roImg, mirror);
+            case 2 -> getPngV2(roImg, mirror);
+            default -> null;
+        };
     }
 
-    private BufferedImage getPngV1(ROImg roImg) {
+    private BufferedImage getPngV1(ROImg roImg, boolean mirror) {
         byte[] frame = roImg.getFrame();
         // Prepare palette
         List<byte[]> rgbPalette = new ArrayList<>();
@@ -195,36 +195,38 @@ public class ROSpr {
 
         // Prepare image
         BufferedImage dest = new BufferedImage(roImg.getSizeX(), roImg.getSizeY(), BufferedImage.TYPE_INT_ARGB);
-        int x,y = x = 0;
+        int x, y = x = 0;
+        if (mirror) x = roImg.getSizeX()-1;
         for(int i = 0; i < frame.length; i++) {
             if (i > 0 && i%roImg.getSizeX() == 0) {
-                x = 0;
+                if (mirror) x = roImg.getSizeX()-1; else x = 0;
                 y++;
             }
+
             int paletteColorPos = (int) frame[i] & 0xff;
             byte[] rgb = rgbPalette.get(paletteColorPos);
             Color c = new Color((int) rgb[0] & 0xff, (int) rgb[1] & 0xff, (int) rgb[2] & 0xff, (paletteColorPos == 0)? 0:255);
             dest.setRGB(x, y, c.getRGB());
-            x++;
+            if (mirror) x--; else x++;
         }
 
         return dest;
     }
 
-    private BufferedImage getPngV2(ROImg roImg) {
+    private BufferedImage getPngV2(ROImg roImg, boolean mirror) {
         byte[] frame = roImg.getFrame();
         // Prepare image
         BufferedImage dest = new BufferedImage(roImg.getSizeX(), roImg.getSizeY(), BufferedImage.TYPE_INT_ARGB);
         int x,y = x = 0;
+        if (mirror) x = roImg.getSizeX()-1;
         for(int i = frame.length-1; i > 0; i-=4) {
             if (x == roImg.getSizeX()) {
-                x = 0;
+                if (mirror) x = roImg.getSizeX()-1; else x = 0;
                 y++;
             }
-            //System.out.println("("+ x +","+ y +") [ R: "+ frame[i] +", G: "+ frame[i-1] +", B: "+ frame[i-2] +", A: "+ frame[i-3] +" ]");
             Color c = new Color((int) frame[i] & 0xff, (int) frame[i-1] & 0xff, (int) frame[i-2] & 0xff, (int) frame[i-3] & 0xff);
             dest.setRGB(x, y, c.getRGB());
-            x++;
+            if (mirror) x--; else x++;
         }
 
         return dest;

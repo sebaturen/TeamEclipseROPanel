@@ -54,7 +54,7 @@
                         <c:forEach items="${characters}" var="pj" varStatus="loop">
                             <c:set var="renderChar" value="${CharacterController.renderCharacter(pj)}" />
                             <div class="pj_info col char_${pj.id}">
-                                <div class="character_display">
+                                <div class="character_display" style="background-image: url('/assets/img/ro/char_bg/${pj.character_display.get("background_bg").asString}')">
                                     <div class="acc_show">
                                         <img src="assets/img/ro/characters/${renderChar[1]}"/>
                                     </div>

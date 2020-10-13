@@ -2,6 +2,7 @@ package com.eclipse.panel;
 
 import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.Accounts;
+import com.eclipse.panel.gameObject.character.Character;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
@@ -296,6 +297,17 @@ public class User {
 
     public String getLink_code() {
         return link_code;
+    }
+
+    public boolean hasCharacter(int characterId) {
+        for(Accounts ac : getAccounts()) {
+            for(Character ch : ac.getCharacters()) {
+                if (ch.getId() == characterId) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

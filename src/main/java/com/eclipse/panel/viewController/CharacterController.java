@@ -1,12 +1,15 @@
 package com.eclipse.panel.viewController;
 
 import com.eclipse.panel.Logs;
+import com.eclipse.panel.User;
+import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.character.Character;
 import com.eclipse.panel.viewController.roRender.ROSprite;
 import com.eclipse.panel.viewController.roRender.roAct.ROAct;
 import com.eclipse.panel.viewController.roRender.roAct.ROFrame;
 import com.eclipse.panel.viewController.roRender.roAct.ROSubFrame;
 import com.eclipse.panel.viewController.roRender.roSpr.ROSpr;
+import com.google.gson.JsonObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -58,6 +61,17 @@ public class CharacterController {
     }
 
     public static String[] renderCharacter(Character character) {
+
+        int action = 0;
+        int direction = 0;
+
+        if (character.getCharacter_display() != null
+                && !character.getCharacter_display().isJsonNull()
+        ) {
+            action = character.getCharacter_display().get("action").getAsInt();
+            direction = character.getCharacter_display().get("direction").getAsInt();
+        }
+
         return renderCharacter(
                 character.getJob_id(),
                 character.getCharacter_view().get("hair_style_id").getAsInt(),
@@ -67,7 +81,7 @@ public class CharacterController {
                 character.getHead_view().get("top_head_view_id").getAsInt(),
                 character.getHead_view().get("mid_head_view_id").getAsInt(),
                 character.getHead_view().get("low_head_view_id").getAsInt(),
-                0,
+                action+direction,
                 0
         );
     }
@@ -242,7 +256,7 @@ public class CharacterController {
                 if (roSubFrame.getImage() >= 0) {
                     drawFrameX += roSubFrame.getOffSetX();
                     drawFrameY += roSubFrame.getOffSetY();
-                    BufferedImage img = drawFrame.getRoSpr().getPng(roSubFrame.getSpriteVersion(), roSubFrame.getImage());
+                    BufferedImage img = drawFrame.getRoSpr().getPng(roSubFrame.getSpriteVersion(), roSubFrame.getImage(), (roSubFrame.getDirection() == 1));
                     int xPos = floorX - (img.getWidth()/2) + drawFrameX;
                     int yPos = floorY - (img.getHeight()/2) + drawFrameY;
                     graphics.drawImage(img, xPos, yPos, null);
@@ -297,4 +311,70 @@ public class CharacterController {
 
     }
 
+    public static void updateCharacterDisplay(Map<String, String[]> params, User u) {
+
+        if (
+            params.containsKey("char_bg")
+            && params.containsKey("char_action")
+            && params.containsKey("char_direction")
+            && params.containsKey("char_id")
+        ) {
+            String charBg = params.get("char_bg")[0];
+            int charAction = Integer.parseInt(params.get("char_action")[0]);
+            int charDirection = Integer.parseInt(params.get("char_direction")[0]);
+            int charId = Integer.parseInt(params.get("char_id")[0]);
+
+            // Validation info
+            if (
+                    (
+                        charBg.equals("")
+                        || charBg.equals("prontera.jpg")
+                        || charBg.equals("geffen.jpg")
+                        || charBg.equals("izlude.jpg")
+                        || charBg.equals("aldebaran.jpg")
+                        || charBg.equals("payon.jpg")
+                        || charBg.equals("rachel.jpg")
+                        || charBg.equals("yuno.jpg")
+                    )
+                        &&
+                    (
+                        charAction == 0
+                        || charAction == 8
+                        || charAction == 32
+                        || charAction == 48
+                        || charAction == 96
+                    )
+                        &&
+                    (
+                        charDirection == 0
+                        || charDirection == 1
+                        || charDirection == 7
+                    )
+            ) {
+
+                if (u.hasCharacter(charId)) {
+                    Map<Object, Object> inf = new HashMap<>();
+
+                    JsonObject charDisplay = new JsonObject();
+                    charDisplay.addProperty("background_bg", charBg);
+                    charDisplay.addProperty("action", charAction);
+                    charDisplay.addProperty("direction", charDirection);
+
+                    inf.put("character_display", charDisplay);
+
+                    try {
+                        DBLoadObject.dbConnect.update(
+                                Character.TABLE_NAME,
+                                inf,
+                                Character.TABLE_KEY +"= ?",
+                                new String[]{charId +""}
+                        );
+                    } catch (Exception e) {
+                        Logs.fatalLog(CharacterController.class, "Failed to upload character info "+ e);
+                    }
+
+                }
+            }
+        }
+    }
 }

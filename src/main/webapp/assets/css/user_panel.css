@@ -10,3 +10,18 @@
 .link_info code {
     color: white;
 }
+
+.char_edit {
+    color: white;
+    background-color: red;
+    position: absolute;
+    right: 25px;
+    text-align: center;
+    padding: 2px 6px;
+    font-size: small;
+    margin-top: 7px;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.10), 0 3px 6px 0 rgba(0,0,0, 0.10);
+    cursor: pointer;
+    z-index: 99;
+}

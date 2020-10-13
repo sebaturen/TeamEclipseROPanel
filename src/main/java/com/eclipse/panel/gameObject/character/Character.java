@@ -29,6 +29,7 @@ public class Character {
     private JsonObject show_equip;
     private JsonObject head_view;
     private JsonObject character_view;
+    private JsonObject character_display;
 
     // Internal data
     private Accounts account;
@@ -104,6 +105,10 @@ public class Character {
         return character_view;
     }
 
+    public JsonObject getCharacter_display() {
+        return character_display;
+    }
+
     @Override
     public String toString() {
         return "{\"_class\":\"Character\", " +
@@ -117,6 +122,7 @@ public class Character {
                 "\"show_equip\":" + (show_equip == null ? "null" : show_equip) + ", " +
                 "\"head_view\":" + (head_view == null ? "null" : head_view) + ", " +
                 "\"character_view\":" + (character_view == null ? "null" : character_view) + ", " +
+                "\"character_display\":" + (character_display == null ? "null" : character_display) + ", " +
                 "\"account\":" + (account == null ? "null" : account) + ", " +
                 "\"showEquip\":" + (showEquip == null ? "null" : Arrays.toString(showEquip.toArray())) + ", " +
                 "\"playableJob\":" + (playableJob == null ? "null" : playableJob) + ", " +

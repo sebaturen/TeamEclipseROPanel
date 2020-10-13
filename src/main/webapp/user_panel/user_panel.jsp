@@ -22,6 +22,8 @@
     <%@include file="../includes/header.jsp" %>
     <link type="text/css" rel="stylesheet" href="../assets/css/class_info.css">
     <link type="text/css" rel="stylesheet" href="../assets/css/user_panel.css">
+    <script type="application/javascript" src="../assets/js/user_panel.js"></script>
+    <% CharacterController.updateCharacterDisplay(request.getParameterMap(), user); %>
 </head>
 <body>
 <%@include file="../includes/menu.jsp" %>
@@ -37,7 +39,15 @@
                     <c:forEach items="${ac.characters}" var="acChar" varStatus="loop">
                         <c:set var="renderChar" value="${CharacterController.renderCharacter(acChar)}" />
                         <div class="pj_info col char_${acChar.id}">
-                            <div class="character_display">
+                            <div class="character_display" style="background-image: url('/assets/img/ro/char_bg/${acChar.character_display.get("background_bg").asString}')">
+                                <div class="char_edit"
+                                     data-toggle="modal"
+                                     data-target="#edit_char"
+                                     data-char_id="${acChar.id}"
+                                     data-bg="${acChar.character_display.get("background_bg").asString}"
+                                     data-action="${acChar.character_display.get("action").asInt}"
+                                     data-direction="${acChar.character_display.get("direction").asInt}"
+                                >Edit</div>
                                 <div class="acc_show">
                                     <img src="assets/img/ro/characters/${renderChar[1]}"/>
                                 </div>
@@ -92,6 +102,59 @@
                             <a href="/faq.jsp">Link account FAQ</a>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!-- MODAL -->
+        <div id="edit_char" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Character</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Background</label>
+                                <select class="form-control" id="char_bg" name="char_bg">
+                                    <option value="" selected>None</option>
+                                    <option value="prontera.jpg">Prontera</option>
+                                    <option value="geffen.jpg">Geffen</option>
+                                    <option value="izlude.jpg">Izlude</option>
+                                    <option value="aldebaran.jpg">Aldebaran</option>
+                                    <option value="payon.jpg">Payon</option>
+                                    <option value="rachel.jpg">Rachel</option>
+                                    <option value="yuno.jpg">Yuno</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Action</label>
+                                <select class="form-control" id="char_action" name="char_action">
+                                    <option value="0" selected>Idle</option>
+                                    <option value="8">Warlking</option>
+                                    <option value="32">Standby</option>
+                                    <option value="48">Receiving</option>
+                                    <option value="96">Casting spell</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Direction</label>
+                                <select class="form-control" id="char_direction" name="char_direction">
+                                    <option value="0" selected>Center</option>
+                                    <option value="1">Left</option>
+                                    <option value="7">Right</option>
+                                </select>
+                            </div>
+                            <input type="hidden" id="char_id" name="char_id" value="">
+                        </div>
+                        <div class="modal-footer">
+                            <button id="apply_change_character" type="submit" class="btn btn-primary">Save changes</button>
+                            <button id="cancel_changes" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

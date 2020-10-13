@@ -54,7 +54,7 @@
                             <div class="pj_info char_${guild.recaller.id}">
                                 <c:if test="${not empty guild.recaller}">
                                     <c:set var="renderChar" value="${CharacterController.renderCharacter(guild.recaller)}" />
-                                    <div class="character_display">
+                                    <div class="character_display" style="background-image: url('/assets/img/ro/char_bg/${guild.recaller.character_display.get("background_bg").asString}')">
                                         <div class="acc_show">
                                             <img src="assets/img/ro/characters/${renderChar[1]}" alt="${guild.recaller.name}"/>
                                         </div>
@@ -79,7 +79,7 @@
                         <c:forEach items="${guild.characterList}" var="pj" varStatus="loop">
                             <c:set var="renderChar" value="${CharacterController.renderCharacter(pj)}" />
                             <div class="pj_info col char_${pj.id}">
-                                <div class="character_display">
+                                <div class="character_display" style="background-image: url('/assets/img/ro/char_bg/${pj.character_display.get("background_bg").asString}')">
                                     <div class="acc_show">
                                         <img src="assets/img/ro/characters/${renderChar[1]}"/>
                                     </div>

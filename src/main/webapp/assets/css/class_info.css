@@ -1,3 +1,6 @@
+.character_display {
+    background-position: center;
+}
 .character_content {
     display: block;
     width: 100%;
