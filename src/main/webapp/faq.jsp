@@ -51,10 +51,9 @@
                             </div>
                         </div>
                     </div>
-                    <br><br>
+                    <br>
                     <div class="row">
                         <div class="col">
-                            <br>
                             <b>Step Two:</b> Copy the Link code and go to Prontera (Kafra spawn) [116, 72].
                             <br>
                             <b>Step Three:</b> create a Private room (/chat) and paste the link code. You can use any password on the Private room.
