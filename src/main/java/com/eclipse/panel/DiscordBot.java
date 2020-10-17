@@ -2,8 +2,12 @@ package com.eclipse.panel;
 
 import com.eclipse.panel.gameObject.Monster;
 import com.eclipse.panel.gameObject.ROMap;
+import com.eclipse.panel.gameObject.character.Character;
 import com.eclipse.panel.viewController.ViewController;
 import com.eclipse.panel.viewController.rest.APIKeys;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -100,7 +104,12 @@ public class DiscordBot {
         }
     }
 
-    public void reportMonsterLocation(Monster monster, APIKeys userShow) {
+    public void reportMonsterLocation(JsonObject monsterData) {
+
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        APIKeys userShow = APIKeys.getValue(monsterData.get("api_key").getAsString());
+        com.eclipse.panel.gameObject.Monster monster = gson.fromJson(monsterData, com.eclipse.panel.gameObject.Monster.class);
+
         if(monstersReport.containsKey(monster.getId())) {
             Monster oldReport = monstersReport.get(monster.getId());
             long diff = oldReport.getTimestamp() - monster.getTimestamp();
@@ -134,7 +143,26 @@ public class DiscordBot {
             prepareServer();
             // Prepare message:
             SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-            String msg = monster.getMonster_name() +" ```nim\n("+ userShow +") ["+ monster.getId() +"] "+ monster.getMap_name() +" ("+ monster.getX() +","+ monster.getY() +") --> "+ df.format(monster.getTimestamp()) +"```";
+            String charViewDetail = "";
+            if (monsterData.has("character") && !monsterData.get("character").isJsonNull()) {
+                JsonObject charInfo = monsterData.get("character").getAsJsonObject();
+                if (charInfo != null && !charInfo.isJsonNull()) {
+                    int accId = charInfo.get("account_id").getAsInt();
+                    int characterId = charInfo.get("character_id").getAsInt();
+
+                    if (characterId != 0) {
+                        Character ch = new Character.Builder(characterId).build();
+                        if (ch != null) {
+                            charViewDetail = ch.getName();
+                        } else {
+                            charViewDetail = "AC: "+ accId +" | C: "+ characterId;
+                        }
+                    } else {
+                        charViewDetail = "AC: "+ accId;
+                    }
+                }
+            }
+            String msg = monster.getMonster_name() +" ```nim\n("+ userShow +") ["+ monster.getId() +"] "+ monster.getMap_name() +" ("+ monster.getX() +","+ monster.getY() +") --> "+ df.format(monster.getTimestamp()) +" ["+ charViewDetail +"]```";
 
             // Prepare map view:
             try {

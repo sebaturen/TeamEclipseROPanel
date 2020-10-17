@@ -15,8 +15,6 @@ import javax.ws.rs.core.Response;
 @Path("/monsters")
 public class Monster {
 
-    private Gson gson = new GsonBuilder().serializeNulls().create();
-
     @PUT
     @Path("/location/{monster_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -34,9 +32,7 @@ public class Monster {
             return Response.status(403).entity("Key not match").build();
         }
 
-        APIKeys userShow = APIKeys.getValue(monsterData.get("api_key").getAsString());
-        com.eclipse.panel.gameObject.Monster monster = gson.fromJson(monsterData, com.eclipse.panel.gameObject.Monster.class);
-        DiscordBot.shared.reportMonsterLocation(monster, userShow);
+        DiscordBot.shared.reportMonsterLocation(monsterData);
 
         return Response.ok().build();
 
