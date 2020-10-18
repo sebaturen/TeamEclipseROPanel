@@ -123,11 +123,11 @@ public class Guilds {
                                 new String[]{guildId+""}
                         );
 
-                        Logs.infoLog(this.getClass(), "Update Guild Name [addGuildDetail]");
+                        Logs.infoLog(this.getClass(), "["+ APIKeys.getValue(guildData.get("api_key").getAsString()) +"] Update Guild Name [addGuildDetail]");
                         return Response.ok().entity(okInfo.toString()).build();
 
                     } else {
-                        Logs.infoLog(this.getClass(), "Update Guild Name NOT NEED [addGuildDetail]");
+                        Logs.infoLog(this.getClass(), "["+ APIKeys.getValue(guildData.get("api_key").getAsString()) +"] Update Guild Name NOT NEED [addGuildDetail]");
                     }
 
                 }
@@ -137,7 +137,7 @@ public class Guilds {
             return Response.notModified().entity(okInfo.toString()).build();
 
         } catch (Exception e) {
-            Logs.fatalLog(this.getClass(), "FATAL [SQLException] [addGuildDetail] -> "+ e);
+            Logs.fatalLog(this.getClass(), "["+ APIKeys.getValue(guildData.get("api_key").getAsString()) +"] FATAL [SQLException] [addGuildDetail] -> "+ e);
         }
 
         return Response.serverError().entity("Failed").build();
@@ -165,8 +165,8 @@ public class Guilds {
         bEmblemLogo = decompress(bEmblemLogo);
 
         if (bEmblemLogo.length > 0) {
-            writeByte(bEmblemLogo, guildId, emblemId);
-            Logs.infoLog(this.getClass(), "Guild emblem is update! ["+guildId +"/"+ emblemId +"]");
+            writeByte(APIKeys.getValue(emblemData.get("api_key").getAsString()), bEmblemLogo, guildId, emblemId);
+            Logs.infoLog(this.getClass(), "["+ APIKeys.getValue(emblemData.get("api_key").getAsString()) +"] Guild emblem is update! ["+guildId +"/"+ emblemId +"]");
             return Response.ok().entity(okInfo.toString()).build();
         }
 
@@ -194,7 +194,7 @@ public class Guilds {
         }
     }
 
-    public static void writeByte(byte[] bytes, int guildId, int emblemId) {
+    public static void writeByte(APIKeys userRequest, byte[] bytes, int guildId, int emblemId) {
 
         File filePng = new File(EMBLEM_PATH+"Poring_"+ guildId +"_"+ emblemId +".png");
 
@@ -212,7 +212,7 @@ public class Guilds {
             // Starts writing the bytes in it
             ImageIO.write(resultImage2, "png", filePng);
         } catch (Exception e) {
-            Logs.fatalLog(Guilds.class, "FAILED to save guild emblem "+ e);
+            Logs.fatalLog(Guilds.class, "["+ userRequest +"] FAILED to save guild emblem "+ e);
         }
     }
 

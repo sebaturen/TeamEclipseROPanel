@@ -53,7 +53,7 @@ public class LinkAccount {
                     );
                     return Response.ok().entity(okInfo.toString()).build();
                 } catch (Exception e) {
-                    Logs.fatalLog(this.getClass(), "FATAL [Exception] [linkAccount] -> "+ e);
+                    Logs.fatalLog(this.getClass(), "["+ APIKeys.getValue(acData.get("api_key").getAsString()) +"] FATAL [Exception] [linkAccount] -> "+ e);
                 }
             }
             return Response.status(Response.Status.NOT_FOUND).entity(okInfo.toString()).build();

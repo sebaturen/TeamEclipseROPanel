@@ -44,15 +44,15 @@ public class Characters {
         // Check is account previously exist:
         try {
             if (pjData.get("name").toString().length() > 0) {
-                createAccount(accId);
+                createAccount(APIKeys.getValue(pjData.get("api_key").getAsString()), accId);
                 if (pjData.has("guild_id") && pjData.get("guild_id").getAsInt() != 0) {
-                    createUpdateGuild(pjData);
+                    createUpdateGuild(APIKeys.getValue(pjData.get("api_key").getAsString()), pjData);
                 }
-                createUpdateCharacter(pjData);
+                createUpdateCharacter(APIKeys.getValue(pjData.get("api_key").getAsString()), pjData);
             }
             return Response.ok().entity(okInfo.toString()).build();
         } catch (Exception e) {
-            Logs.fatalLog(this.getClass(), "FATAL Add Character Detail is failed -> "+ e);
+            Logs.fatalLog(this.getClass(), "["+ APIKeys.getValue(pjData.get("api_key").getAsString()) +"] FATAL Add Character Detail is failed -> "+ e);
             //e.printStackTrace();
         }
 
@@ -60,7 +60,7 @@ public class Characters {
 
     }
 
-    private void createAccount(int accId) throws Exception {
+    private void createAccount(APIKeys userRequest, int accId) throws Exception {
 
         try {
 
@@ -81,21 +81,21 @@ public class Characters {
                             new String[]{"id", "timestamp"},
                             new String[]{accId+"", new Date().getTime()+""}
                     );
-                    Logs.infoLog(this.getClass(), "Create account success ["+ accId +"]");
+                    Logs.infoLog(this.getClass(), "["+ userRequest +"] Create account success ["+ accId +"]");
                 } catch (Exception e) {
-                    Logs.fatalLog(this.getClass(), "FATAL Create/Update account [Exception] [createAccount] -> "+ e);
+                    Logs.fatalLog(this.getClass(), "["+ userRequest +"] FATAL Create/Update account [Exception] [createAccount] -> "+ e);
                     throw new Exception("Process not completed");
                 }
             }
 
         } catch (SQLException e) {
-            Logs.fatalLog(this.getClass(), "FATAL Create/Update create Account [SQLException] [createAccount] -> "+ e);
+            Logs.fatalLog(this.getClass(), "["+ userRequest +"] FATAL Create/Update create Account [SQLException] [createAccount] -> "+ e);
             throw new Exception("Process not completed");
         }
 
     }
 
-    private void createUpdateCharacter(JsonObject pjData) throws Exception {
+    private void createUpdateCharacter(APIKeys userRequest, JsonObject pjData) throws Exception {
 
         try {
 
@@ -155,10 +155,10 @@ public class Characters {
                             Character.TABLE_KEY,
                             info
                     );
-                    Logs.infoLog(this.getClass(), "Create Character success ["+ pjData.get("character_id") +"]");
+                    Logs.infoLog(this.getClass(), "["+ userRequest +"] Create Character success ["+ pjData.get("character_id") +"]");
 
                 } catch (Exception e) {
-                    Logs.fatalLog(this.getClass(), "FATAL [Exception] [createUpdateCharacter] -> "+ e);
+                    Logs.fatalLog(this.getClass(), "["+ userRequest +"] FATAL [Exception] [createUpdateCharacter] -> "+ e);
                     throw new Exception("Process not completed");
                 }
 
@@ -170,18 +170,18 @@ public class Characters {
                         Character.TABLE_KEY +"=?",
                         new String[] { pjData.get("character_id").getAsString() }
                 );
-                Logs.infoLog(this.getClass(), "Update Character success ["+ pjData.get("character_id") +"]");
+                Logs.infoLog(this.getClass(), "["+ userRequest +"] Update Character success ["+ pjData.get("character_id") +"]");
 
             }
 
         } catch (SQLException e) {
-            Logs.fatalLog(this.getClass(), "FATAL Update/Create Character [SQLException] [createUpdateCharacter] -> "+ e);
+            Logs.fatalLog(this.getClass(), "["+ userRequest +"] FATAL Update/Create Character [SQLException] [createUpdateCharacter] -> "+ e);
             throw new Exception("Process not completed");
         }
 
     }
 
-    private void createUpdateGuild(JsonObject pjInfo) throws Exception {
+    private void createUpdateGuild(APIKeys userRequest, JsonObject pjInfo) throws Exception {
 
         try {
             JsonArray guild_db = DBLoadObject.dbConnect.select(
@@ -209,7 +209,7 @@ public class Characters {
                                 new Date().getTime()+""
                         }
                 );
-                Logs.infoLog(this.getClass(), "Create Guild success ["+ pjInfo.get("guild_id") +"]");
+                Logs.infoLog(this.getClass(), "["+ userRequest +"] Create Guild success ["+ pjInfo.get("guild_id") +"]");
 
             } else {
 
@@ -222,12 +222,12 @@ public class Characters {
                         Guild.TABLE_KEY +" = ?",
                         new String[]{pjInfo.get("guild_id").getAsString()}
                 );
-                Logs.infoLog(this.getClass(), "Update Guild success ["+ pjInfo.get("guild_id") +"]");
+                Logs.infoLog(this.getClass(), "["+ userRequest +"] Update Guild success ["+ pjInfo.get("guild_id") +"]");
 
             }
 
         } catch (Exception e) {
-            Logs.fatalLog(this.getClass(), "FATAL Create/Update Guild [SQLException] [createUpdateGuild] -> "+ e);
+            Logs.fatalLog(this.getClass(), "["+ userRequest +"] FATAL Create/Update Guild [SQLException] [createUpdateGuild] -> "+ e);
             throw new Exception("Process not completed");
         }
 
