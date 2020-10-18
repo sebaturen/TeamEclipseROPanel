@@ -95,18 +95,12 @@ function renderCastle(inf, castNumber) {
         } else {
             showTime = "0:"+ ((minuteDiff >= 9)? minuteDiff:"0"+ minuteDiff);
         }
-        let guildDet = null;
-        if (breaks_h.guild_id === -1) {
-            guildDet =``;
-        } else {
-            guildDet =`<a href="guild_info.jsp?id=`+ breaks_h.guild_id +`" data-guild_name='`+ breaks_h.guild_name +`' data-break_time='`+ showTime +`'>
-                        <img src='./assets/img/ro/guilds/emblems/Poring_`+ breaks_h.guild_id +`_`+ breaks_h.guild_emblem +`.png'>
-                    </a>`;
-        }
         breaks.append(`
                 <div class='breaker_point `+ tempClass +`' style="margin-left: `+ postEmb +`%">
                     <div class='breaker_guild_tl'>
-                        `+ guildDet +`
+                        <a href="guild_info.jsp?id=`+ breaks_h.guild_id +`" data-guild_name='`+ breaks_h.guild_name +`' data-break_time='`+ showTime +`'>
+                            <img src='./assets/img/ro/guilds/emblems/Poring_`+ breaks_h.guild_id +`_`+ breaks_h.guild_emblem +`.png'>
+                        </a>
                     </div>
                 </div>
             `);
