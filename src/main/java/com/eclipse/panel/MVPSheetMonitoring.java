@@ -77,7 +77,7 @@ public class MVPSheetMonitoring implements Runnable {
             List<Monster> spawnMonsterList = new ArrayList<>();
             if (values == null || values.isEmpty()) {
                 Logs.infoLog(this.getClass(), "No data found - monster time");
-            } else {    
+            } else {
                 for (List row : values) {
                     // Print columns A and E, which correspond to indices 0 and 4.
                     if (row.size() >= 3 && !row.get(4).toString().equals("--")) {

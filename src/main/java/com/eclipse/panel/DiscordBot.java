@@ -131,8 +131,8 @@ public class DiscordBot {
 
             // Check if preview not have a map
             if (
-                    (oldReport.getMap_name() == null || oldReport.getMap_name().isEmpty())
-                    && (monster.getMap_name() != null && monster.getMap_name().length() > 0)
+                    (oldReport.getMap_name() == null || oldReport.getMap_name().isEmpty() || oldReport.getMap_name().equals("UNKNOWN!"))
+                    && (monster.getMap_name() != null && monster.getMap_name().length() > 0 && !oldReport.getMap_name().equals("UNKNOWN!"))
             ){
                 monstersReport.remove(monster.getId());
             }
