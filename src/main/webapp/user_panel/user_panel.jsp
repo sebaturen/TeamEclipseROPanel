@@ -54,6 +54,19 @@
                                 <div class="char_show">
                                     <img src="assets/img/ro/characters/${renderChar[0]}"/>
                                 </div>
+                                <div class="char_equip">
+                                    <c:set var="renderItems" value="${CharacterController.renderItems(acChar)}" />
+                                    <c:if test="${renderItems[0].length() > 0}">
+                                        <div class="char_shield">
+                                            <img src="assets/img/ro/items/${renderItems[0]}">
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${renderItems[1].length() > 0}">
+                                        <div class="char_weapon">
+                                            <img src="assets/img/ro/items/${renderItems[1]}">
+                                        </div>
+                                    </c:if>
+                                </div>
                             </div>
                             <div class="character_name_lvl">
                                     ${acChar.name}<br>Lvl ${acChar.lvl}

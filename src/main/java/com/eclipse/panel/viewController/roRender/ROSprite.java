@@ -36,4 +36,12 @@ public class ROSprite {
     public ROSpr getRoSpr() {
         return roSpr;
     }
+
+    @Override
+    public String toString() {
+        return "{\"_class\":\"ROSprite\", " +
+                "\"roSpr\":" + (roSpr == null ? "null" : roSpr) + ", " +
+                "\"roAct\":" + (roAct == null ? "null" : roAct) +
+                "}";
+    }
 }

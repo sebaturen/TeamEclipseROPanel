@@ -22,22 +22,26 @@ import java.util.*;
 public class CharacterController {
 
     public static String CHARACTER_PATH = ViewController.FILEPATH +"assets/img/ro/characters/";
+    public static String ITEMS_PATH = ViewController.FILEPATH +"assets/img/ro/items/";
     private static final String RO_SPRITES_LOC = "ro_sprites/";
     private static final String HEADS_LOC = "head/";
     private static final String HEADS_PALETTE_LOC = "palette/head/";
     private static final String JOB_LOC = "body/";
     private static final String JOB_PALETTE = "palette/body/";
     private static final String ACCESSORY_ID_NAME_LOC = "accessory/";
+    private static final String ITEM_LOC = "items/";
 
     private static final String HEADS_PROPERTIES = "head_id.properties";
     private static final String JOB_NAME_PROPERTIES = "job_names.properties";
     private static final String SEX_PROPERTIES = "sex_id.properties";
     private static final String ACCESSORY_ID_NAME_PROPERTIES = "accessory_id_name.properties";
+    private static final String ITEM_ID_NAME_PROPERTIES = "items_id_name.properties";
 
     public static final Properties headsProp = new Properties();
     public static final Properties jobsNameProp = new Properties();
     private static final Properties sexProp = new Properties();
     public static final Properties accessoryIdName = new Properties();
+    public static final Properties itemNameProp = new Properties();
     private static ClassLoader classLoader;
 
     static {
@@ -47,10 +51,12 @@ public class CharacterController {
             FileInputStream fsSex = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+SEX_PROPERTIES)).getFile());
             FileInputStream fsHeads = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+HEADS_PROPERTIES)).getFile());
             FileInputStream fsAccIdName = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+ACCESSORY_ID_NAME_PROPERTIES)).getFile());
+            FileInputStream fsItemIdName = new FileInputStream(Objects.requireNonNull(classLoader.getResource(RO_SPRITES_LOC+ITEM_ID_NAME_PROPERTIES)).getFile());
             jobsNameProp.load(new InputStreamReader(fsJobs, StandardCharsets.UTF_8));
             sexProp.load(new InputStreamReader(fsSex, StandardCharsets.UTF_8));
             accessoryIdName.load(new InputStreamReader(fsAccIdName, StandardCharsets.UTF_8));
             headsProp.load(fsHeads);
+            itemNameProp.load(new InputStreamReader(fsItemIdName, StandardCharsets.UTF_8));
         } catch(IOException e) {
             Logs.fatalLog(CharacterController.class, e.toString());
         }
@@ -130,7 +136,8 @@ public class CharacterController {
                             floorX,
                             floorY,
                             actionId,
-                            frameId
+                            frameId,
+                            false
                     );
 
                     // Draw head
@@ -141,7 +148,8 @@ public class CharacterController {
                             floorX,
                             floorY,
                             actionId,
-                            frameId
+                            frameId,
+                            false
                     );
 
                     /*/ reference position
@@ -187,7 +195,8 @@ public class CharacterController {
                             floorX,
                             floorY,
                             actionId,
-                            frameId
+                            frameId,
+                            false
                     );
 
                     // Draw accessory TOP
@@ -198,7 +207,8 @@ public class CharacterController {
                             floorX,
                             floorY,
                             actionId,
-                            frameId
+                            frameId,
+                            false
                     );
 
                     // Draw accessory LOW
@@ -209,7 +219,8 @@ public class CharacterController {
                             floorX,
                             floorY,
                             actionId,
-                            frameId
+                            frameId,
+                            false
                     );
 
                     /*/ reference position
@@ -231,6 +242,61 @@ public class CharacterController {
         return new String[] {bodyPngFileName, accPngFileName};
     }
 
+    public static String[] renderItems(Character character) {
+        int weaponId = character.getShow_equip().get("weapon_id").getAsInt();
+        int shieldId = character.getShow_equip().get("shield_id").getAsInt();
+
+        String weaponFile = "";
+        String shieldFile = "";
+        if (weaponId > 0) {
+            weaponFile = renderItem(weaponId);
+        }
+        if (shieldId > 0) {
+            shieldFile = renderItem(shieldId);
+        }
+
+        return new String[] { weaponFile, shieldFile };
+    }
+    public static String renderItem(int itemId) {
+        String itemFileName = "item_"+ itemId +".png";
+
+        File itemPng = new File(ITEMS_PATH + itemFileName);
+
+        if (!itemPng.exists()) {
+
+            try {
+                // Item Render
+                ROSprite itemSprite = getItemSprite(itemId);
+                //ROFrame itemFrame = itemSprite.getAnimationFrame(0, 0);
+
+                // Mix elements
+                BufferedImage itemLoc = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
+                Graphics gBody = itemLoc.getGraphics();
+
+                // Draw body
+                drawElement(
+                        gBody,
+                        null,
+                        itemSprite,
+                        15,
+                        15,
+                        0,
+                        0,
+                        true
+                );
+
+                ImageIO.write(itemLoc, "png", itemPng);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Logs.errorLog(CharacterController.class, "Failed to render item\n" +
+                        "-> "+ itemFileName +"\n" +
+                        "e-> "+ e);
+            }
+        }
+        return itemFileName;
+    }
+
     private static void drawElement(
             Graphics graphics,
             ROFrame referenceFrame,
@@ -238,7 +304,8 @@ public class CharacterController {
             int floorX,
             int floorY,
             int actionId,
-            int frameId
+            int frameId,
+            boolean ignorePosition
     ) {
 
         if (drawFrame != null) {
@@ -257,8 +324,10 @@ public class CharacterController {
                     drawFrameX += roSubFrame.getOffSetX();
                     drawFrameY += roSubFrame.getOffSetY();
                     BufferedImage img = drawFrame.getRoSpr().getPng(roSubFrame.getSpriteVersion(), roSubFrame.getImage(), (roSubFrame.getDirection() == 1));
-                    int xPos = floorX - (img.getWidth()/2) + drawFrameX;
-                    int yPos = floorY - (img.getHeight()/2) + drawFrameY;
+                    int xPos = floorX - (img.getWidth()/2);
+                    if (!ignorePosition) xPos += drawFrameX;
+                    int yPos = floorY - (img.getHeight()/2);
+                    if (!ignorePosition) yPos += drawFrameY;
                     graphics.drawImage(img, xPos, yPos, null);
                 }
             }
@@ -309,6 +378,17 @@ public class CharacterController {
 
         return new ROSprite(new ROSpr.Builder(accSprite).build(), new ROAct.Builder(actSprite).build());
 
+    }
+
+    private static ROSprite getItemSprite(int itemId) throws Exception {
+
+        String itemSpriteAct = RO_SPRITES_LOC + ITEM_LOC + itemNameProp.getProperty(itemId+"");
+
+        URL itemSprite = classLoader.getResource(itemSpriteAct+".spr");
+        URL actSprite = classLoader.getResource(itemSpriteAct+".act");
+
+        ROSpr roSpr = new ROSpr.Builder(itemSprite).build();
+        return new ROSprite(roSpr, new ROAct.Builder(actSprite).build());
     }
 
     public static void updateCharacterDisplay(Map<String, String[]> params, User u) {

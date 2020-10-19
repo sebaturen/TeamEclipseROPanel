@@ -35,4 +35,10 @@ public class CharacterControllerTest extends TestCase {
         CharacterController.renderCharacter(4009, 7, 1, 2, 0, 1675, 12, 1691, 7, 0);
 
     }
+
+    public void testRenderItem() {
+        CharacterController.ITEMS_PATH = "RENDER_TEST/item/";
+
+        CharacterController.renderItem(1158);
+    }
 }

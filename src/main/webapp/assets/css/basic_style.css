@@ -69,19 +69,18 @@ a {
     background-position: 0, 0;
 }
 
-/** Personal fix **/
-.job_show_f_20 { width: 54px; margin-left: 5px; }
-.job_show_m_7 { margin-left: 4px; }
-.job_show_m_15 { margin-left: 0; margin-top: 8px; }
-.job_show_m_19 { margin-left: 3px; margin-top: 8px; }
-.job_show_f_7 { margin-left: 4px; width: 54px; }
-.job_show_f_18 { margin-left: 4px; }
-.job_show_m_11 { margin-left: 4px; }
-.job_show_m_8 { margin-left: 1px; margin-top: 10px; }
-.job_show_m_10 { margin-top: 13px; margin-left: 3px; }
-.job_show_f_1 { margin-left: 6px; width: 46px; }
-.job_show_f_17 { margin-top: 3px; margin-left: -2px; height: 90px; width: 57px; }
-.job_show_f_0 { margin-left: 3px; }
+.char_equip {
+    position: absolute;
+    top: 25%;
+    left: 24px;
+}
+
+.char_shield, .char_weapon {
+    box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.10), 0 3px 6px 0 rgba(0,0,0, 0.10);
+    background-color: white;
+    border: solid 1px;
+    border-radius: 3px;
+}
 /** =========================== head ======================= **/
 .acc_show {
 
@@ -97,20 +96,6 @@ a {
 .hair_show_stand {
     background-position: 0, 0;
 }
-
-/** person style **/
-.hair_show_f_7 { margin-left: 17px; }
-.hair_show_m_13 { margin-top: 3px; width: 30px; }
-.hair_show_m_2 { width: 29px; margin-left: 16px; }
-.hair_show_m_6 { margin-left: 19px; }
-.hair_show_m_21 { width: 30px; }
-.hair_show_f_14 { margin-left: 19px; }
-.hair_show_m_4 { margin-left: 19px; }
-.hair_show_m_26 { width: 28px; }
-.hair_show_m_7 { width: 30px; }
-.hair_show_m_9 { margin-left: 16px; }
-.hair_show_m_5 { margin-left: 19px; margin-top: 1px; }
-.hair_show_m_14 { margin-left: 19px; }
 
 /** =========================== FOOTER ======================= **/
 #footer {

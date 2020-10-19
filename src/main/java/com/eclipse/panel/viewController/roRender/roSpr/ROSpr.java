@@ -239,4 +239,11 @@ public class ROSpr {
             return framesV2.get(frame);
         }
     }
+
+    @Override
+    public String toString() {
+        return "{\"_class\":\"ROSpr\", " +
+                "\"version\":\"" + version + "\"" + ", " +
+                "}";
+    }
 }
