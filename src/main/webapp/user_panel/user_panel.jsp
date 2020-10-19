@@ -56,6 +56,7 @@
                                 </div>
                                 <div class="char_equip">
                                     <c:set var="renderItems" value="${CharacterController.renderItems(acChar)}" />
+                                    <c:set var="items" value="${CharacterController.getItems(acChar)}" />
                                     <c:if test="${renderItems[0].length() > 0}">
                                         <div class="char_shield">
                                             <img src="assets/img/ro/items/${renderItems[0]}">
@@ -89,7 +90,7 @@
                         </div>
                         <div class="row c_character_content">
                             <div class="col">
-                                Conoce como vincular tus cuentas en:
+                                Know how you can link your accounts:
                                 <br><br>
                                 <a href="/faq.jsp"><b>Link account FAQ</b></a>
                             </div>

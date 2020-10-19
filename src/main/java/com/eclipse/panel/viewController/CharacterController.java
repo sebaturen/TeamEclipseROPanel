@@ -4,6 +4,7 @@ import com.eclipse.panel.Logs;
 import com.eclipse.panel.User;
 import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.character.Character;
+import com.eclipse.panel.gameObject.roDB.Item;
 import com.eclipse.panel.viewController.roRender.ROSprite;
 import com.eclipse.panel.viewController.roRender.roAct.ROAct;
 import com.eclipse.panel.viewController.roRender.roAct.ROFrame;
@@ -333,6 +334,22 @@ public class CharacterController {
             }
         }
 
+    }
+
+    public static Item[] getItems(Character character) {
+        int weaponId = character.getShow_equip().get("weapon_id").getAsInt();
+        int shieldId = character.getShow_equip().get("shield_id").getAsInt();
+
+        Item weaponFile = null;
+        Item shieldFile = null;
+        if (weaponId > 0) {
+            weaponFile = new Item.Builder(weaponId).build();
+        }
+        if (shieldId > 0) {
+            shieldFile = new Item.Builder(shieldId).build();
+        }
+
+        return new Item[] { weaponFile, shieldFile };
     }
 
     private static ROSprite getBodySprite(String jobId, String sexId, int bodyPalette) throws Exception {
