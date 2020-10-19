@@ -69,7 +69,7 @@
                                             </div>
                                         </c:if>
                                         <c:if test="${renderItems[1].length() > 0}">
-                                            <div class="char_   weapon">
+                                            <div class="char_weapon">
                                                 <img src="assets/img/ro/items/${renderItems[1]}">
                                             </div>
                                         </c:if>
