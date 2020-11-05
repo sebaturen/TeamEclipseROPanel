@@ -10,7 +10,10 @@ import com.eclipse.panel.viewController.roRender.roAct.ROAct;
 import com.eclipse.panel.viewController.roRender.roAct.ROFrame;
 import com.eclipse.panel.viewController.roRender.roAct.ROSubFrame;
 import com.eclipse.panel.viewController.roRender.roSpr.ROSpr;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.apache.commons.logging.Log;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.*;
 
 public class CharacterController {
@@ -350,6 +354,25 @@ public class CharacterController {
         }
 
         return new Item[] { weaponFile, shieldFile };
+    }
+
+    public static Character getRandomCharacter() {
+
+        try {
+            JsonArray r = DBLoadObject.dbConnect.selectQuery("SELECT "+ Character.TABLE_KEY +" FROM " + Character.TABLE_NAME +" ORDER BY RAND() LIMIT 1");
+
+            for(JsonElement ch : r) {
+                JsonObject c = (JsonObject) ch;
+                int cId = c.get(Character.TABLE_KEY).getAsInt();
+                return new Character.Builder(cId).build();
+            }
+
+        } catch (SQLException e) {
+            Logs.fatalLog(Character.class, "Failed to get a random character - "+ e.getMessage());
+        }
+
+        return null;
+
     }
 
     private static ROSprite getBodySprite(String jobId, String sexId, int bodyPalette) throws Exception {

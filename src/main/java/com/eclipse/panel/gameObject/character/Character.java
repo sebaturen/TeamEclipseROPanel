@@ -2,6 +2,7 @@ package com.eclipse.panel.gameObject.character;
 
 import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.Accounts;
+import com.eclipse.panel.gameObject.Guild;
 import com.eclipse.panel.gameObject.roDB.Item;
 import com.eclipse.panel.gameObject.roDB.PlayableJob;
 import com.eclipse.panel.gameObject.roDB.PlayableSex;
@@ -36,6 +37,7 @@ public class Character {
     private List<Item> showEquip;
     private PlayableJob playableJob;
     private PlayableSex playableSex;
+    private Guild guild;
 
     // Update control
     private long timestamp;
@@ -51,6 +53,7 @@ public class Character {
 
         public Character build() {
             Character c = (Character) load(TABLE_KEY, id);
+            c.guild = new Guild.Builder(c.guild_id).build();
             // Load info (?)
             return c;
         }
@@ -109,6 +112,10 @@ public class Character {
         return character_display;
     }
 
+    public Guild getGuild() {
+        return guild;
+    }
+
     @Override
     public String toString() {
         return "{\"_class\":\"Character\", " +
@@ -127,6 +134,7 @@ public class Character {
                 "\"showEquip\":" + (showEquip == null ? "null" : Arrays.toString(showEquip.toArray())) + ", " +
                 "\"playableJob\":" + (playableJob == null ? "null" : playableJob) + ", " +
                 "\"playableSex\":" + (playableSex == null ? "null" : playableSex) + ", " +
+                "\"guild\":" + (guild == null ? "null" : guild) + ", " +
                 "\"timestamp\":\"" + timestamp + "\"" + ", " +
                 "\"last_update\":\"" + last_update + "\"" +
                 "}";

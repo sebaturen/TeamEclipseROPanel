@@ -37,9 +37,9 @@ public class LinkAccount {
             return Response.status(403).entity("Key not match").build();
         }
 
-        Logs.warningLog(this.getClass(), "CHECK "+ acData.toString());
+        Logs.warningLog(this.getClass(), "["+ APIKeys.getValue(acData.get("api_key").getAsString()) +"] CHECK "+ acData.toString());
         Accounts ac = new Accounts.Builder(accId).build();
-        if (ac.getUser_id() == 0 && acData.has("chat_name")) {
+        if (ac != null && ac.getUser_id() == 0 && acData.has("chat_name")) {
             User u = new User.Builder(acData.get("chat_name").getAsString(), true).build();
             if (u != null) {
                 Map<Object, Object> inf = new HashMap<>();

@@ -100,7 +100,7 @@ public class ROSpr {
         }
 
         /**
-         * All frame is a full info, the structure is:
+         * All frame have a full info, the structure is:
          *      [total frame]:
          *          [size x] [size y] {
          *              [RGBA] x sprite
