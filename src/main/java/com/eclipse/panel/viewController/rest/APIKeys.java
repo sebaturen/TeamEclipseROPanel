@@ -8,6 +8,7 @@ public enum APIKeys {
     CLEIN("rgR+oq9u}$poKY])+HF?3dG,DNQl-|"),
     GUILDER("Xuoy0rA<Zur0Gv4(>a-fKQW0,FsP*="),
     TURKO("ucXR2GitnokQ96xjIHZN3v33UROJj86W"),
+    ANA("0lgUdTje62jMj9a3tfOWrlaeiNzE4WAw"),
     WOE_KEY_AUTH("GriPd5rXzRTjS3ZO4xw8ekVTQMgipSUX");
 
     private final String ident;

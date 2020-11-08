@@ -247,6 +247,13 @@ public class DiscordBot {
         return msg;
     }
 
+    public void reportSystemChat(String msg) {
+        if (server == null || messageChannel == null) {
+            prepareServer();
+        }
+        messageChannel.sendMessage("System Chat: ```"+ msg +"```").queue();
+    }
+
     public Monster getMonsterReport(int mapMonsterId) {
         if (monstersReport.containsKey(mapMonsterId)) {
             return monstersReport.remove(mapMonsterId);

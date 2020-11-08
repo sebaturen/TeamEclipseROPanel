@@ -1,5 +1,6 @@
 package com.eclipse.panel.viewController.rest;
 
+import com.eclipse.panel.DiscordBot;
 import com.eclipse.panel.Logs;
 import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.Accounts;
@@ -44,6 +45,9 @@ public class General {
                     new String[]{"chat", "timestamp"},
                     new String[]{systemChat.get("chat").getAsString(), systemChat.get("timestamp").getAsLong()+""}
             );
+
+            DiscordBot.shared.reportSystemChat(systemChat.get("chat").getAsString());
+
             Logs.infoLog(this.getClass(), "["+ APIKeys.getValue(systemChat.get("api_key").getAsString()) +"] System Chat: "+ systemChat.get("chat"));
             return Response.ok().build();
         } catch (Exception e) {
