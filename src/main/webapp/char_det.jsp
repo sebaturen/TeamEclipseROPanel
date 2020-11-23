@@ -33,12 +33,12 @@
                         <c:set var="renderChar" value="${CharacterController.renderCharacter(pj)}" />
                         <div class="pj_info col char_${pj.id}">
                             <div class="char_show">
-                                <img src="assets/img/ro/characters/${renderChar[0]}" alt="${pj.name}"/>
+                                <img src="assets/img/ro/characters/${renderChar[0]}" alt="${fn:escapeXml(pj.name)}"/>
                             </div>
                             <div class="acc_show">
-                                <img src="assets/img/ro/characters/${renderChar[1]}" alt="${pj.name}"/>
+                                <img src="assets/img/ro/characters/${renderChar[1]}" alt="${fn:escapeXml(pj.name)}"/>
                             </div>
-                            <p class="pj_name">${pj.name}</p>
+                            <p class="pj_name">${fn:escapeXml(pj.name)}</p>
                             <p class="pj_lvl">Lvl ${pj.lvl}</p>
                         </div>
                     </div>

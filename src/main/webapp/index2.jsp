@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="character_name">${pj.name}</div>
+                                    <div class="character_name">${fn:escapeXml(pj.name)}</div>
                                     <div class="guild_name">
                                         <c:if test="${pj.guild != null}">
                                             ${pj.guild.name}

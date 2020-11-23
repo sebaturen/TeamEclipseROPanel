@@ -48,19 +48,29 @@ function castBreaker(breakInfo) {
         // Foreach castles
         let castles = $("<div class='castles'></div>");
         // CAST 1
-        castles.append(renderCastle(cast.castle_1, 1));
+        if (typeof cast.castle_1 !== 'undefined') {
+            castles.append(renderCastle(cast.castle_1, 1));
+        }
 
         // CAST 2
-        castles.append(renderCastle(cast.castle_2, 2));
+        if (typeof cast.castle_2 !== 'undefined') {
+            castles.append(renderCastle(cast.castle_2, 2));
+        }
 
         // CAST 3
-        castles.append(renderCastle(cast.castle_3, 3));
+        if (typeof cast.castle_3 !== 'undefined') {
+            castles.append(renderCastle(cast.castle_3, 3));
+        }
 
         // CAST 4
-        castles.append(renderCastle(cast.castle_4, 4));
+        if (typeof cast.castle_4 !== 'undefined') {
+            castles.append(renderCastle(cast.castle_4, 4));
+        }
 
         // CAST 5
-        castles.append(renderCastle(cast.castle_5, 5));
+        if (typeof cast.castle_5 !== 'undefined') {
+            castles.append(renderCastle(cast.castle_5, 5));
+        }
 
         $("#"+ i).append(castles);
     });
@@ -90,10 +100,10 @@ function renderCastle(inf, castNumber) {
             } else {
                 let tTime = minuteDiff - 60;
                 if (tTime < 0) tTime = 0;
-                showTime = "1:"+ ((tTime >= 9)? tTime:"0"+ tTime);
+                showTime = "1:"+ ((tTime > 9)? tTime:"0"+ tTime);
             }
         } else {
-            showTime = "0:"+ ((minuteDiff >= 9)? minuteDiff:"0"+ minuteDiff);
+            showTime = "0:"+ ((minuteDiff > 9)? minuteDiff:"0"+ minuteDiff);
         }
         breaks.append(`
                 <div class='breaker_point `+ tempClass +`' style="margin-left: `+ postEmb +`%">

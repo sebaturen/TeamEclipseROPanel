@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                                 <div class="character_name_lvl">
-                                        ${pj.name}<br>Lvl ${pj.lvl}
+                                        ${fn:escapeXml(pj.name)}<br>Lvl ${pj.lvl}
                                 </div>
                             </div>
                             <c:if test="${(loop.index+1)%3 == 0}">
