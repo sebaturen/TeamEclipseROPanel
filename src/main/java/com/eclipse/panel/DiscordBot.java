@@ -37,6 +37,7 @@ public class DiscordBot {
     private static final String TAG_PROFILE_ID = "744004665607454760";
     public static final String MAP_PATH = ViewController.FILEPATH +"assets/img/ro/maps/";
     public static final String MAP_POINTER_PATH = ViewController.FILEPATH +"assets/img/icons/";
+    private static String lastMsg;
     private static Date lastSpawnReport;
 
     private Map<Integer, Monster> monstersReport = new HashMap<>();
@@ -251,7 +252,10 @@ public class DiscordBot {
         if (server == null || messageChannel == null) {
             prepareServer();
         }
-        messageChannel.sendMessage("System Chat: ```"+ msg +"```").queue();
+        if (!msg.equals(lastMsg)) {
+            lastMsg = msg;
+            messageChannel.sendMessage("System Chat: ```"+ msg +"```").queue();
+        }
     }
 
     public Monster getMonsterReport(int mapMonsterId) {
