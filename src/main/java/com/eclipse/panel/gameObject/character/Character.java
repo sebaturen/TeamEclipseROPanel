@@ -53,7 +53,9 @@ public class Character {
 
         public Character build() {
             Character c = (Character) load(TABLE_KEY, id);
-            c.guild = new Guild.Builder(c.guild_id).build();
+            if (c != null) {
+                c.guild = new Guild.Builder(c.guild_id).build();
+            }
             // Load info (?)
             return c;
         }

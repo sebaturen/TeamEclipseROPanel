@@ -265,4 +265,25 @@ public class DiscordBot {
         return null;
     }
 
+    public void reportSold(JsonObject data) {
+        int charId = data.get("char_id").getAsInt();
+        String charName = "Char ["+ charId +"]";
+
+        Character ch = new Character.Builder(charId).build();
+        if (ch != null) {
+            charName = ch.getName();
+        }
+
+        if (server == null || messageChannel == null) {
+            prepareServer();
+        }
+
+        StringBuilder msg = new StringBuilder();
+        msg.append("Item sold: ```\n");
+        msg.append("- Cantidad: ").append(data.get("amount").getAsInt()).append("\n");
+        msg.append("- Zeny: ").append(data.get("zeny").getAsInt()).append("\n");
+        msg.append("- Comprador: ").append(charName).append("```");
+
+        messageChannel.sendMessage(msg).queue();
+    }
 }
