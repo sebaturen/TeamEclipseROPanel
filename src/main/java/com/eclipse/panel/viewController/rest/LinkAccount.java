@@ -4,10 +4,10 @@ import com.eclipse.panel.Logs;
 import com.eclipse.panel.User;
 import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.Accounts;
-import com.google.gson.JsonArray;
+import com.eclipse.panel.viewController.rest.keys.APIKeys;
+import com.eclipse.panel.viewController.rest.keys.APIKeysType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.apache.commons.logging.Log;
 
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -33,11 +33,11 @@ public class LinkAccount {
 
         // Save info
         JsonObject acData = JsonParser.parseString(inputData).getAsJsonObject();
-        if (!acData.has("api_key") || APIKeys.getValue(acData.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
+        if (!acData.has("api_key") || APIKeys.getAPIKey(acData.get("api_key").getAsString()).getType() == APIKeysType.UNAUTHORIZED) {
             return Response.status(403).entity("Key not match").build();
         }
 
-        Logs.warningLog(this.getClass(), "["+ APIKeys.getValue(acData.get("api_key").getAsString()) +"] CHECK "+ acData.toString());
+        Logs.warningLog(this.getClass(), "["+ APIKeys.getAPIKey(acData.get("api_key").getAsString()).getName() +"] CHECK "+ acData.toString());
         Accounts ac = new Accounts.Builder(accId).build();
         if (ac != null && ac.getUser_id() == 0 && acData.has("chat_name")) {
             User u = new User.Builder(acData.get("chat_name").getAsString(), true).build();
@@ -53,7 +53,7 @@ public class LinkAccount {
                     );
                     return Response.ok().entity(okInfo.toString()).build();
                 } catch (Exception e) {
-                    Logs.fatalLog(this.getClass(), "["+ APIKeys.getValue(acData.get("api_key").getAsString()) +"] FATAL [Exception] [linkAccount] -> "+ e);
+                    Logs.fatalLog(this.getClass(), "["+ APIKeys.getAPIKey(acData.get("api_key").getAsString()).getName() +"] FATAL [Exception] [linkAccount] -> "+ e);
                 }
             }
             return Response.status(Response.Status.NOT_FOUND).entity(okInfo.toString()).build();

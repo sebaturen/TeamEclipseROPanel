@@ -1,6 +1,8 @@
 package com.eclipse.panel.viewController.rest;
 
 import com.eclipse.panel.DiscordBot;
+import com.eclipse.panel.viewController.rest.keys.APIKeys;
+import com.eclipse.panel.viewController.rest.keys.APIKeysType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -21,7 +23,7 @@ public class Shop {
     ) {
         // Save info
         JsonObject soldData = JsonParser.parseString(inputData).getAsJsonObject();
-        if (!soldData.has("api_key") || APIKeys.getValue(soldData.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
+        if (!soldData.has("api_key") || APIKeys.getAPIKey(soldData.get("api_key").getAsString()).getType() == APIKeysType.UNAUTHORIZED) {
             return Response.status(403).entity("Key not match").build();
         }
 

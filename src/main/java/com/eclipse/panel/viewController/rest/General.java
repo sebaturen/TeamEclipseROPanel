@@ -3,7 +3,8 @@ package com.eclipse.panel.viewController.rest;
 import com.eclipse.panel.DiscordBot;
 import com.eclipse.panel.Logs;
 import com.eclipse.panel.dbConnect.DBLoadObject;
-import com.eclipse.panel.gameObject.Accounts;
+import com.eclipse.panel.viewController.rest.keys.APIKeys;
+import com.eclipse.panel.viewController.rest.keys.APIKeysType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -13,7 +14,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
 
 @Path("/system")
 public class General {
@@ -33,7 +33,7 @@ public class General {
         if (!systemChat.has("api_key") || systemChat.get("api_key").isJsonNull()) {
             return Response.status(403).entity("Key not match").build();
         }
-        if (APIKeys.getValue(systemChat.get("api_key").getAsString()) != APIKeys.WOE_KEY_AUTH) {
+        if (APIKeys.getAPIKey(systemChat.get("api_key").getAsString()).getType() != APIKeysType.WOE_UPDATE) {
             return Response.status(403).entity("Key not auth").build();
         }
 
@@ -48,10 +48,10 @@ public class General {
 
             DiscordBot.shared.reportSystemChat(systemChat.get("chat").getAsString());
 
-            Logs.infoLog(this.getClass(), "["+ APIKeys.getValue(systemChat.get("api_key").getAsString()) +"] System Chat: "+ systemChat.get("chat"));
+            Logs.infoLog(this.getClass(), "["+ APIKeys.getAPIKey(systemChat.get("api_key").getAsString()).getName() +"] System Chat: "+ systemChat.get("chat"));
             return Response.ok().build();
         } catch (Exception e) {
-            Logs.fatalLog(this.getClass(), "["+ APIKeys.getValue(systemChat.get("api_key").getAsString()) +"] FATAL Add system chat -> "+ e);
+            Logs.fatalLog(this.getClass(), "["+ APIKeys.getAPIKey(systemChat.get("api_key").getAsString()).getName() +"] FATAL Add system chat -> "+ e);
             return Response.serverError().build();
         }
 

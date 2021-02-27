@@ -4,7 +4,8 @@ import com.eclipse.panel.gameObject.Monster;
 import com.eclipse.panel.gameObject.ROMap;
 import com.eclipse.panel.gameObject.character.Character;
 import com.eclipse.panel.viewController.ViewController;
-import com.eclipse.panel.viewController.rest.APIKeys;
+import com.eclipse.panel.viewController.rest.keys.APIKey;
+import com.eclipse.panel.viewController.rest.keys.APIKeys;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -31,10 +32,10 @@ import java.util.List;
 
 public class DiscordBot {
 
-    private static final String DISCORD_CLIENT_SECRET = "NzM5NTIyNDQ2NDExMTY5OTcy.Xybr8g.prqK1kZRfXtt603Je_7PxCyk9kc";
-    private static final String SERVER_ID = "88465337883852800";
-    private static final String CHANNEL_ID = "739627408486957056";
-    private static final String TAG_PROFILE_ID = "744004665607454760";
+    private static final String DISCORD_CLIENT_SECRET = GeneralConfig.getStringConfig("DISCORD_CLIENT_SECRET");
+    private static final String SERVER_ID = GeneralConfig.getStringConfig("DISCORD_SERVER_ID");
+    private static final String CHANNEL_ID = GeneralConfig.getStringConfig("DISCORD_CHANNEL_ID");
+    private static final String TAG_PROFILE_ID = GeneralConfig.getStringConfig("DISCORD_TAG_PROFILE_ID");
     public static final String MAP_PATH = ViewController.FILEPATH +"assets/img/ro/maps/";
     public static final String MAP_POINTER_PATH = ViewController.FILEPATH +"assets/img/icons/";
     private static String lastMsg;
@@ -108,7 +109,7 @@ public class DiscordBot {
     public void reportMonsterLocation(JsonObject monsterData) {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        APIKeys userShow = APIKeys.getValue(monsterData.get("api_key").getAsString());
+        APIKey userShow = APIKeys.getAPIKey(monsterData.get("api_key").getAsString());
         com.eclipse.panel.gameObject.Monster monster = gson.fromJson(monsterData, com.eclipse.panel.gameObject.Monster.class);
 
         if(monstersReport.containsKey(monster.getId())) {

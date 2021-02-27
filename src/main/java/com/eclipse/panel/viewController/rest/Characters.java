@@ -1,17 +1,17 @@
 package com.eclipse.panel.viewController.rest;
 
 
-import com.eclipse.panel.DiscordBot;
 import com.eclipse.panel.Logs;
 import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.Accounts;
 import com.eclipse.panel.gameObject.Guild;
 import com.eclipse.panel.gameObject.character.Character;
+import com.eclipse.panel.viewController.rest.keys.APIKeys;
+import com.eclipse.panel.viewController.rest.keys.APIKeysType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import javax.swing.text.View;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,22 +37,22 @@ public class Characters {
 
         // Save info
         JsonObject pjData = JsonParser.parseString(inputData).getAsJsonObject();
-        if (!pjData.has("api_key") || APIKeys.getValue(pjData.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
+        if (!pjData.has("api_key") || APIKeys.getAPIKey(pjData.get("api_key").getAsString()).getType() == APIKeysType.UNAUTHORIZED) {
             return Response.status(403).entity("Key not match").build();
         }
 
         // Check is account previously exist:
         try {
             if (pjData.get("name").toString().length() > 0) {
-                createAccount(APIKeys.getValue(pjData.get("api_key").getAsString()), accId);
+                createAccount(APIKeys.getAPIKey(pjData.get("api_key").getAsString()).getName(), accId);
                 if (pjData.has("guild_id") && pjData.get("guild_id").getAsInt() != 0) {
-                    createUpdateGuild(APIKeys.getValue(pjData.get("api_key").getAsString()), pjData);
+                    createUpdateGuild(APIKeys.getAPIKey(pjData.get("api_key").getAsString()).getName(), pjData);
                 }
-                createUpdateCharacter(APIKeys.getValue(pjData.get("api_key").getAsString()), pjData);
+                createUpdateCharacter(APIKeys.getAPIKey(pjData.get("api_key").getAsString()).getName(), pjData);
             }
             return Response.ok().entity(okInfo.toString()).build();
         } catch (Exception e) {
-            Logs.fatalLog(this.getClass(), "["+ APIKeys.getValue(pjData.get("api_key").getAsString()) +"] FATAL Add Character Detail is failed -> "+ e);
+            Logs.fatalLog(this.getClass(), "["+ APIKeys.getAPIKey(pjData.get("api_key").getAsString()).getName() +"] FATAL Add Character Detail is failed -> "+ e);
             //e.printStackTrace();
         }
 
@@ -60,7 +60,7 @@ public class Characters {
 
     }
 
-    private void createAccount(APIKeys userRequest, int accId) throws Exception {
+    private void createAccount(String userRequest, int accId) throws Exception {
 
         try {
 
@@ -95,7 +95,7 @@ public class Characters {
 
     }
 
-    private void createUpdateCharacter(APIKeys userRequest, JsonObject pjData) throws Exception {
+    private void createUpdateCharacter(String userRequest, JsonObject pjData) throws Exception {
 
         try {
 
@@ -181,7 +181,7 @@ public class Characters {
 
     }
 
-    private void createUpdateGuild(APIKeys userRequest, JsonObject pjInfo) throws Exception {
+    private void createUpdateGuild(String userRequest, JsonObject pjInfo) throws Exception {
 
         try {
             JsonArray guild_db = DBLoadObject.dbConnect.select(

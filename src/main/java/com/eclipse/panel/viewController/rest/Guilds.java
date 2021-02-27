@@ -2,10 +2,11 @@ package com.eclipse.panel.viewController.rest;
 
 import com.eclipse.panel.Logs;
 import com.eclipse.panel.dbConnect.DBLoadObject;
-import com.eclipse.panel.gameObject.woe.CastleBreaker;
 import com.eclipse.panel.gameObject.Guild;
 import com.eclipse.panel.gameObject.character.Character;
 import com.eclipse.panel.viewController.ViewController;
+import com.eclipse.panel.viewController.rest.keys.APIKeys;
+import com.eclipse.panel.viewController.rest.keys.APIKeysType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -44,7 +45,7 @@ public class Guilds {
 
         // Save info
         JsonObject guildData = JsonParser.parseString(inputData).getAsJsonObject();
-        if (!guildData.has("api_key") || APIKeys.getValue(guildData.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
+        if (!guildData.has("api_key") || APIKeys.getAPIKey(guildData.get("api_key").getAsString()).getType() == APIKeysType.UNAUTHORIZED) {
             return Response.status(403).entity("Key not match").build();
         }
 
@@ -110,7 +111,7 @@ public class Guilds {
 
                     if (needUpdate) {
 
-                        if (needForceUpdate && APIKeys.getValue(guildData.get("api_key").getAsString()) != APIKeys.WOE_KEY_AUTH) {
+                        if (needForceUpdate && APIKeys.getAPIKey(guildData.get("api_key").getAsString()).getType() != APIKeysType.WOE_UPDATE) {
                             return Response.notModified().entity(okInfo.toString()).build();
                         }
                         Map<Object, Object> inf = new HashMap<>();
@@ -123,11 +124,11 @@ public class Guilds {
                                 new String[]{guildId+""}
                         );
 
-                        Logs.infoLog(this.getClass(), "["+ APIKeys.getValue(guildData.get("api_key").getAsString()) +"] Update Guild Name [addGuildDetail]");
+                        Logs.infoLog(this.getClass(), "["+ APIKeys.getAPIKey(guildData.get("api_key").getAsString()).getName() +"] Update Guild Name [addGuildDetail]");
                         return Response.ok().entity(okInfo.toString()).build();
 
                     } else {
-                        Logs.infoLog(this.getClass(), "["+ APIKeys.getValue(guildData.get("api_key").getAsString()) +"] Update Guild Name NOT NEED [addGuildDetail]");
+                        Logs.infoLog(this.getClass(), "["+ APIKeys.getAPIKey(guildData.get("api_key").getAsString()).getName() +"] Update Guild Name NOT NEED [addGuildDetail]");
                     }
 
                 }
@@ -137,7 +138,7 @@ public class Guilds {
             return Response.notModified().entity(okInfo.toString()).build();
 
         } catch (Exception e) {
-            Logs.fatalLog(this.getClass(), "["+ APIKeys.getValue(guildData.get("api_key").getAsString()) +"] FATAL [SQLException] [addGuildDetail] -> "+ e);
+            Logs.fatalLog(this.getClass(), "["+ APIKeys.getAPIKey(guildData.get("api_key").getAsString()).getName() +"] FATAL [SQLException] [addGuildDetail] -> "+ e);
         }
 
         return Response.serverError().entity("Failed").build();
@@ -157,7 +158,7 @@ public class Guilds {
 
         // Save info
         JsonObject emblemData = JsonParser.parseString(inputData).getAsJsonObject();
-        if (!emblemData.has("api_key") || APIKeys.getValue(emblemData.get("api_key").getAsString()) == APIKeys.UNKNOWN) {
+        if (!emblemData.has("api_key") || APIKeys.getAPIKey(emblemData.get("api_key").getAsString()).getType() == APIKeysType.UNAUTHORIZED) {
             return Response.status(403).entity("Key not match").build();
         }
 
@@ -165,8 +166,8 @@ public class Guilds {
         bEmblemLogo = decompress(bEmblemLogo);
 
         if (bEmblemLogo.length > 0) {
-            writeByte(APIKeys.getValue(emblemData.get("api_key").getAsString()), bEmblemLogo, guildId, emblemId);
-            Logs.infoLog(this.getClass(), "["+ APIKeys.getValue(emblemData.get("api_key").getAsString()) +"] Guild emblem is update! ["+guildId +"/"+ emblemId +"]");
+            writeByte(APIKeys.getAPIKey(emblemData.get("api_key").getAsString()).getName(), bEmblemLogo, guildId, emblemId);
+            Logs.infoLog(this.getClass(), "["+ APIKeys.getAPIKey(emblemData.get("api_key").getAsString()).getName() +"] Guild emblem is update! ["+guildId +"/"+ emblemId +"]");
             return Response.ok().entity(okInfo.toString()).build();
         }
 
@@ -194,7 +195,7 @@ public class Guilds {
         }
     }
 
-    public static void writeByte(APIKeys userRequest, byte[] bytes, int guildId, int emblemId) {
+    public static void writeByte(String userRequest, byte[] bytes, int guildId, int emblemId) {
 
         File filePng = new File(EMBLEM_PATH+"Poring_"+ guildId +"_"+ emblemId +".png");
 

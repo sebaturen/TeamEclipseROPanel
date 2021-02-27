@@ -5,6 +5,8 @@ import com.eclipse.panel.dbConnect.DBLoadObject;
 import com.eclipse.panel.gameObject.Guild;
 import com.eclipse.panel.gameObject.woe.CastleBreaker;
 import com.eclipse.panel.viewController.GuildController;
+import com.eclipse.panel.viewController.rest.keys.APIKeys;
+import com.eclipse.panel.viewController.rest.keys.APIKeysType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -103,7 +105,7 @@ public class WoE {
         if (!breakCast.has("api_key") || breakCast.get("api_key").isJsonNull()) {
             return Response.status(403).entity("Key not match").build();
         }
-        if (APIKeys.getValue(breakCast.get("api_key").getAsString()) != APIKeys.WOE_KEY_AUTH) {
+        if (APIKeys.getAPIKey(breakCast.get("api_key").getAsString()).getType() != APIKeysType.WOE_UPDATE) {
             return Response.status(403).entity("Key not auth").build();
         }
 

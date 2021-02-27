@@ -16,15 +16,34 @@
     <!-- ***************** Enviroment variables **************************** -->
     <!-- ******************************************************************* -->
     <!--  Guild information -->
-    <Environment name="GUILD_NAME"      value="" override="false" type="java.lang.String" />
+    <Environment name="GUILD_NAME" value="" override="false" type="java.lang.String" />
 
     <!--  Web main URL -->
-    <Environment name="MAIN_URL"        value="" override="false" type="java.lang.String" />
+    <Environment name="MAIN_URL" value="" override="false" type="java.lang.String" />
 
     <!-- DISCORD API INFO -->
     <Environment name="DISCORD_CLIENT_ID" value="" override="false" type="java.lang.String" />
     <Environment name="DISCORD_CLIENT_SECRET" value="" override="false" type="java.lang.String" />
     <Environment name="DISCORD_REDIRECT_URI" value="" override="false" type="java.lang.String" />
+    <Environment name="DISCORD_SERVER_ID" value="" override="false" type="java.lang.String" />
+    <Environment name="DISCORD_CHANNEL_ID" value="" override="false" type="java.lang.String" />
+    <Environment name="DISCORD_TAG_PROFILE_ID" value="" override="false" type="java.lang.String" />
+
+    <!-- API Keys -->
+    <!-- The value is a Json Object, contain the key, name, and type: *beware xml format (replace " to &quot;)
+            {
+              "key1": {
+                "key": "asdasd",
+                "type": "char_update"
+              },
+              "key2": {
+                "key": "asdasd",
+                "type": "woe_update"
+              }
+            }
+    -->
+    <Environment name="API_KEYS" value="" override="false" type="java.lang.String"/>
+
 
     <!-- Rewrite value -->
     <Valve className="org.apache.catalina.valves.rewrite.RewriteValve" />
